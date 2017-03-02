@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <record id="purchase_tax_line_form" model="ir.ui.view">
+            <field name="name">purchase.tax.line.form</field>
+            <field name="type">form</field>
+            <field name="model">purchase.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form" />
+            <field name="arch" type="xml">
+                <field name="amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}" position = "before">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" >
+                        <group>
+                            <group width="800%%">                           
+                                <field name="packing_charges"/>
+                                <field name="freight_charges"/>
+                                <field name="insurance_charges"/>                                
+                            </group>
+                        </group>
+                    </group>
+                </field>
+                <field name ="order_line" position="after">
+                    <field colspan="4" mode="tree" name="tax_line" nolabel="1" widget="one2many_list">
+                        <tree editable="bottom" string="Taxes">
+                            <field name="name"/>
+                            <field name="account_id" groups="account.group_account_invoice"/>
+                            <field name="base" readonly="1" />
+                            <field name="amount"/>
+                            <field invisible="True" name="base_amount"/>
+                            <field invisible="True" name="tax_amount"/>
+                            <field name="factor_base" invisible="True"/>
+                            <field name="factor_tax" invisible="True"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+    </record>
+
+
+    </data>
+</openerp>

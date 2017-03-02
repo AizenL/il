@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record id="view_print_order" model="ir.ui.view">
+          <field name="name">prints.wizard</field>
+          <field name="model">prints.wizard</field>
+          <field name="arch" type="xml">
+            <form string="Print The Copy of " >
+                <group>
+                    <group>
+                        <field name="selection_item" />
+                        
+                    </group>
+                </group>
+                <footer>
+                    <button name="print_report" context="{'open_purchase': True}" string="Print Excise Invoice" type="object" class="oe_highlight"/>
+		    <button name="print_report1" context="{'open_purchase': True}" string="Print Commercial Invoice" type="object" class="oe_highlight"/>
+                    <!-- <button name="create_supplier" string="Dummy invoice" type="object" class="oe_highlight"/> -->
+                </footer>
+            </form>
+          </field>
+        </record>
+        <record id="action_pass1_update_wizard" model="ir.actions.act_window">
+            <field name="name">Pass-01 Invoice</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">prints.wizard</field>
+        
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="target">new</field>
+
+        </record>
+        <!-- <act_window name="Pass-01 Invoice"
+            res_model="prints.wizard"
+            src_model="account.invoice"
+            view_mode="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+            id="action_pass_id"/>
+ -->
+    
+
+      </data>
+</openerp>

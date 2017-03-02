@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Top menu item -->
+        
+
+      <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group/group[@name='quants_grp']" position="after">
+                   <field name="unit_price"/></xpath>
+                <xpath expr="//form/group/group[@name='quants_grp']" position="before">
+
+                
+                <group colspan="4">
+                   
+                                     
+                                    
+                                          <separator string="Manufacturer/Dealer Details" colspan="4"/>
+                                  
+                                   <field name="new_stock_id" nolabel="1">
+
+                                        <form>
+                                            <group><group>
+                                            <field name="type_stage" />
+                                            <field name="company_selection"  on_change="supplier_information(company_selection)" />
+
+                                            <field name="comapny_name" />
+                                             <field name="addrress"/>
+                                            <field name="reg_num"/>
+                                           
+                                            <field name="range"/>
+                                            <field name="division"/>
+                                            <field name="commissionerate"/>
+                                           
+                                            <field name="invoice_no"/>
+                                            <field name="invoice_date"/>
+                                            <field name="tarrif"/>
+                                            <field name="quantity"/>
+                                             <field name="rate_bed_amount"/>
+                                              <field name="rate_ed_cess_amount"/>
+                                            </group><group>
+                                        
+                                        <field name="assessable_value"/>
+                                        <field name="bed_amount"/>
+                                        <field name="ed_cess_amount"/>
+                                        <field name="sec_ed_cess_amount"/>
+                                        <field name="total_duty_amount"/>
+                                        <field name="duty_per_unit"/>
+                                        <field name="rate_sec_ed_cess_amount"/>
+                                        
+                                        
+                                        
+                                        <field name="seller"/></group></group>
+                                    </form>
+
+
+                                    <tree string="Manufacturer" >
+                                        <field name="type_stage"/>
+                                        <field name="company_selection" />
+                                        <field name="comapny_name" />
+                                        <field name="reg_num"/>
+                                        <field name="division"/>
+                                        <field name="invoice_no"/>
+                                        <field name="invoice_date"/>
+                                        <field name="tarrif"/>
+                                        <field name="quantity"/>
+                                        <field name="assessable_value"/>
+                                        <field name="bed_amount"/>
+                                        <field name="ed_cess_amount"/>
+                                        <field name="sec_ed_cess_amount"/>
+                                        <field name="total_duty_amount"/>
+                                        <field name="duty_per_unit"/>
+
+                                       
+                                    </tree> 
+                                </field>
+                                </group>
+
+                    </xpath>
+
+
+            </field>
+        </record>
+        <record id="stock_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//tree/field[@name='product_id']" position="after">
+                <field name="unit_price"/></xpath>
+        </field>
+        </record>
+      <record id="stock_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="replace">
+                <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+               <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
+                <field name="select_stage" attrs="{'invisible':[('picking_type_id','!=',1)]}"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/field[@name='date']" position="replace">
+                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/field[@name='min_date']" position="replace">
+                <field name="min_date" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/div/field[@name='owner_id']" position="replace">
+                <field name="owner_id" attrs="{'readonly':[('state','!=','draft')]}" groups="stock.group_tracking_owner"/></xpath>
+
+                 <xpath expr="//form/sheet/group/group/field[@name='origin']" position="replace">
+                <field name="origin" attrs="{'readonly':[('state','!=','draft')]}" placeholder="e.g. PO0032" class="oe_inline"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='move_type']" position="replace">
+                <field name="move_type" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='picking_type_id']" position="replace">
+                <field name="picking_type_id" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='date_done']" position="replace">
+                <field name="date_done" attrs="{'readonly':[('state','!=','draft')]}" groups="base.group_no_one"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='priority']" position="replace">
+                <field name="priority" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+                   <!--<xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">-->
+
+                   <!--<field name="partner_id"/>-->
+
+
+        </field>
+    </record>
+
+<!--     <record id="account_invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//form/sheet/group/group/field[@name='date_invoice']" position="after">
+                <field name="select_stage"/></xpath>
+                   <xpath expr="//form/sheet/notebook/page/group/field[@name='payment_term']" position="after">
+                <field name="account_payment_terms"/>
+                       <field name="account_shippment_terms"/>
+               
+            </xpath> -->
+                 <!--<xpath expr="//form/sheet/group/group/field[@name='date_invoice']" position="replace">-->
+                     <!--<field name="date_invoice" on_change="onchange_date(date_invoice,account_payment_terms)"/>-->
+
+
+            <!--</xpath>-->
+<!--         </field>
+    </record> -->
+                
+      
+        
+      
+    </data>
+</openerp>

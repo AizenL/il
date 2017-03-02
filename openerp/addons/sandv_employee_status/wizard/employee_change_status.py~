@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+import openerp.addons.decimal_precision as dp
+##### Selection Values Declaration
+
+
+_EMPLOYEE_STATUS = [('notice_period' , 'Notice Period'),('probation' , 'Probation'),('temporary','Temporary'),('permanent','Permanent'),('terminated','Terminated'),('resigned','Resigned'),('absconded','Absconded')]
+################################################################################################
+
+class employee_status(osv.osv_memory):
+	_name = "employee.status"
+	_columns = {
+	'status' : fields.selection(_EMPLOYEE_STATUS, 'Employee Status'),
+	'start_date' : fields.date('Start Date'),
+	'end_date': fields.date('End Date'),
+	}
+
+
+    def update_status(self, cr, uid, ids, context=None):
+        """ create invoices for the active sales orders """
+        sale_obj = self.pool.get('sale.order')
+        act_window = self.pool.get('ir.actions.act_window')
+        wizard = self.browse(cr, uid, ids[0], context)
+        sale_ids = context.get('active_ids', [])
+        if wizard.advance_payment_method == 'all':
+            # create the final invoices of the active sales orders
+            res = sale_obj.manual_invoice(cr, uid, sale_ids, context)
+            if context.get('open_invoices', False):
+                return res
+            return {'type': 'ir.actions.act_window_close'}
+
+        if wizard.advance_payment_method == 'lines':
+            # open the list view of sales order lines to invoice
+            res = act_window.for_xml_id(cr, uid, 'sale', 'action_order_line_tree2', context)
+            res['context'] = {
+                'search_default_uninvoiced': 1,
+                'search_default_order_id': sale_ids and sale_ids[0] or False,
+            }
+            return res
+        assert wizard.advance_payment_method in ('fixed', 'percentage')
+
+        inv_ids = []
+        for sale_id, inv_values in self._prepare_advance_invoice_vals(cr, uid, ids, context=context):
+            inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
+
+        if context.get('open_invoices', False):
+            return self.open_invoices( cr, uid, ids, inv_ids, context=context)
+        return {'type': 'ir.actions.act_window_close'}
+employee_status()

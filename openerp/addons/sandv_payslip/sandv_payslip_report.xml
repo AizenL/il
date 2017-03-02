@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            string="Employee Payslip" 
+            id="sandv_employee_payslip" 
+            model="hr.payslip" 
+            report_type="qweb-pdf"
+            name="sandv_payslip.report_sandv_payslip_document" 
+            file="sandv_payslip.report_sandv_payslip_document"
+        />
+    </data>
+</openerp>

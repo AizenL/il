@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+<!--
+
+
+           
+
+        <record id="view_delivery_order_inherit_form" model="ir.ui.view">
+            <field name="name">sale.picking.inherit.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+            	<field name="partner_id" position = "after">
+			<field name="project_id"/>
+          	</field>
+
+			
+   </field>
+   </record>
+
+
+        
+
+        <record id="view_sale_order_inherit_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+            	<field name="partner_id" position = "after">
+			<field name="project_id_id"/>
+            	</field>
+
+   </field>
+   </record>
+ 
+
+-->
+
+        <record id="view_delivery_location_tax_tree" model="ir.ui.view">
+            <field name="name">delivery.location.tree</field>
+            <field name="model">delivery.location.tax</field>
+            <field name="arch" type="xml">
+                <tree string="Shipment Location">
+                    <field name="name"/>
+                    <field name="to_state"/>
+                    <field name="bill_to"/>
+
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_delivery_location_tax_form" model="ir.ui.view">
+            <field name="name">shipment.location.form</field>
+            <field name="model">delivery.location.tax</field>
+            <field name="arch" type="xml">
+                <form string="Shipment Location">
+                   
+                    <group>
+                        
+				<field name="name" />
+				<field name="to_state" />
+                    		<field name="bill_to"/></group>
+				<!--<field name="amount_per" />-->
+                        <label for="tax_category"/>
+
+		            <field name="tax_category" colspan="3" >
+
+		        	<!--<form string="Category">-->
+					<!--<group>-->
+		            		<!--<field name="name"/>-->
+		            		<!--<field name="account_tax" />-->
+					<!--</group>-->
+				<!--</form>-->
+
+		        	<tree string="Category" editable="True" >
+		            		<field name="name"/>
+		            		<field name="account_tax" />
+                            <field name="account_tax_input" />
+				</tree>
+		   	    </field>
+
+                            
+
+		</form>
+            </field>
+        </record>
+
+        <record id="action_delivery_location_tax_form" model="ir.actions.act_window">
+            <field name="name">Delivery Location Tax</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.location.tax</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new Shipment Location. 
+              </p>
+            </field>
+        </record>
+
+        
+
+
+
+
+
+   
+  </data> 
+</openerp>

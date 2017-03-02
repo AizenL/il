@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_amendment_history,sale.amendment.history,model_sale_amendment_history,base.group_sale_salesman,1,0,0,0
+access_sale_amendment_history_line,sale.amendment.history.line,model_sale_amendment_history_line,base.group_sale_salesman,1,0,0,0
+access_sale_amendment_history_manager,sale.amendment.history,model_sale_amendment_history,group_sale_amendment,1,1,1,0
+access_sale_amendment_history_line_manager,sale.amendment.history.line,model_sale_amendment_history_line,group_sale_amendment,1,1,1,0
+access_procurement_group_user,procurement.group,model_procurement_group,group_sale_amendment,1,1,1,1

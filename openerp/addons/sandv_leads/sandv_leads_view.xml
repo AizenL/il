@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+     <record id="crm_crm_case_form_view_leads" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='partner_id']" position="replace">
+            		<field name="partner_id" string="Customer"
+                                on_change="on_change_partner_id(partner_id)"
+                                options='{"create_name_field": "name"}'
+                                context="{'default_name': contact_name, 'default_street': street, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_function': function, 'default_phone': phone, 'default_mobile': mobile, 'default_fax': fax, 'default_email': email_from, 'default_user_id': user_id, 'default_section_id': section_id}" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='title']" position="replace">
+                	<field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" class="oe_inline" options='{"no_open": True}' invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="replace">
+                	<field name="categ_ids"
+                                widget="many2many_tags"
+                                context="{'object_name': 'crm.lead'}" invisible="1"/>
+                </xpath>
+
+            </field>
+     </record>
+
+      <record id="crm_crm_case_form_view_oppor" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='partner_name']" position="after">
+            		<field name="customer_designation"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="replace">
+            		<field name="partner_id"
+                                    on_change="on_change_partner_id(partner_id)"
+                                    string="Customer"
+                                    context="{'default_name': partner_name, 'default_email': email_from, 'default_phone': phone}" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='title']" position="replace">
+                	<field name="title" placeholder="Title" domain="[('domain', '=', 'contact')]" class="oe_inline" options='{"no_open": True}' invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="replace">
+                	<field name="categ_ids"
+                                widget="many2many_tags"
+                                context="{'object_name': 'crm.lead'}" invisible="1"/>
+                </xpath>
+
+
+            </field>
+     </record>
+     <record id="sale_crm_crm_case_form_view_oppor" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@string='Convert to Quotation']" position="replace">
+                   
+                </xpath>
+                <xpath expr="//button[@string='Create Quotation']" position="replace">
+                   
+                </xpath>
+               
+            </field>
+     </record>
+
+     <!-- <record id="sale_crm_crm_case_form_view_oppor" model="ir.ui.view">
+            <field name="name">crm.lead.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="sale_crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//data/button[1]" position="replace">
+            		<button attrs="{'invisible': [('probability', '=', 100)]}" string="Convert to Quotation" name="%(action_crm_make_sale)d" type="action" class="oe_highlight" invisible="1"/>
+                </xpath>
+                
+            </field>
+     </record> -->
+  </data> 
+</openerp>

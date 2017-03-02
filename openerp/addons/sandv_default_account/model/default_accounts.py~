@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+import re
+from openerp import addons
+import logging
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp import tools
+import pdb
+from openerp.tools.safe_eval import safe_eval
+
+class account_config_settings(osv.osv_memory):
+    _inherit = "account.config.settings"
+
+    _columns = {
+        'default_receivable_acc': fields.many2one('account.account', 'Default Receivable Account',domain=[('type', '=', 'view')]),
+        'default_payable_acc': fields.many2one('account.account', 'Default Payable Account',domain=[('type', '=', 'view')]),
+    } 
+    def get_default_receivable_acc(self, cr, uid, fields, context=None):
+        icp = self.pool.get('ir.config_parameter')
+        return {
+            'default_receivable_acc': safe_eval(icp.get_param(cr, uid, 'sandv_default_account.default_receivable_acc', 'False')),
+        }
+    def set_default_receivable_acc(self, cr, uid, ids, context=None):
+        config = self.browse(cr, uid, ids[0], context=context)
+        icp = self.pool.get('ir.config_parameter')
+        icp.set_param(cr, uid, 'sandv_default_account.default_receivable_acc', repr(config.default_receivable_acc.id))
+    def get_default_payable_acc(self, cr, uid, fields, context=None):
+        icp = self.pool.get('ir.config_parameter')
+        return {
+            'default_payable_acc': safe_eval(icp.get_param(cr, uid, 'sandv_default_account.default_payable_acc', 'False')),
+        }
+    def set_default_payable_acc(self, cr, uid, ids, context=None):
+        config = self.browse(cr, uid, ids[0], context=context)
+        icp = self.pool.get('ir.config_parameter')
+        icp.set_param(cr, uid, 'sandv_default_account.default_payable_acc', repr(config.default_payable_acc.id))
+        
+    
+
+class automatic_create_account(osv.osv):
+    _inherit = "res.partner"
+
+    def create(self, cr, uid, vals,context=None):
+        all_childs_code = 0
+        icp = self.pool.get('ir.config_parameter')
+        default_receivable_acc = safe_eval(icp.get_param(cr, 1, 'sandv_default_account.default_receivable_acc', 'False')),
+        default_payable_acc = safe_eval(icp.get_param(cr, 1, 'sandv_default_account.default_payable_acc', 'False')),
+        
+        if default_receivable_acc[0] == False:
+            raise osv.except_osv(_('Warning!'),_('Please set Default Receivable Account in Settings->Configuration->Accounting'))
+        if default_payable_acc[0] == False:
+            raise osv.except_osv(_('Warning!'),_('Please set Default Payable Account in Settings->Configuration->Accounting'))
+
+	if vals['customer'] == True:
+	
+		if default_receivable_acc:
+		    acc_obj = self.pool.get('account.account')
+		    acc_config_obj = self.pool.get('account.config.settings')
+		    partner_obj = self.pool.get('res.partner')
+		    all_childs_code = []
+		    all_childs = acc_obj.search(cr,1,[('parent_id', 'in', default_receivable_acc)])
+		    for child in all_childs:
+			    child_code = acc_obj.browse(cr,uid,child)
+			    all_childs_code.append(child_code.code)
+		    account_code = int(max(all_childs_code)) + 1
+		    new_account_id = acc_obj.create(cr,1,{
+		   	'name': vals['name'],
+		   	'parent_id': default_receivable_acc[0],
+		   	'type': 'receivable',
+		   	'user_type': 2,
+		   	'active':'True',
+		   	'code':account_code,
+			'reconcile':True
+			})
+		    vals.update({'property_account_receivable':new_account_id})	
+
+	else:
+
+		if default_payable_acc:
+		    acc_obj = self.pool.get('account.account')
+		    acc_config_obj = self.pool.get('account.config.settings')
+		    partner_obj = self.pool.get('res.partner')
+		    all_childs_code = []
+		    all_childs = acc_obj.search(cr,1,[('parent_id', 'in', default_payable_acc)])
+		    for child in all_childs:
+			    child_code = acc_obj.browse(cr,1,child)
+			    all_childs_code.append(child_code.code)
+		    account_code = int(max(all_childs_code)) + 1
+		    new_account_id = acc_obj.create(cr,1,{
+		   	'name': vals['name'],
+		   	'parent_id': default_payable_acc[0],
+		   	'type': 'payable',
+		   	'user_type': 3,
+		   	'active':'True',
+		   	'code':account_code,
+			'reconcile':True
+			})
+		    
+		    vals.update({'property_account_payable':new_account_id})	
+
+	new_id = super(automatic_create_account, self).create(cr, uid, vals, context=context)
+        return new_id   
+automatic_create_account()
+
+
+
+
+
+

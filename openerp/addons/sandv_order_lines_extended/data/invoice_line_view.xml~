@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+        <!-- Sale order link in invoice form  -->
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">account_invoice_sale_link.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page name="sale_ids" string="Sale Orders">
+                        <field name="sale_ids"/>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+        <!-- Purchase order link in invoice form  -->
+        <record id="supplier_invoice_form" model="ir.ui.view">
+            <field name="name">supplier.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <page string="Payments" position="after">
+                    <page name="purchase_ids" string="Purchase Orders">
+                        <field name="purchase_ids"/>
+                    </page>
+                </page>
+            </field>
+        </record>
+
+
+    	<!-- Supplier Invoice Lines Extended view -->
+    	<record model="ir.ui.view" id="invoice_lines_extended_form_view">
+            <field name="name">invoice.lines.extended.form.view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="view_type">form</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}" position="after">	
+                    <field name="other_charges" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+                <group class="oe_subtotal_footer oe_right" position="before">
+                    <group>
+                        <group width="800%%">                           
+                            <field name="packing_charges" />
+                            <field name="freight_charges"/>
+                            <field name="insurance_charges"/>                                
+                        </group>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <!-- Customer Invoice Lines Extended view 
+    	<record model="ir.ui.view" id="cust_invoice_lines_extended_form_view">
+            <field name="name">cust.invoice.lines.extended.form.view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="view_type">form</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">                
+                <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}" position="after">
+                    <field name="other_charges" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                </field>
+                <group class="oe_subtotal_footer oe_right" position="before">
+                    <group>
+                        <group width="800%%">                           
+                            <field name="packing_charges" />
+                            <field name="freight_charges"/>
+                            <field name="insurance_charges"/>                                
+                        </group>
+                    </group>
+                </group>             	
+            </field>
+        </record>
+-->
+
+
+    </data>
+</openerp>

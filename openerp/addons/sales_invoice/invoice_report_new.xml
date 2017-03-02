@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="action_other_mom_new"
+            string="Sales Invoice"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_invoice_new"
+            file="sales_invoice.report_invoice_new"
+            
+        />
+
+        <record id="paperformat_lowmargin123_new" model="report.paperformat">
+        <field name="name">Sale Invoice </field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">35</field>
+        <field name="margin_bottom">30</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">30</field>
+        <field name="dpi">90</field>
+</record>
+
+
+    <record id="sales_invoice.action_other_mom_new" model="ir.actions.report.xml">
+    <field name="paperformat_id" ref="sales_invoice.paperformat_lowmargin123_new" />
+     <!-- <field name="download_filename">${o.number}_Commercial_Report.pdf</field> -->
+</record>
+  
+
+
+    
+
+      </data>
+</openerp>

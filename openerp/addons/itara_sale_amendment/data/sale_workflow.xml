@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Inherit from sales workflow to change the state from shipping_except to progress-->
+
+        <record id="sale.act_ship_except" model="workflow.activity">
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="name">ship_except</field>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'progress'})</field>
+        </record>
+
+    </data>
+</openerp>

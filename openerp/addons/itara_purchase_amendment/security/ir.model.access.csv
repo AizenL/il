@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_amendment_history,purchase.amendment.history,model_purchase_amendment_history,purchase.group_purchase_user,1,0,0,0
+access_purchase_amendment_history_line,purchase.amendment.history.line,model_purchase_amendment_history_line,purchase.group_purchase_user,1,0,0,0
+access_purchase_amendment_history_manager,purchase.amendment.history,model_purchase_amendment_history,group_purchase_amendment,1,1,1,0
+access_purchase_amendment_history_line_manager,purchase.amendment.history.line,model_purchase_amendment_history_line,group_purchase_amendment,1,1,1,0

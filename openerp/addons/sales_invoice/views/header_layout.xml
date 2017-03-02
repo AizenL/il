@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	  
+    	<!-- 	
+       <template id="report_header_custom" inherit_id="report.external_layout_header">
+
+           <xpath expr="//div[@class='header']" position="replace">
+           
+                <div class="header" >
+                	<div style="border-bottom: 1px solid black;"></div>
+                	<div class="row">
+                	
+                		<div class="col-xs-3">
+                		<img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 90px;"/>
+            			</div>
+
+
+                	<div class="col-xs-9 text-right" style="text-align: center;">
+                		<t t-set="city" t-value="o.origin"/>
+                		<t t-set="xyz" t-value="o.get_warehouse_address(city)"/>
+                	<b><h4><strong> <span t-field="o.company_id.partner_id.name"/></strong></h4></b> 
+
+                	<h5><span t-field="o.company_id.partner_id.street"/>&amp;nbsp;<span t-field="o.company_id.partner_id.street2"/>&amp;nbsp;<span t-field="o.company_id.partner_id.city"/>&amp;nbsp;<span t-field="o.company_id.partner_id.zip"/>&amp;nbsp;<span t-field="o.company_id.partner_id.state_id.name"/>&amp;nbsp;</h5>
+                	<h5><span t-field="o.company_id.partner_id.company_id.phone"/>&amp;nbsp;<span t-field="o.company_id.partner_id.company_id.email"/></h5></div></div><div style="border-bottom: 1px solid black;"></div>
+                   
+                </div>
+            </xpath>
+        </template>
+
+
+
+        <template id="report_footer_custom" inherit_id="report.external_layout_footer">
+
+            <xpath expr="//div[@class='footer']" position="replace">
+                <div class ="footer">
+                   </div>
+            </xpath>
+        </template> -->
+
+
+
+    </data>
+</openerp>

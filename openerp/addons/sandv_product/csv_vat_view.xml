@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+   	
+
+
+
+  		 <record id="sandv_cst_vat_form_view" model="ir.ui.view">
+            <field name="name">cst.vat.form</field>
+            <field name="model">cst.vat</field>
+            <field name="arch" type="xml">
+                <form string="CST/Vat ,Entery Tax ">
+                	 <sheet>
+		                    <group>
+		                        <group>
+		                            <field name="cst"  required="1"/>
+		                            <field name="entery_tax"  required="1" />
+		                            <field name="cuurent_tax"/>
+
+                        		</group>
+                        	</group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+            <record id="sandv_pricelist_tree_view" model="ir.ui.view">
+            <field name="name">cst.vat.tree</field>
+            <field name="model">cst.vat</field>
+            <field name="arch" type="xml">
+                <tree string="CST/Vat ,Entery Tax">
+                    
+                    <field name="cst"  required="1"/>
+		            <field name="entery_tax"  required="1" />
+		             <field name="cuurent_tax"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="sandv_cst_vat_action" model="ir.actions.act_window">
+            <field name="name">CST/Vat And Entery Tax</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cst.vat</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        
+        </record>
+
+
+ 
+
+            <menuitem action="sandv_cst_vat_action"
+            id="menu_action_sandv_cst_vat_action" sequence="1" groups="base.group_sale_manager,base.group_no_one"
+            
+            parent="base.menu_base_config"/>
+
+        </data>
+    </openerp>

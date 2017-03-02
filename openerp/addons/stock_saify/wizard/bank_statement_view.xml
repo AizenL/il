@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record id="view_import_bank" model="ir.ui.view">
+          <field name="name">bank.statement</field>
+          <field name="model">bank.statement</field>
+          <field name="arch" type="xml">
+            <form string="Bank Statement" >
+                <group>
+                    <group>
+                        <field name="selection_item" />
+                        
+                    </group>
+                </group>
+                <footer>
+                    <button  name= 'get_bank_statement_line' icon="gtk-ok" type="object" string="Import" class="oe_highlight"/>
+                    <!-- <button name="print_report" context="{'open_purchase': True}" string="Print Excise Invoice" type="object" class="oe_highlight"/>
+		    <button name="print_report1" context="{'open_purchase': True}" string="Print Commercial Invoice" type="object" class="oe_highlight"/> -->
+                    <!-- <button name="create_supplier" string="Dummy invoice" type="object" class="oe_highlight"/> -->
+                </footer>
+            </form>
+          </field>
+        </record>
+        <record id="view_import_bank_wizard" model="ir.actions.act_window">
+            <field name="name">Bank Statement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bank.statement</field>
+        
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="target">new</field>
+
+        </record>
+        <!-- <act_window name="Pass-01 Invoice"
+            res_model="prints.wizard"
+            src_model="account.invoice"
+            view_mode="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+            id="action_pass_id"/>
+ -->
+    
+
+      </data>
+</openerp>

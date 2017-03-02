@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+	<template id="report_sandv_batch_multi_payslip_document">
+        <!-- <t t-call="report.external_layout"> -->
+        <div class="header">
+        <div class="clearfix"><br /></div>
+                <table style="border-bottom:1px solid; width:100%">
+                        <t t-if="not o or not 'company_id' in o">
+                            <t t-set="company" t-value="res_company"></t>
+                        </t>
+                        <tr>
+                            <td><img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 45px;"/></td>
+                            <td>
+                            <div style="text-align:right">
+                                <div>
+                                    <span t-esc="res_company.name"/>
+                                </div>
+                                <div>
+                                    <span t-esc="res_company.street"/>
+                                    <label> ,</label>
+                                    <span t-esc="res_company.zip"/>
+                                </div>
+                                <div>
+                                    <label>Email : </label>
+                                    <span t-esc="res_company.website"/>
+                                </div>
+                                 <label>Phone : </label>
+                                <span t-esc="res_company.phone"/>
+                            </div>
+                            </td>
+                        </tr>
+                </table>
+        </div>
+
+        <div class="page">
+            <div class="row">
+                <style>
+                    p.uppercase {
+                                text-transform: uppercase;
+                            }
+                   <!-- th  {
+                        text-align:center; 
+                        vertical-align:middle;
+                    } -->
+                </style>
+                <p class="text-center uppercase"> <strong><span t-field="docs.name"/></strong></p>
+            </div>
+            <table class="table table-bordered table-bg">
+               <html>
+                <thead>
+                    <tr>
+                        <!-- <td  colspan="4">&amp;nbsp;&amp;nbsp;</td> -->
+                        <th class="text-center" rowspan="2"  style="vertical-align:middle;"><strong><center>EMPLOYEE NAME</center></strong></th>
+                        <th class="text-center" rowspan="2"  style="vertical-align:middle;"><strong>DESIGNATION</strong></th>
+                        <th class="text-center" rowspan="2"  style="vertical-align:middle;"><strong>WORK-EMAIL</strong></th>
+                        <th rowspan="2"  style="vertical-align:middle;"><center><strong>BANK ACC</strong></center></th>
+                        <th class="text-center" colspan="5">&amp;nbsp;&amp;nbsp; <strong>ALLOWANCES </strong></th>
+                        <th rowspan="2"  style="vertical-align:middle;"><strong>GROSS</strong></th>
+                        <th colspan="5"  class="text-center">&amp;nbsp; <strong>DEDUCTION</strong></th>
+                        <!-- <td  colspan="2">&amp;nbsp;</td> -->
+                        <th class="text-center" rowspan="2"  style="vertical-align:middle;"><strong>NET</strong></th>
+                        <th class="text-center" rowspan="2"  style="vertical-align:middle;"><strong>TOTAL</strong></th>
+                    </tr>
+                    <tr>
+                        <td  class="text-center" style="vertical-align:middle;"><strong>BASIC</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>HRA</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>CONVEYANCE</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>MEDICAL REIMBURSEMENT</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>OTHER ALLOWENCES</strong></td>
+                        <!-- <td>&amp;nbsp;&amp;nbsp; </td> -->
+                        <!-- <td >Gross</td> -->
+                        <td class="text-center" style="vertical-align:middle;"><strong>TDS</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>LEAVE DEDUCTION</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>ADVANCE DEDUCTION</strong></td>
+                        <td class="text-center" style="vertical-align:middle;"><strong>OTHER DEDUCTION</strong></td>
+                        <td style="vertical-align:middle;"><strong><center>TOTAL DEDUCTION</center></strong></td>
+                    </tr>
+                </thead>
+
+                    <tbody>
+                    <tr>
+                        <t t-foreach="docs" t-as="o">
+                            <tr t-foreach="o.slip_ids" t-as="jj">
+                                <t t-if="jj">
+                                    <td ><span t-esc="jj.employee_id.name"/></td>
+                                    <td ><span t-field="jj.employee_id.job_id.name"/></td>
+                                    <td ><span t-field="jj.employee_id.work_email"/></td>
+                                    <td class="text-right"><span t-field="jj.employee_id.bank_account_id.acc_number"/></td>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                        <span t-if="line_ids.code == 'BASIC'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                        <span t-if="line_ids.code == 'HRA'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                    
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'conv'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'MR'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'OA'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'GROSS'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'TDS'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'LD'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'AD'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'OD'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <!-- <td >&amp;nbsp;</td> -->
+
+                                    <!-- total deduction -->
+
+                                    
+                                       <span>
+                                            <td class="text-right">
+                                                <span t-esc="docs.get_total_deduction(jj.id)"/>
+                                            </td>
+                                        </span>
+                                       
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'GROSS'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'NET'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                </t>
+                            </tr>
+                        </t>
+                    </tr>
+                </tbody>
+
+                        </html>
+                    </table>
+        </div>
+
+        <div class="footer">
+            <table  style="border-top:1px solid; width:100%">
+
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="company" t-value="res_company"></t>
+                </t>
+                <tr>
+                    <td>Email: <span t-esc="res_company.website"/></td>
+                </tr>
+            </table>
+        </div>
+    <!-- </t> -->
+	</template>
+</data>
+</openerp>
+
+
+
+
+<!-- 
+##########################################
+<table>
+<tbody>
+<tr>
+<td  colspan="4">&nbsp;nbsp;&nbsp;nbsp;</td>
+<td colspan="4">&nbsp;nbsp;&nbsp;nbsb; Allowances </td>
+<td  colspan="4">&nbsp;nbsp; deduction</td>
+<td  colspan="3">&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;nbsp;employee name</td>
+<td>designation</td>
+<td >workemail</td>
+<td >bank acc</td>
+<td >hra</td>
+<td >conv</td>
+<td >mr</td>
+<td >oa</td>
+<td >tds</td>
+<td >lda</td>
+<td >Dod</td>
+<td>gross</td>
+<td >net</td>
+<td>total</td>
+</tr>
+<tr>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td>&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td>&nbsp;nbsp;</td>
+</tr>
+<tr>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+</tr>
+<tr>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+<td >&nbsp;nbsp;</td>
+</tr>
+</tbody>
+</table> -->

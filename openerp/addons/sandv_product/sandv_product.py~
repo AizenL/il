@@ -1,0 +1,53 @@
+##############################################################################
+import time
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp.tools.float_utils import float_compare
+import pdb
+
+
+class product_brand(osv.osv):
+
+    _name = "product.brand"
+   
+    _columns = {
+        'name': fields.char(string='Name'),
+       
+    }
+
+
+class product_type(osv.osv):
+
+    _name = "product.type"
+   
+    _columns = {
+        'name': fields.char(string='Name'),
+       
+    }
+
+
+class product_material(osv.osv):
+
+    _name = "product.material"
+   
+    _columns = {
+        'name': fields.char(string='Name'),
+       
+    }
+
+
+class sandv_product(osv.osv):
+
+    _inherit = "product.template"
+   
+    _columns = {
+        'customer_part_noo': fields.char(string='Customer Part No'),
+        'product_description': fields.char(string='Product Description'),
+        'product_brand': fields.many2one('product.brand', 'Brand'),
+        'manufacturer_part_no': fields.char(string='Manufacturer Part No'),
+        'product_type': fields.many2one('product.type', 'Product Type'),
+        'product_material': fields.many2one('product.material', 'Product Material'),
+    }
+
+
+

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="product_master_tree_view" model="ir.ui.view">
+            <field name="name">product.master.tree.view</field>
+            <field name="model">product.master</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase List">
+                    <field name="name"/>
+                    <field name="line_item"/>
+                    <field name="material_number"/>
+		    <field name="material_desc"/>
+                    <field name="uom"/>
+                    <field name="qty"/>
+                    <field name="unit_price"/>
+                    <field name="total"/>
+                    <field name="currency"/>
+                    <field name="received_qty"/>
+                    <field name="is_qr_generated"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="product_master_form_view" model="ir.ui.view">
+            <field name="name">product.master.form.view</field>
+            <field name="model">product.master</field>
+            <field name="arch" type="xml">
+                <form string="Purchase List">
+                    <header>
+                        <button name="action_generate_qr" string="Generate QR Code" type="object" attrs="{'invisible':[('is_qr_generated', '=', True)]}"/>
+                        <button name="receive_material" string="Receive Material" type="object" attrs="{'invisible':[('state', '=', 'received')]}"/>
+
+                    <field name="state" widget="statusbar"/>
+
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="qr_code" widget="image" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+                            <field name = "qr_data" invisible ="1" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+                        </div>
+                        <group>
+                            <group>
+				    <field name="name" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="line_item" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="material_number" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="material_desc" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="uom" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="qty" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+			     </group>
+			     <group>
+				    <field name="unit_price" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="total" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="currency" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+				    <field name="received_qty"/>
+				    <field name="is_qr_generated" attrs="{'readonly':[('is_qr_generated', '=', True)]}"/>
+                            </group>
+                        </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+        <record id="product_master_search_view" model="ir.ui.view">
+            <field name="name">product.master.search.view</field>
+            <field name="model">product.master</field>
+            <field name="arch" type="xml">
+                <search string="Purchase List">
+                    <field name="name" select="1"/>
+                    <field name="line_item" select="1"/>
+                    <field name="material_number" select="1"/>
+                    <field name="uom" select="1"/>
+                    <field name="qty" select="1"/>
+                    <field name="unit_price" select="1"/>
+                    <field name="total" select="1"/>
+                    <field name="currency" select="1"/>
+                    <group expand="0" string="Group By">
+                        <filter name="is_qr_generated" string="QR Generated" context="{'group_by':'is_qr_generated'}"/>
+                        <filter name="state" string="State" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+    <record model="ir.ui.view" id="product_master_kanban_view">
+        <field name="name">Product Master Kanban</field>
+        <field name="model">product.master</field>
+        <field name="priority">10</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_employee_vignette">
+                            <div class="oe_employee_image">
+                                <a type="open"><img t-att-src="kanban_image('product.master', 'image_medium', record.id.value)" class="oe_employee_picture"/></a>
+                            </div>
+			    <div>
+                                <h4>
+                                    <field name="name"/>
+                                </h4>
+			    </div>
+                        </div>
+                        <script>
+                            $('.oe_employee_picture').load(function() { if($(this).width() > $(this).height()) { $(this).addClass('oe_employee_picture_wide') } });
+                        </script>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+
+
+        <record id="action_product_master" model="ir.actions.act_window">
+            <field name="name">Product Master</field>
+            <field name="res_model">product.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" ref="product_master_tree_view"/>
+        </record>
+    <menuitem name="QR Code Generator"
+            id="menu_qr_root"
+            
+            sequence="10"/>
+
+    <menuitem id="menu_qr_main_submenu" parent="menu_qr_root" name="QR Code Generator" sequence="0"/>
+
+    <!-- <menuitem id="main_menu_product_sheet" name="Product" parent="menu_qr_main_submenu" sequence="49"/> -->
+
+    <menuitem action="action_product_master" id="menu_product_po_sheet" parent="menu_qr_main_submenu" sequence="5"/>
+
+
+
+    <record id="product_scan_tree_view" model="ir.ui.view">
+            <field name="name">product.scan.tree.view</field>
+            <field name="model">product.scan</field>
+            <field name="arch" type="xml">
+                <tree string="Product Scan">
+                    <field name="qr_data"/>
+                </tree>
+            </field>
+        </record>
+        <record id="product_scan_form_view" model="ir.ui.view">
+            <field name="name">product.scan.form.view</field>
+            <field name="model">product.scan</field>
+            <field name="arch" type="xml">
+                <form string="Product Scan">
+                    <header>
+                        <button name="action_view_form" string="Open PO" type="object"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="qr_code" widget="image"/>
+                            <field name = "qr_data" invisible="1"/>
+                        </div>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+    <record id="action_product_scan" model="ir.actions.act_window">
+            <field name="name">Product Scan</field>
+            <field name="res_model">product.scan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="product_scan_tree_view"/>
+        </record>
+
+    <menuitem action="action_product_scan" id="menu_product_scan_sheet" parent="menu_qr_main_submenu" sequence="6"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_invoice_extra">
+           
+
+            <style>
+body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+
+table{
+	font-size:12px;
+	line-height:18px;
+	width:100%;
+	border-collapse: collapse;
+
+	}
+{#p{#}
+{#padding:0px;#}
+{#margin:0px;#}
+{#}#}
+/* vertical-align Top Middle*/
+.vat{
+vertical-align: top;
+}
+.vam{
+vertical-align: middle;
+}
+
+.gridlist th{
+    background: #eee none repeat scroll 0 0;
+    vertical-align: top;
+}
+
+
+table, td, th {
+ page-break-inside: avoid !important;
+}
+
+/* table Border */
+.ttb{
+border-top:1px solid #888;
+border-bottom:1px solid #888;
+}
+.ttop{
+border-top:1px solid #ccc;
+}
+.tbottom{
+border-bottom:1px solid #888;
+}
+
+.tleft{
+border-left:1px solid #888;
+}
+
+.tright{
+border-right: 1px solid #888;
+}
+.padding_lr{
+padding-left:5px;
+padding-right:5px;
+}
+.padding_tb{
+padding-top:5px;
+padding-bottom:5px;
+}
+.padding_all{
+padding:5px;
+}
+h1{
+font-size:24px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+h2{
+font-size:18px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+h4{
+font-size:14px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+.grid{
+border:1px solid #888;
+}
+.grid td{
+}
+.bold{
+font-weight:bold;
+}
+.small{
+font-size:10px;
+line-height:14px;
+}
+.gridlist td{
+font-size:11px;
+}
+<!-- ttop tbottom tleft tright -->
+</style>
+
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+                    <div class="row">
+
+                        <table width="100%">
+                            <tr>
+                                <td class="padding_all vam" width="50%">
+                                    <img t-if="docs.company_id.logo" t-att-src="'data:image/png;base64,%s' % docs.company_id.logo" style="max-height:50px;" />
+                                </td>
+                                <td class="padding_all vam" width="50%" align="right">
+                                  Extra
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="center" class="padding_all vam">
+                                    <h1>Invoice</h1>
+                                </td>
+                            </tr>                            
+                        </table>
+                    </div>
+
+                </div>
+                <t t-call="report.html_container">
+ 
+                        <div class="page">                  
+                            <div class="row">
+                                <table class="grid">
+                                    <tbody>
+                                      <tr>
+                                          <td>
+                                             <table width="100%">
+                                                 <tr class="tbottom">
+                                                   <td colspan="3" class="padding_all vam">
+                                                     <t t-set="city" t-value="o.origin"/>
+                                                  <t t-set="xyz" t-value="o.get_warehouse_address(city)"/>
+                                                  <b><span t-esc="xyz[0]"/></b>, <span t-esc="xyz[1]"/>, <span t-esc="xyz[2]"/>, Tel No : - <span t-esc="xyz[3]"/>, Email Id: - <span t-esc="xyz[4]"/>
+                                                   </td>
+                                                 </tr>
+                                                  <tr class="tbottom">
+                                                       <td class="padding_all" width="34%">
+                                                                            CIN : <span t-field="o.company_id.cin"/>
+                                                       </td>
+                                                       <td class="padding_all tleft" width="33%">
+                                                                            TIN No. : <span t-field="o.company_id.tin"/>
+                                                       </td>
+                                                       <td class="padding_all tleft" width="33%">
+                                                                           PAN No :<span t-field="o.company_id.partner_id.pan_no"/>
+                                                       </td>                                                                                                                                                 
+                                                  </tr>
+                                             </table>                                            
+                                          </td>
+                                      </tr>
+                                        <tr>
+                                            <td>
+                                                <table width="100%">
+                                                    <tbody>
+                                                    <tr class="tbottom">
+                                                    	<td width="34%" class="padding_all">
+                                                    		<t t-set="city" t-value="o.origin" />
+                                                            <t t-set="xyz" t-value="o.get_consignee_address(city)" />
+                                                                            Consignee<br />
+                                                           <span t-esc="xyz[0]" /><br />
+                                                           <span t-esc="xyz[1]" /><br />
+                                                           <span t-esc="xyz[2]" /><br />
+                                                           <span t-esc="xyz[3]" /><br />
+                                                           <p>TIN No: <span t-esc="xyz[4]" /></p>
+                                                           <p>PAN No: <span t-esc="xyz[5]" /></p>  
+                                                    	</td>
+                                                    	<td width="33%" class="padding_all tleft">
+                                                         Buyer (if other than consignee)<br />
+                                                         <t t-if="o.partner_id.parent_id.name"><span t-esc="o.partner_id.parent_id.name"/></t>&amp;nbsp;<span t-esc="o.partner_id.name"/><br />
+                                                         <span t-esc="o.partner_id.street" />, 
+                                                         <span t-esc="o.partner_id.street2" /><br />
+                                                         <span t-esc="o.partner_id.state_id.name" />, 
+                                                         <span t-esc="o.partner_id.zip" />
+                                                         <span t-esc="o.partner_id.country_id.name" /><br />
+                                                         <span t-esc="o.partner_id.city" />                                                    		
+                                                    	</td>
+                                                    	<td width="33%" class="padding_all tleft">
+                                                          TIN NO  :  <span t-esc="o.partner_id.vat_tin" /><br />
+                                                          PAN NO  :  <span t-esc="o.partner_id.pan_no" />                                                    		
+                                                    	</td>                                                    	                                                    	
+                                                    	                                                    
+                                                    </tr>
+                                                    
+                                                      <tr class="tbottom">
+                                                          <td width="34%">
+                                                              <table width="100%" class="">
+                                                                  <tr class="tbottom">
+                                                                  	<td class="padding_all" width="50%">Despatch Document No.</td>
+                                                                  	<td class="padding_all tleft" width="50%">Dated </td>                                                                  	
+                                                                  </tr>
+                                                                  <tr class="tbottom">
+                                                                  	<td class="padding_all" height="30" width="50%"></td>
+                                                                  	<td class="padding_all tleft" height="20"  width="50%"></td>                                                                  	
+                                                                  </tr>  
+                                                                  <tr class="tbottom">
+                                                                  	<td class="padding_all" width="50%">Despatched through</td>
+                                                                  	<td class="padding_all tleft" width="50%">Destination </td>                                                                  	
+                                                                  </tr>
+                                                                  <tr class="tbottom">
+                                                                  	<td class="padding_all" height="30"  width="50%"></td>
+                                                                  	<td class="padding_all tleft"  height="20" width="50%"></td>                                                                  	
+                                                                  </tr>  
+                                                              </table>
+                        
+                                                          </td>
+                                                          
+                                                          <td width="66%" colspan="2" class="tleft">
+                                                        <table width="100%">
+                                                                <tr class="tbottom">
+                                                                    <td width="49">
+                                                                        <table width="100%">
+                                                                          <tr>
+                                                                              <td class="padding_all" width="50%">Invoice No. : <span t-esc="o.number" /></td>
+                                                                              <td class="padding_all tleft" width="50%">e-Sugam No. :</td>
+                                                                          </tr>
+                                                                        </table> 
+                                                                    </td>
+                                                                    <td width="51%" class="padding_all tleft">
+                                                                            Mode / Terms of Payment<br />
+                                                                            <span t-esc="o.pay_term.payment_information" />
+                                                                    </td>
+                                                                </tr>   
+                                                                <tr class="tbottom">
+                                                                    <td width="50%">
+                                                                        <table width="100%" border="0">
+                                                                          <tr>
+                                                                              <td class="padding_all" width="50%">Buyer's Order No.:<span t-esc="o.name"/></td>
+                                                                              <td class="padding_all tleft" width="50%">Other Refference: <t t-set="city" t-value="o.origin"/>
+                                                                                  <t t-set="date" t-value="o.get_sale_order(city)"/>
+                                                                                  <span t-esc="date"/>
+                                                                              </td>
+                                                                          </tr>
+                                                                        </table> 
+                                                                    </td>
+                                                                    <td width="50%" class="padding_all tleft">
+                                                                            Invoice Date<br /><span t-field="o.date_invoice" t-field-options='{"format" : "d MMMM y"}'/>
+                                                                    </td>
+                                                                </tr>  
+
+                                                                <tr class="tbottom">
+                                                                    <td width="50%" class="padding_all">
+                                                                      Contact Person: <span t-esc="o.partner_id.concern_person" />
+                                                                      <br />Tel No : <span t-esc="o.partner_id.phone" />
+                                                                    </td>
+                                                                    <td width="50%" class="padding_all tleft">
+                                                                          Warehouse Ref No:    <span t-esc="o.origin" />
+                                                                    </td>
+                                                                </tr>    
+                                                                <tr  class="">
+                                                                    <td width="100%" colspan="2" class="padding_all">
+                                                                       <p>Terms of Delivery</p>
+                                                                        <span t-esc="o.ship_term.shipping_information" />
+                                                                
+                                                                    </td>
+                                                                </tr>                                                                                                                                  
+
+                                                              </table>                                                          
+                                                          </td>
+														<td>
+														
+														</td>
+                                                      </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="tbottom">
+                                            <td class="vat">
+                                                <table width="100%" class="gridlist">
+                                                    <tbody>
+                                                        <tr class="tbottom">
+                                                            <th class="padding_all bold" align="center">S.No.</th>
+                                                            <th class="tleft padding_all bold" align="left">Description</th>
+                                                            <th class="tleft padding_all bold" align="left">Specification Of Products</th>
+                                                            <th class="tleft padding_all bold" align="left">Brand</th>
+                                                            <th class="tleft padding_all bold" align="left">Customer PO No</th>
+                                                            <th class="tleft padding_all bold" align="left">IL Part No</th>
+                                                            <th class="tleft padding_all bold" align="left">Customer<br />Part No.</th>
+                                                            <th class="tleft padding_all bold" align="left">VAT %</th>
+                                                            <th class="tleft padding_all bold" align="left">Quantity</th>
+                                                            <th class="tleft padding_all bold" align="right">Rate</th>
+                                                            <th class="tleft padding_all bold" align="left">Unit</th>
+                                                            <th class="tleft padding_all bold" align="left">Disc. %</th>
+                                                            <th class="tleft padding_all bold" align="right">Amount (INR)</th>
+                                                        </tr>
+                                                        <t t-set="sl_no" t-value="1" />
+                                                        <t t-set="unit_sum" t-value="0" />
+                                                        <tr class="tbottom" t-foreach="o.invoice_line" t-as="line">
+                                                            <td class="padding_all" align="center">
+                                                                <span t-esc="sl_no" />
+                                                            </td>
+                                                            <t t-set="sl_no" t-value="sl_no+1" />
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="line.name" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                               <!-- <span t-field="line.name" />-->
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-esc="line.product_id.product_brand.name" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="o.name" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-esc="line.product_id.default_code" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-esc="line.product_id.customer_part_noo" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="line.invoice_line_tax_id.name" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="line.quantity" />
+                                                            </td>
+                                                            <t t-set="unit_sum" t-value="unit_sum + line.quantity" />
+                                                            <td class="tleft padding_all" align="right">
+                                                                <span t-field="line.price_unit" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="line.uos_id.name" />
+                                                            </td>
+                                                            <td class="tleft padding_all" align="left">
+                                                                <span t-field="line.discount" />
+                                                            </td>
+                                                            <td  class="tleft padding_all" align="right">
+                                                                <span t-field="line.price_subtotal" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="tbottom">
+                                                            <td colspan="12"  class="padding_all bold" align="right">Untaxed Amount </td>
+                                                            <td  class="tleft padding_all bold" align="right"> <span t-field="o.amount_untaxed" /></td>
+                                                        </tr>
+                                                        <tr class="tbottom">
+                                                            <td colspan="12"  class="padding_all bold" align="right">Tax Amount</td>
+                                                            <td  class="tleft padding_all bold" align="right"> <span t-field="o.amount_tax" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="12" align="right" class="padding_all bold">Total</td>
+
+                                                            <td  class="tleft padding_all bold" align="right" > <span t-field="o.amount_total" /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <table>
+                                                    <tbody>
+                                                        <tr class="tbottom">
+                                                            <td class="padding_all" width="50%">
+                                                                <p>Amount Chargeable (in words)</p>
+                                                                <p>INR <span t-esc="o.amount_to_text(doc_ids,'Rupees','Paisa')" /></p>
+                                                                <p>VAT Amount (in words)</p>
+                                                                <p>INR <span t-esc="o.amount_to_text_tax(doc_ids,'Rupees','Paisa')" /></p>
+                                                            </td>
+                                                            <td class="tleft" width="50%">
+                                                            	                                                            
+										                    <table width="100%">
+                                                                    <tbody>
+                                                                    <tr class="tbottom">
+                                                                    	<td colspan="3" class="padding_all" >
+                                                                    	E. &amp; O.E
+                                                                    	</td>
+                                                                    </tr>
+                                                                        <tr class="tbottom">
+                                                                            <td class="padding_all" width="34%">VAT %</td>
+                                                                            <td class="padding_all tleft" width="33%">Taxable Value</td>
+                                                                            <td class="padding_all tleft" width="33%">VAT Amount</td>
+                                                                        </tr>
+                                                                        <tr class="tbottom"  t-foreach="o.tax_line" t-as="line1">
+                                                                            <td class="padding_all" width="34%">
+                                                                                <span t-esc="line1.name" />
+                                                                            </td>
+                                                                            <td class="padding_all tleft" width="33%">
+                                                                                <span t-esc="line1.base" />
+                                                                            </td>
+                                                                            <td class="padding_all tleft" width="33%">
+                                                                                <span t-esc="line1.amount" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>                                                            
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr class="tbottom">
+                                            <td>
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <table width="100%">
+                                                                    <tr class="tbottom">
+                                                                        <td colspan="3" height="50" class="padding_all">
+                                                                            <b>Bank Details: </b>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="tbottom">
+                                                                        <td class="padding_all" width="30%">
+                                                                            Bank Name : <span t-field="o.company_id.partner_id.bank_ids.bank_name" />
+                                                                        </td>
+                                                                        <td class="padding_all tleft" width="20%">
+                                                                            A/c No. : <span t-field="o.company_id.partner_id.bank_ids.acc_number" />
+                                                                        </td>
+                                                                        <td class="padding_all tleft" width="50%">
+                                                                           Branch &amp; IFS Code : <span t-field="o.company_id.partner_id.bank_ids.bank.name" />- <span t-field="o.company_id.partner_id.bank_ids.bank_bic" />
+                                                                        </td>                                                                                                                                                 
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td width="50%" class="padding_all small" >
+                                                                Certified that the goods have been issued out of duty paid goods duty recorded consignment wise and entered in the stock record. Further the duty passed on is proportionate to the quantity ( i.e. the duty per unit passed on the same as that paid)
+                                                            </td>
+                                                            <td class="padding_all tleft"  width="50%" >
+                                                                <p>for Industrylane Solutions Private Ltd</p>
+                                                                <p>&amp;nbsp;</p>
+                                                                 <p>&amp;nbsp;</p>
+                                                                  <p>&amp;nbsp;</p>
+                                                                <p>Authorised Signatory</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </t>
+
+                     <div class="footer">
+
+
+                                <table width="100%">
+                                    <tr>
+                                        <td align="center" class="padding_all small">
+                                              SUBJECT TO BENGALURU JURISDICTION <br />
+                                              This is a Computer Generated Invoice<br />
+                                              <span t-field="o.company_id.partner_id.name" /> ,:&amp;nbsp;<span t-field="o.company_id.partner_id.street" />&amp;nbsp;<span t-field="o.company_id.partner_id.street2" />&amp;nbsp;<span t-field="o.company_id.partner_id.city" />&amp;nbsp;<span t-field="o.company_id.partner_id.zip" />&amp;nbsp;<span t-field="o.company_id.partner_id.state_id.name" /> 
+                                        </td>
+                                    </tr>
+                                </table>
+                              </div>                      
+
+               
+   </t>
+
+       
+
+        </template>
+    </data>
+</openerp>

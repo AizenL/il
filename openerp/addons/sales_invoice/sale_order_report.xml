@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="action_other_mom2"
+            string="Sales Order Invoice"
+            model="sale.order"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_sale_order"
+            file="sales_invoice.report_sale_order"
+        />
+        <!-- <report 
+            id="sale.report_sale_order"
+            string="Quotation / Order"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="sale.report_saleorder" 
+            name="sale.report_saleorder"
+            menu="False"
+            header="False"
+        />
+ -->
+
+    
+
+      </data>
+</openerp>

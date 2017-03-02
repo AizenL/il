@@ -1,0 +1,393 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-today OpenERP SA (<http://www.openerp.com>)
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+
+from datetime import datetime, date
+from lxml import etree
+import time
+
+from openerp import SUPERUSER_ID
+from openerp import tools
+from openerp.addons.resource.faces import task as Task
+from openerp.osv import fields, osv
+from openerp.tools import float_is_zero
+from openerp.tools.translate import _
+import pdb
+from collections import OrderedDict
+import datetime
+
+
+
+
+class stock_picking_inherit(osv.osv):
+    _inherit = "stock.move"
+    _description = "stock move"
+    _columns = {
+      
+        'new_stock_id':fields.one2many('manufacturer','new_id','Manufacturer / Dealer Details'),
+        'unit_price' : fields.float(string='Unit Price', store=True, related='procurement_id.sale_line_id.price_unit'),
+
+       
+       
+        
+     }
+class stock_warehouse(osv.osv):
+    _inherit="stock.warehouse"
+    def create_sequences_and_picking_types(self, cr, uid, warehouse, context=None):
+
+        seq_obj = self.pool.get('ir.sequence')
+        picking_type_obj = self.pool.get('stock.picking.type')
+        #create new sequences
+        in_seq_id = seq_obj.create(cr, SUPERUSER_ID, {'name': warehouse.name + _(' Sequence in'), 'prefix': warehouse.code + '/IN/'+'%(year)s'+'/3', 'padding': 5,'reset_required':1}, context=context)
+        out_seq_id = seq_obj.create(cr, SUPERUSER_ID, {'name': warehouse.name + _(' Sequence out'), 'prefix': warehouse.code + '/OUT/'+'%(year)s'+'/4', 'padding': 5,'reset_required':1}, context=context)
+        pack_seq_id = seq_obj.create(cr, SUPERUSER_ID, {'name': warehouse.name + _(' Sequence packing'), 'prefix': warehouse.code + '/PACK/', 'padding': 5}, context=context)
+        pick_seq_id = seq_obj.create(cr, SUPERUSER_ID, {'name': warehouse.name + _(' Sequence picking'), 'prefix': warehouse.code + '/PICK/', 'padding': 5}, context=context)
+        int_seq_id = seq_obj.create(cr, SUPERUSER_ID, {'name': warehouse.name + _(' Sequence internal'), 'prefix': warehouse.code + '/INT/', 'padding': 5}, context=context)
+
+        wh_stock_loc = warehouse.lot_stock_id
+        wh_input_stock_loc = warehouse.wh_input_stock_loc_id
+        wh_output_stock_loc = warehouse.wh_output_stock_loc_id
+        wh_pack_stock_loc = warehouse.wh_pack_stock_loc_id
+
+        #fetch customer and supplier locations, for references
+        customer_loc, supplier_loc = self._get_partner_locations(cr, uid, warehouse.id, context=context)
+
+        #create in, out, internal picking types for warehouse
+        input_loc = wh_input_stock_loc
+        if warehouse.reception_steps == 'one_step':
+            input_loc = wh_stock_loc
+        output_loc = wh_output_stock_loc
+        if warehouse.delivery_steps == 'ship_only':
+            output_loc = wh_stock_loc
+
+        #choose the next available color for the picking types of this warehouse
+        color = 0
+        available_colors = [c%9 for c in range(3, 12)]  # put flashy colors first
+        all_used_colors = self.pool.get('stock.picking.type').search_read(cr, uid, [('warehouse_id', '!=', False), ('color', '!=', False)], ['color'], order='color')
+        #don't use sets to preserve the list order
+        for x in all_used_colors:
+            if x['color'] in available_colors:
+                available_colors.remove(x['color'])
+        if available_colors:
+            color = available_colors[0]
+
+        #order the picking types with a sequence allowing to have the following suit for each warehouse: reception, internal, pick, pack, ship.
+        max_sequence = self.pool.get('stock.picking.type').search_read(cr, uid, [], ['sequence'], order='sequence desc')
+        max_sequence = max_sequence and max_sequence[0]['sequence'] or 0
+
+        in_type_id = picking_type_obj.create(cr, uid, vals={
+            'name': _('Receipts'),
+            'warehouse_id': warehouse.id,
+            'code': 'incoming',
+            'sequence_id': in_seq_id,
+            'default_location_src_id': supplier_loc.id,
+            'default_location_dest_id': input_loc.id,
+            'sequence': max_sequence + 1,
+            'color': color}, context=context)
+        out_type_id = picking_type_obj.create(cr, uid, vals={
+            'name': _('Delivery Orders'),
+            'warehouse_id': warehouse.id,
+            'code': 'outgoing',
+            'sequence_id': out_seq_id,
+            'return_picking_type_id': in_type_id,
+            'default_location_src_id': output_loc.id,
+            'default_location_dest_id': customer_loc.id,
+            'sequence': max_sequence + 4,
+            'color': color}, context=context)
+        picking_type_obj.write(cr, uid, [in_type_id], {'return_picking_type_id': out_type_id}, context=context)
+        int_type_id = picking_type_obj.create(cr, uid, vals={
+            'name': _('Internal Transfers'),
+            'warehouse_id': warehouse.id,
+            'code': 'internal',
+            'sequence_id': int_seq_id,
+            'default_location_src_id': wh_stock_loc.id,
+            'default_location_dest_id': wh_stock_loc.id,
+            'active': True,
+            'sequence': max_sequence + 2,
+            'color': color}, context=context)
+        pack_type_id = picking_type_obj.create(cr, uid, vals={
+            'name': _('Pack'),
+            'warehouse_id': warehouse.id,
+            'code': 'internal',
+            'sequence_id': pack_seq_id,
+            'default_location_src_id': wh_pack_stock_loc.id,
+            'default_location_dest_id': output_loc.id,
+            'active': warehouse.delivery_steps == 'pick_pack_ship',
+            'sequence': max_sequence + 3,
+            'color': color}, context=context)
+        pick_type_id = picking_type_obj.create(cr, uid, vals={
+            'name': _('Pick'),
+            'warehouse_id': warehouse.id,
+            'code': 'internal',
+            'sequence_id': pick_seq_id,
+            'default_location_src_id': wh_stock_loc.id,
+            'default_location_dest_id': output_loc.id if warehouse.delivery_steps == 'pick_ship' else wh_pack_stock_loc.id,
+            'active': warehouse.delivery_steps != 'ship_only',
+            'sequence': max_sequence + 2,
+            'color': color}, context=context)
+
+        #write picking types on WH
+        vals = {
+            'in_type_id': in_type_id,
+            'out_type_id': out_type_id,
+            'pack_type_id': pack_type_id,
+            'pick_type_id': pick_type_id,
+            'int_type_id': int_type_id,
+        }
+        super(stock_warehouse, self).write(cr, uid, warehouse.id, vals=vals, context=context)
+
+
+class stock_picking_inheritsss(osv.osv):
+    _inherit = "stock.picking"
+    _description = "stock picking"
+    _columns = {
+        'select_stage':fields.selection([('first', 'First Stage Dealer'), ('secon', 'Second Stage Dealer')],'Stage'),
+	'return_voucher':fields.boolean('Is Return Voucher'),
+       
+     }
+
+    _defualts = {
+	'return_voucher':False,
+		}
+
+
+class account_invoice_inherit(osv.osv):
+    _inherit = "account.invoice"
+    _description = "Account Invoice Inherit"
+    _columns = {
+        'pay_term':fields.char('Payment Terms'),
+        'ship_term':fields.char('Shipping Terms'),
+        'select_stage':fields.selection([('first', 'First Stage Dealer'), ('secon', 'Second Stage Dealer')],'Stage'),
+        'is_excise':fields.boolean('Is Excise Invoice'),       
+     }
+
+    def get_lotnumber(self, cr, uid, variable, context=None):
+        manufacturers_info=[]
+        val1=self.pool.get("stock.picking").search(cr, uid, [('name','=',variable)])
+        val2=self.pool.get('stock.picking').browse(cr, uid, val1, context=context)
+        for obj in val2.move_lines:
+            for lines in obj.quant_ids:
+                manufacturers_tuple = ()
+                #purchase_quant=self.pool.get("stock.quant").search(cr,uid,[('lot_id','=',lines.lot_id.id),('id','!=',lines.id)])
+                purchase_quant=self.pool.get("stock.quant").search(cr,uid,[('lot_id','=',lines.lot_id.id)])
+                purchase_stock_move_id = self.pool.get("stock.move").search(cr,uid,[('quant_ids','in',purchase_quant), ('picking_id.picking_type_id','=',1)])
+                purchase_stock_move = self.pool.get('stock.move').browse(cr,uid,purchase_stock_move_id)
+                product_name = purchase_stock_move.product_id.name
+                manufacturers_row = purchase_stock_move.new_stock_id
+                #pdb.set_trace()
+                if manufacturers_row :
+                                for manufacturer in manufacturers_row : 
+                                        manufacturers_dict=[]
+
+                                        #print "===========================",manufacturer.comapny_name
+                                        manufacturers_dict.append((
+                                        #'manufacturer' : manufacturer.comapny_name,
+                                        'assessable_value' , manufacturer.assessable_value,))
+                                        manufacturers_dict.append(('rate_bed_amount',manufacturer.rate_bed_amount,))
+                                        manufacturers_dict.append(('bed_amount', manufacturer.bed_amount, ))
+                                        manufacturers_dict.append(('rate_ed_cess_amount', manufacturer.rate_ed_cess_amount, ))
+                                        manufacturers_dict.append(('ed_cess_amount', manufacturer.ed_cess_amount, ))
+                                        manufacturers_dict.append(('rate_sec_ed_cess_amount', manufacturer.rate_sec_ed_cess_amount, ))
+                                        manufacturers_dict.append(('sec_ed_cess_amount', manufacturer.sec_ed_cess_amount, ))
+                                        manufacturers_dict.append(('reg_num', manufacturer.reg_num, ))
+                                        manufacturers_dict.append(('comapny_name', str(manufacturer.comapny_name or '')+str(manufacturer.addrress or ''), ))
+                                        manufacturers_dict.append(('division',str(manufacturer.division or '') + str(manufacturer.range or '')+str(manufacturer.commissionerate or ''), ))
+                                        manufacturers_dict.append(('invoice_no', str(manufacturer.invoice_no or '')+str(manufacturer.invoice_date or ''), ))
+                                        manufacturers_dict.append(('seller',manufacturer.seller ))
+                                        abc=OrderedDict(manufacturers_dict)
+                                        print abc
+
+                                        manufacturers_tuple += (abc,)
+                                manufacturers_info.append((product_name,manufacturers_tuple))
+        xyz=OrderedDict(manufacturers_info)
+        print manufacturers_info
+
+        print xyz
+        #pdb.set_trace()
+
+        
+        return xyz
+
+
+    def get_warehouse_address(self, cr, uid, variable, context=None):
+        manufacturers_info=[]
+        val1=self.pool.get("stock.picking").search(cr, uid, [('name','=',variable)])
+        val2=self.pool.get('stock.picking').browse(cr, uid, val1, context=context)
+        warehouse_name=val2.picking_type_id.default_location_src_id.partner_id.name
+        street=val2.picking_type_id.default_location_src_id.partner_id.street
+        street2=val2.picking_type_id.default_location_src_id.partner_id.street2
+        city=val2.picking_type_id.default_location_src_id.partner_id.city
+        state=val2.picking_type_id.default_location_src_id.partner_id.state_id.name
+        zip_id=val2.picking_type_id.default_location_src_id.partner_id.zip
+        phone_num=val2.picking_type_id.default_location_src_id.partner_id.phone
+        county=val2.picking_type_id.default_location_src_id.partner_id.country_id.name
+        email_id=val2.picking_type_id.default_location_src_id.partner_id.email
+        manufacturers_info.append(str(warehouse_name))
+        manufacturers_info.append(str(street)+" "+str(street2)+" "+str(city)+" "+str(state)+" "+str(zip_id))
+        manufacturers_info.append(str(county)+" "+str(phone_num)+" "+str(email_id))
+            
+
+        print "-----------------------------------------------------------"
+        print val2
+        return manufacturers_info
+
+    def get_consignee_address(self, cr, uid, variable, context=None):
+        manufacturers_info=[]
+        val1=self.pool.get("stock.picking").search(cr, uid, [('name','=',variable)])
+        val2=self.pool.get('stock.picking').browse(cr, uid, val1, context=context)
+        warehouse_name=val2.partner_id.name
+        street=val2.partner_id.street
+        street2=val2.partner_id.street2
+        city=val2.partner_id.city
+        state=val2.partner_id.state_id
+        zip_id=val2.partner_id.zip
+        country=val2.partner_id.country_id.name
+       
+        manufacturers_info.append(str(warehouse_name))
+        manufacturers_info.append(str(street)+" "+str(street2))
+        manufacturers_info.append(str(state)+" "+str(zip_id)+" "+str(country))
+        manufacturers_info.append(str(city))
+            
+
+        print "-----------------------------------------------------------"
+        print val2
+        return manufacturers_info
+
+
+
+
+class sale_order_inherit(osv.osv):
+    _inherit="sale.order"
+    
+    def get_warehouse_address(self, cr, uid, variable, context=None):
+        manufacturers_info=[]
+        val1=self.pool.get("stock.picking").search(cr, uid, [('name','=',variable)])
+        val2=self.pool.get('stock.picking').browse(cr, uid, val1, context=context)
+        warehouse_name=val2.picking_type_id.default_location_src_id.partner_id.name
+        street=val2.picking_type_id.default_location_src_id.partner_id.street
+        street2=val2.picking_type_id.default_location_src_id.partner_id.street2
+        city=val2.picking_type_id.default_location_src_id.partner_id.city
+        state=val2.picking_type_id.default_location_src_id.partner_id.state_id.name
+        zip_id=val2.picking_type_id.default_location_src_id.partner_id.zip
+        phone_num=val2.picking_type_id.default_location_src_id.partner_id.phone
+        county=val2.picking_type_id.default_location_src_id.partner_id.country_id.name
+        email_id=val2.picking_type_id.default_location_src_id.partner_id.email
+        manufacturers_info.append(str(warehouse_name))
+        manufacturers_info.append(str(street)+" "+str(street2)+" "+str(city)+" "+str(state)+" "+str(zip_id))
+        manufacturers_info.append(str(county)+" "+str(phone_num)+" "+str(email_id))
+            
+
+        print "-----------------------------------------------------------"
+        print val2
+        return manufacturers_info
+
+class purchase_order_inherit(osv.osv):
+    _inherit="purchase.order"
+    
+    def get_warehouse_address(self, cr, uid, variable, context=None):
+        manufacturers_info=[]
+        val1=self.pool.get("stock.picking").search(cr, uid, [('name','=',variable)])
+        val2=self.pool.get('stock.picking').browse(cr, uid, val1, context=context)
+        warehouse_name=val2.picking_type_id.default_location_src_id.partner_id.name
+        street=val2.picking_type_id.default_location_src_id.partner_id.street
+        street2=val2.picking_type_id.default_location_src_id.partner_id.street2
+        city=val2.picking_type_id.default_location_src_id.partner_id.city
+        state=val2.picking_type_id.default_location_src_id.partner_id.state_id.name
+        zip_id=val2.picking_type_id.default_location_src_id.partner_id.zip
+        phone_num=val2.picking_type_id.default_location_src_id.partner_id.phone
+        county=val2.picking_type_id.default_location_src_id.partner_id.country_id.name
+        email_id=val2.picking_type_id.default_location_src_id.partner_id.email
+        manufacturers_info.append(str(warehouse_name))
+        manufacturers_info.append(str(street)+" "+str(street2)+" "+str(city)+" "+str(state)+" "+str(zip_id))
+        manufacturers_info.append(str(county)+" "+str(phone_num)+" "+str(email_id))
+            
+
+        print "-----------------------------------------------------------"
+        print val2
+        return manufacturers_info
+
+
+
+class manufacturer(osv.osv):
+    _name="manufacturer"
+    _columns={
+        
+        #'description_goods': fields.many2one( 'product.product',string='Description  of Goods'),
+        'type_stage':fields.selection([('manifacturer', 'Manufacturer'), ('dealer', 'Dealer')],'Type'),
+        "company_selection":fields.many2one('res.partner','Supplier Selection',domain="[('supplier','=',True)]"),
+        'assessable_value':fields.float('Assessable Value'),
+        'rate_bed_amount':fields.float('Rate of BED'),
+        'bed_amount':fields.float('BED Amount'),
+        'rate_ed_cess_amount':fields.float('Rate of Ed Cess'),
+        'ed_cess_amount':fields.float('Ed Cess Amount'),
+        'rate_sec_ed_cess_amount':fields.float('Rate of Sec Ed Cess'),
+        'sec_ed_cess_amount':fields.float('Sec Ed Cess Amount'),
+        'comapny_name':fields.char(string='Supplier Name'),
+        'reg_num': fields.char('Excise Reg No'),
+        'division': fields.char('Division Name'),
+        'invoice_no':fields.char("Invoice Number"),
+        'invoice_date':fields.date("Date"),
+        'tarrif':fields.integer('Tariff Classification'),
+        'quantity':fields.integer('Quantity'),
+        'addrress':fields.char('Address'),
+        'range':fields.char('Range'),
+        'commissionerate':fields.char('Commissionerate'),
+        'seller':fields.char('Seller RG 23D No. & Supplier RG 23D No.',),  
+        
+        
+        
+        'total_duty_amount': fields.float('Total Duty Amount'),
+        'duty_per_unit':fields.float('Duty per Unit'),
+        
+        
+        
+
+        'new_id':fields.many2one('stock.move','Stock'),
+
+    }
+
+
+    
+    def supplier_information(self, cr, uid,ids, company_selection, context=None):
+        vals = {}
+        a=self.pool.get("res.partner")
+       
+        if company_selection:
+            for rec in a.browse(cr,uid,company_selection,context=context):
+                print rec
+                vals={
+                'value':{
+                            'comapny_name':rec.name,
+                'reg_num':rec.excise_reg_no,
+                            'range':rec.range,
+                            'division':rec.division,
+                            'commissionerate':rec.commissionerae,
+                            'addrress':str(rec.street)+" "+str(rec.street2)+" "+str(rec.city)+" "+str(rec.state_id.name)+" "+str(rec.zip)+" "+str(rec.country_id.name),
+                        }
+
+                       }
+
+                       
+           
+            return vals
+
+
+
+

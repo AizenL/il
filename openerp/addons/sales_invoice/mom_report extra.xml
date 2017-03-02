@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="action_report_mom444_new"
+            string="Excise Invoice and Sales_invoice"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_mom_extra"
+            file="sales_invoice.report_mom_extra"
+            header="False"
+            menu="False"
+            
+        />
+        <!-- <act_window name="Pass-01 Invoice"
+            res_model="prints.wizard"
+            src_model="account.invoice"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+            id="action_pass_id"/> -->
+
+  
+   <record id="exise_report_new" model="report.paperformat">
+        <field name="name">Excise Invoice Report</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <!-- <field name="page_height">0</field> -->
+        <!-- <field name="page_width">0</field> -->
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">70</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">62</field>
+        <field name="dpi">90</field>
+</record>
+
+    <record id="sales_invoice.action_report_mom444_new" model="ir.actions.report.xml">
+    <field name="paperformat_id" ref="sales_invoice.exise_report_new" />
+</record> 
+
+      </data>
+</openerp>

@@ -1,0 +1,17 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_manufacturer_stock_manager","access_manufacturer_stock_manager","model_manufacturer","stock.group_stock_manager",1,1,1,1
+"access_purchase_payment_terms_purchase_manager","access_purchase_payment_terms_purchase_manager","model_purchase_payment","purchase.group_purchase_manager",1,1,1,1
+"access_purchase_shipping_terms_purchase_manager","access_purchase_shipping_terms_purchase_manager","model_purchase_shipping","purchase.group_purchase_manager",1,1,1,1
+"access_sales_payment_terms_sales_manager","access_sales_payment_terms_sales_manager","model_payment_terms","base.group_sale_manager",1,1,1,1
+"access_sales_shipping_terms_sales_manager","access_sales_shipping_terms_sales_manager","model_shipping_terms","base.group_sale_manager",1,1,1,1
+"access_purchase_order","access_purchase_order","model_purchase_order","stock.group_stock_user",1,1,1,1
+"access_manager_purchase_order","access_manager_purchase_order","model_purchase_order","stock.group_stock_manager",1,1,1,1
+"access_purchase_order_line","access_purchase_order_line","model_purchase_order_line","stock.group_stock_user",1,1,1,1
+"access_manager_purchase_order_line","access_manager_purchase_order_line","model_purchase_order_line","stock.group_stock_manager",1,1,1,1
+"access_purchase_forecast_purchase_manager","access_purchase_forecast_purchase_manager","model_purchase_forecast","purchase.group_purchase_manager",1,1,1,1
+"access_purchase_forecast_sale_manager","access_purchase_forecast_sale_manager","model_purchase_forecast","base.group_sale_manager",1,1,1,1
+"access_sale_order_purchase_manager","access_sale_order_purchase_manager","model_sale_order","purchase.group_purchase_manager",1,0,0,0
+"access_dealer_manufacturer","accessdealer_manufacturer","model_dealer_manufacturer","stock.group_stock_manager",1,1,1,1
+"access_payment_terms","access_payment_terms","model_payment_terms","stock.group_stock_user",1,1,1,1
+"access_shipping_terms","access_shipping_terms","model_shipping_terms","stock.group_stock_user",1,1,1,1
+

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+	<template id="special_order_quotes" name="Special Order Quotes">
+	    <t t-call="website.layout">
+<!-- MAIN TITLE -->
+		<div class="main-title">
+			<div class="container">
+				<h1 class="main-title__primary">Special Order Quotes</h1>
+				<h3 class="main-title__secondary">What we do and what can you expect from us</h3>
+			</div>
+		</div><!-- /.main-title -->
+<div class="container">
+			
+<div class="row margin-bottom-30">
+				
+				<div class="col-sm-3 hentry">
+					
+					<div class="widget_black-studio-tinymce">
+						<div class="featured-widget">
+							<h3 class="widget-title">
+								<span class="widget-title__inline">Here is how it works:</span>
+							</h3>
+							<ul>
+								<li>Contact us or Call your Industrylane Representative. </li>
+								<li>Our experienced staff will help you obtain a quote on items you can’t find in our catalog. </li>
+								<li>We’ll notify you with an email when your Special Order quote is ready (usually within 24 hours). </li>
+								
+							</ul>
+							<p>
+								
+
+							</p>
+							<p>
+								91-80-4096-2556<br/>
+								91-80-4096-3556<br/>
+								91-80-4096-4556<br/>									
+								91 99020-26198								
+								<a href="mailto:info@industrylane.com">info@industrylane.com</a>
+							</p>
+							
+						</div>
+					</div>
+					
+
+					
+				</div><!-- /.col -->
+				
+				<div class="col-sm-9">
+					
+					<h3 class="widget-title margin-top-0">
+						Find what you need now!
+					</h3>
+					
+			
+					
+					<form  method="post" action="/special_order_quotes_ac" class="aSubmit" id="spcial">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<input type="text" placeholder="Name of the Company*" aria-invalid="false" aria-required="true" size="40" value="" required="required" id="partner_name" name="partner_name"/>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+						<div class="col-xs-12 ">
+								<div class="form-group">
+									<input type="text" placeholder="Contact Name *" aria-invalid="false" size="40" value="" name="contact_name" id="contact_name" required="required"/>
+								</div>
+							</div>		
+						</div>								
+						<div class="row">
+							<div class="col-xs-12 col-md-6">
+								<div class="form-group">
+									<input type="email" placeholder="E-mail address *" aria-invalid="false" aria-required="true" size="40" value=""  id="email_from" name="email_from" required="required"/>
+								</div>
+							</div>
+							<div class="col-xs-12 col-md-6">
+								<div class="form-group">
+									<input type="tel" placeholder="Mobile Number *" aria-invalid="false" aria-required="true" size="40" value="" name="mobile" id="mobile" required="required"/>
+								</div>
+							</div>
+						</div>
+	
+						<div class="row">
+						<div class="col-xs-12 ">
+								<div class="form-group">
+									<input type="text" placeholder="Subject" aria-invalid="false" size="40" value="" name="name" id="name" />
+								</div>
+							</div>		
+						</div>								
+											
+					<div class="row">
+						<div class="col-xs-12">
+							<table class="table table-striped getyourquote">
+    							<thead>
+    								<tr>
+       									<th>Products request for quoted</th>
+     								</tr>
+    							</thead>
+								<tbody>
+								    <tr t-foreach="products.product_list" t-as="p">
+								        <td class="filterable-cell"><t t-esc="p.product_id.name"/></td>
+								    </tr> 
+								 </tbody>   							
+    						</table>
+    					</div>
+					</div>
+					<div class="row">				
+							<div class="col-xs-12">
+								<textarea  rows="10" cols="40"  name="description"  style="display:none;">
+									<t t-foreach="products.product_list" t-as="p">
+									<t t-esc="p.product_id.name"/>, 
+									</t>
+ 								</textarea>
+  							</div>
+						</div>		
+  	
+
+            								
+						<div class="row">
+	
+							<div class="col-xs-12" style="margin-top:10px;">
+		<!-- 						<div class="form-group">
+									<textarea id="selectedProducts" placeholder="Message*" aria-invalid="false" rows="10" cols="40" name="comment"></textarea>
+								</div> -->
+								<input type="submit" class="btn btn-primary" value="GET YOUR QUOTE"/>
+								<img class="ajax-loader" id="loader" src="images/ajax-loader.gif" alt="Sending ..." style="display: none;"/>
+							</div>
+						</div>
+						<div class="response success">Your message was sent; we'll be in touch shortly!</div>
+						<div class="response error">Unfortunately, we could not sent your message right now. Please try again.</div>
+					</form>
+					
+				</div><!-- /.col -->
+				
+			</div><!-- /.row -->
+
+
+
+			
+		</div><!-- /.container -->
+
+ 
+            
+
+            
+
+	    </t>
+	</template>
+	
+<template id="order_thanks" name="Special Order Quotes">
+	    <t t-call="website.layout">
+<!-- MAIN TITLE -->
+		<div class="main-title">
+			<div class="container">
+				<h1 class="main-title__primary">Special Order Quotes</h1>
+				<h3 class="main-title__secondary">What we do and what can you expect from us</h3>
+			</div>
+		</div><!-- /.main-title -->
+<div class="container">
+			
+<div class="row margin-bottom-30">
+				
+				<div class="col-sm-3 hentry">
+					
+					<div class="widget_black-studio-tinymce">
+						<div class="featured-widget">
+							<h3 class="widget-title">
+								<span class="widget-title__inline">Here is how it works:</span>
+							</h3>
+							<ul>
+								<li>Contact us or Call your Industrylane Representative. </li>
+								<li>Our experienced staff will help you obtain a quote on items you can’t find in our catalog. </li>
+								<li>We’ll notify you with an email when your Special Order quote is ready (usually within 24 hours). </li>
+								
+							</ul>
+							<p>
+								
+
+							</p>
+							<p>
+								91-80-4096-2556<br/>
+								91-80-4096-3556<br/>
+								91-80-4096-4556<br/>
+								91 99020-26198
+								<a href="mailto:info@industrylane.com">info@industrylane.com</a>
+							</p>
+							
+						</div>
+					</div>
+					
+
+					
+				</div><!-- /.col -->
+				
+				<div class="col-sm-9">
+					
+                    <div class="alert alert-success">
+                       Your request has been received. We will get back to you shortly.
+                        <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                    </div>   
+
+					
+					
+				</div><!-- /.col -->
+				
+			</div><!-- /.row -->
+
+
+
+			
+		</div><!-- /.container -->
+
+ 
+            
+
+            
+
+	    </t>
+	</template>	
+	
+<!-- <template id="categories_select" name="Category list">
+ 
+  <optgroup t-att-label="p.name">
+       <t t-if="p.child_id">
+		<t t-foreach="p.child_id" t-as="c">
+			<optgroup t-att-label="c.name">
+				  <t t-set="product_value_ids"  t-value="get_product_value_ids(c.id)"/>
+			       <t t-foreach="product_value_ids" t-as="prod">
+			          <option t-att-value="prod.name"><t t-esc="prod.name"/></option> 
+			       </t>
+			</optgroup>
+		 </t>
+       </t>
+       /.dropdown-menu 
+  </optgroup>
+
+</template>	 -->	
+<template id="home_responce">
+		<t t-call="website.layout">
+		
+<section id="teaser">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-7 col-xs-12 pull-left">
+	                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="5000">
+	                    <!-- Wrapper for slides start -->
+	                    <div class="carousel-inner">
+	                        <div class="item active">
+	                            <h1 class="title">Application Specific
+	                                </h1>
+	                            <div class="car-img">
+	                                <img src="/website_industrylane/static/src/img/01.png" class="img-responsive" alt="car1"/>
+	                            </div>
+	                        </div>
+	                        <div class="item">
+	                            <h1 class="title">Pocket Friendly</h1>
+	                            <div class="car-img">
+	                                <img src="/website_industrylane/static/src/img/02.png" class="img-responsive" alt="car1"/>
+	                            </div>
+	                        </div>
+	                        <div class="item">
+	                            <h1 class="title"> Finest Quality</h1>
+	                            <div class="car-img">
+	                                <img src="/website_industrylane/static/src/img/03.png" class="img-responsive" alt="car1"/>
+	                            </div>
+	                        </div>    
+	                        <div class="item">
+	                            <h1 class="title"> Large Selection</h1>
+	                            <div class="car-img">
+	                                <img src="/website_industrylane/static/src/img/car5.png" class="img-responsive" alt="car1"/>
+	                            </div>
+	                        </div>                           
+	                        
+	                        <div class="item">
+	                            <h1 class="title">Precision Engineered</h1>
+	                            <div class="car-img">
+	                                <img src="/website_industrylane/static/src/img/04.png" class="img-responsive" alt="car1"/>
+	                            </div>
+	                        </div>                                             
+	                    </div>
+	                    <!-- Wrapper for slides end -->
+	
+	                    <!-- Slider Controls start -->
+	                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+	                        <span class="glyphicon glyphicon-chevron-left"></span>
+	                    </a>
+	                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+	                        <span class="glyphicon glyphicon-chevron-right"></span>
+	                    </a>
+	                    <!-- Slider Controls end -->
+	                </div>
+	            </div>
+            <div class="col-md-5 col-xs-12 pull-right">
+	                <div class="reservation-form-shadow">
+	                <h4>NOT YET REGISTERED?</h4>
+					<h2 class="red">SIGN UP NOW</h2>
+	                     <div class="alert alert-success">
+                        You have successfully signed up. Your account is in review and we will get back to you soon.
+                        <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                    </div>   
+	                    
+	
+	                </div>
+	            </div> 
+	
+	        </div>
+	    </div>
+	    
+	</section>		
+
+		</t>
+</template>
+</data>
+</openerp>

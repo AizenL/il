@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+   	
+
+
+
+  		 <record id="sandv_pricelist_form_view" model="ir.ui.view">
+            <field name="name">sandv.customer.pricelist.form</field>
+            <field name="model">sandv.customer.pricelist</field>
+            <field name="arch" type="xml">
+                <form string="Customer Pricelist Computation">
+		                <header>
+		                	<button string="Update Pricelist" name="update_pricelist" type="object"/>
+		                	<button string="Import Version"  type="action" name="%(view_import_product_wizard)d"/>
+		                
+		                </header>
+		                <sheet>
+		                    <group>
+		                        <group>
+		                            <field name="name"  required="1"/>
+		                            <field name="pricelist"  required="1" />
+                        		</group>
+		                        <group>
+		                            
+		                            <field name="start_date"  />
+		                            <field name="end_date" />
+
+		                        </group>
+		                    </group>
+		                    
+		                    <notebook>
+		                   	<page string="Item List">
+		                    		
+		                    		
+		                    		<field name="item_list"   mode="tree"  >
+		                                
+		                                
+		                                <form string="Item List">
+							                    <header>
+							                       
+							                    </header>
+							                    <sheet string="Item List">
+							                        <group>
+							                            <group string="" name="item_list">
+							                            	<field name="pricelist_version" string="Pricelist Version" invisible="True"/>
+							                                
+							                                <field name="sequence" invisible="True"/>
+							                                <field name="product_id" required="1" on_change="onchange_product_id(product_id)"/>
+							                                <field name="il_part_no" />
+							                                <field name="customer_code" />
+							                                <field name="discount" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,ed,mrp,entry_tax_percent)" />
+							                                <field name="cst_vat_selection" string="CST/VAT" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" />
+							                                <field name="cst_vat_percent" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" invisible="True" />
+							                                <field name="no_cst_vat_percent"  attrs="{'invisible': [('cst_vat_selection', '=', 'Yes')]}"/>
+							                                <field name="margin"  on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" />
+							                               </group>
+							                               
+							                              <group string="" name="item__list">
+							                                <!-- <newline/> -->
+							                                <field name="ed" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" invisible="True"/>
+							                                <field name="name" />
+							                                <field name="product_brand" />
+							                                <field name="mrp" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" />
+							                                
+							                                <field name="entry_tax_percent" on_change="onchange_item_list_value(discount,cst_vat_percent,margin,cst_vat_selection,mrp,entry_tax_percent)" invisible="True"/>
+							                                <field name="no_entry_tax_percent" attrs="{'invisible': [('cst_vat_selection', '=', 'Yes')]}"/>
+							                             </group>
+							                            
+							                               
+							                               <group> 
+							                                
+							                                <field name="net_price" />
+							                                <field name="il_landed_price" />
+							                                <field name="final_il_landed_price" />
+							                                
+							                                
+							                            </group>
+							                                
+							                             <group>
+							                                <field name="cst_vat" attrs="{'invisible': [('cst_vat_selection', '=', 'No')]}"/>
+							                                <field name="entry_tax" attrs="{'invisible': [('cst_vat_selection', '=', 'No')]}"/>
+							                                <field name="sale_price" />
+							                                					                                
+							                            </group>
+							                        </group>
+							                    </sheet>
+							                    
+			               			   	</form>
+			                               
+		                                
+		                                <tree string="Item List" >
+		                                	
+		                                	<field name="sequence" invisible="True"/>
+		                                	<field name="il_part_no" />
+		                                	<field name="product_id" />
+		                                	<field name="sale_price" />
+		                                	                               
+		                                                                   
+		                                </tree>
+		                    			
+		                    		</field>
+		                    	</page>	
+					  </notebook>
+                </sheet>
+                
+                </form>
+            </field>
+        </record>  
+        
+        
+        
+        <record id="sandv_pricelist_tree_view" model="ir.ui.view">
+            <field name="name">sandv.customer.pricelist.tree</field>
+            <field name="model">sandv.customer.pricelist</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Pricelist Computation">
+                    
+                    <field name="name" />
+                    <field name="pricelist" />
+                    <field name="start_date" />
+                    <field name="end_date" />
+                    
+                </tree>
+            </field>
+        </record>
+
+
+        
+         <record id="sandv_pricelist_action" model="ir.actions.act_window">
+            <field name="name">Customer Pricelist</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sandv.customer.pricelist</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_mode">tree,form</field>
+        
+        </record>
+       
+         <menuitem
+            action="sandv_pricelist_action" id="menu_product_pricelist_action"
+            parent="product.menu_product_pricelist_main" sequence="8"/>
+
+
+	<!-- <menuitem action="sandv_pricelist_action" id="sandv_pricelist_action_menu" parent="base.menu_sales" sequence="8" groups=""/> -->
+
+
+
+
+
+
+	</data>
+
+</openerp>
+
+

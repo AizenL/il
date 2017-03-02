@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data> 
+<!-- <menuitem action="purchase.purchase_form_action" id="menu_action_invoice_tree12" parent="account.menu_finance_payables" groups="account.group_account_user"/>
+<menuitem action="stock_saify.action_orders_new" id="menu_action_invoice_tree13" parent="account.menu_finance_receivables" groups="account.group_account_user"   />
+ -->
+
+      
+    </data>
+</openerp>

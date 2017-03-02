@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_website_sale_search_extra_website_sale_search_extra,website_sale_search_extra.website_sale_search_extra,model_website_sale_search_extra_website_sale_search_extra,,1,0,0,0

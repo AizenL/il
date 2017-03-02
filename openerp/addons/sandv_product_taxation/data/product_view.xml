@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<!-- Product Master Extended View in new Tab of Taxation Details -->
+    	<record model="ir.ui.view" id="product_master_extended_form_view">
+            <field name="name">product.master.extended.form.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+                <page string="Procurements" position="after">
+                	<page string = "Taxation Details">
+	                    <group colspan="2" col="2">
+	                        <group>
+	                            <field name="pandf_value"/>
+	                            <field name="freight_value"/>
+	                            <field name="insurance_value"/>
+	                            <field name="excise_value"/>
+	                            <field name="vat_value"/>
+	                        </group>
+	                    </group>
+	                </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</openerp>

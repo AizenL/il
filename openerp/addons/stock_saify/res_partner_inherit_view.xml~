@@ -1,0 +1,105 @@
+<openerp>
+    <data>
+
+
+
+<record id="base_view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//form/sheet/group/group/field[@name='website']" position="after">
+                
+                <field name="vat_tin" />
+                <field name="excise_reg_no" />
+               <!--  <field name="cts_no" string="CST No"/> -->
+                <field name="range" />
+                <field name="concern_person" />
+                
+                
+
+                    </xpath>
+                    <xpath expr="//form/sheet/group/group/field[@name='title']" position="after">
+                        <field name="division" />
+                <field name="commissionerae" />
+                    <field name="pan_no" /></xpath>
+                 <xpath expr="//form/sheet/div/field[@name='parent_id']" position="attributes">
+                        <attribute name="string">Parent Company Name</attribute>
+                        <attribute name="placeholder">Parent Company Name</attribute></xpath>
+
+                <!-- <xpath expr="//form/sheet/div/field[@name='category_id']" position="attributes">
+
+                        <attribute name="invisible">1</attribute></xpath> -->
+                 <xpath expr="//form/sheet/div/field[@name='category_id']" position="replace">
+
+                        <field name="category_id" widget="many2many_tags" placeholder="Customer Category..." attrs="{'invisible': [('supplier', '=', True)]}" /></xpath>
+
+
+                 <xpath expr="//form/sheet/notebook/page[@name='sales_purchases']" position="after">
+                    
+                        <page string="Attachments">
+                            <field name="attachments" widget="many2many_binary"/>
+                        </page>
+
+                        </xpath>
+                <xpath expr="//form/sheet/notebook/page[@string='Contacts']" position="attributes">
+                        <attribute name="string">Child Companies</attribute></xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='mobile']" position="attributes">
+                        <attribute name="placeholder">e.g: 9876543210</attribute></xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='phone']" position="attributes">
+                        <attribute name="placeholder">e.g: 080-9632658</attribute></xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='email']" position="attributes">
+                        <attribute name="placeholder">e.g: sale@mail.com</attribute></xpath>
+               
+
+
+            </field>
+        </record>
+
+        <record id="base_view_partner_new_form" model="ir.ui.view">
+            <field name="name">res.partner.property.form.inherit22</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                    <field name='property_account_payable' position="replace" >
+                        <field name="property_account_payable" attrs="{'invisible': [('customer', '=', True)]}" /></field>
+                <field name='property_supplier_payment_term' position="replace" >
+                        <field name="property_supplier_payment_term" widget="selection" attrs="{'invisible': [('customer', '=', True)]}" /></field>
+                <field name='debit' position="replace" >
+                        <field name="debit" attrs="{'invisible': [('customer', '=', True)]}" /></field>
+                <field name='bank_ids' position="replace" >
+                        <field name="bank_ids" attrs="{'invisible': [('customer', '=', True)]}" /></field>
+
+
+                 <field name='property_account_receivable' position="replace" >
+                        <field name="property_account_receivable" attrs="{'invisible': [('supplier', '=', True)]}" /></field>
+                <field name='property_payment_term' position="replace" >
+                        <field name="property_payment_term" widget="selection" attrs="{'invisible': [('supplier', '=', True)]}" /></field>
+                <field name='credit' position="replace" >
+                        <field name="credit" attrs="{'invisible': [('supplier', '=', True)]}" /></field>
+                <field name='credit_limit' position="replace" >
+                        <field name="credit_limit" attrs="{'invisible': [('supplier', '=', True)]}" /></field>
+
+
+            </field>
+        </record>
+
+
+
+
+
+        <record id="base_view_company_form" model="ir.ui.view">
+            <field name="name">res.company.form</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//form/sheet/notebook/page/group/group/field[@name='website']" position="after">
+                <field name="ecc" />
+                <field name="cin" />
+            </xpath>
+        </field>
+    </record>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="getquotes_form_view">
+            <field name="name">get.quotes</field>
+            <field name="model">get.your.quote</field>
+            <field name="arch" type="xml">
+                <form string="getquotes_Form">
+                    <sheet>
+                        <group>
+                            <field name="identification"/>
+                            <field name="product_list">
+                                <tree string="Product" editable="bottom">
+                                    <field name="product_id"/>
+                                  
+                                </tree>
+                            </field>>
+                                                      
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="getquotes_tree_view">
+            <field name="name">get.quotes</field>
+            <field name="model">get.your.quote</field>
+            <field name="arch" type="xml">
+                <tree string="getquotes_Tree">
+                    <field name="identification"/>
+                </tree>
+          </field>
+      </record>
+
+        <record model="ir.actions.act_window" id="get_your_quote">
+            <field name="name">getquotes</field>
+            <field name="res_model">get.your.quote</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">productquotes
+                </p>
+            </field>
+        </record>
+
+
+
+        <menuitem id="getquotes" action="get_your_quote" name="Get Your Quote" parent="base.menu_sales" />
+
+
+
+
+    </data>
+</openerp>
+
+

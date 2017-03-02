@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_sandv_stock_product_qty po_user","sandv.stock.product.qty user","model_sandv_stock_product_qty","purchase.group_purchase_user",1,1,1,1
+"access_sandv_stock_product_qty po_manager","sandv.stock.product.qty manager","model_sandv_stock_product_qty","purchase.group_purchase_manager",1,1,1,1

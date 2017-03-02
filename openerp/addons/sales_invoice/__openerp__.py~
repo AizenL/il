@@ -1,0 +1,16 @@
+{
+	'name': 'Minutes of Meeting',
+	'version':'1.0',
+	'description': """
+		Minutes of Meeting
+		- Meeting Agenda
+		- Decisions
+		- Notes
+		- Issues
+	""",
+	'author': 'Suraj',
+	'depends': ['base_setup','hr','mail','email_template', 'calendar','account',],
+	'data': ['mom_view.xml','views/report_mom.xml','mom_report.xml',],
+	'installable': True,
+	'auto_install': False,
+}

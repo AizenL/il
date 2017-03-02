@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!-- inherited view to make the order lines list in the form non-editable
+             for the members of some usability groups -->
+        <record id="sandv_hr_contract_view_form" model="ir.ui.view">
+            <field name="name">sandv.hr.contract</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='wage']" position="replace">
+			<field name="wage" string="Total Salary"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

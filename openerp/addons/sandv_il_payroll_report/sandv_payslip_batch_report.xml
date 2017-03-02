@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report 
+            string="Payroll Excel" 
+            id="sandv_il_employee_batch_xls" 
+            model="hr.payslip.run" 
+            report_type="qweb-xls"
+            name="sandv_il_payroll_report.report_invoice" 
+            file="sandv_il_payroll_report.report_invoice"
+        />
+        
+    </data>
+</openerp>
+

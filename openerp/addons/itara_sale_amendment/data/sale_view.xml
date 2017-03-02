@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!-- Sale order inherit for additional amendment fields and buttons -->
+
+        <record id="view_order_form_amendment_inherits" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="/form/sheet/notebook/page/group/div/button[@name='button_dummy']" position="replace">
+                    <button name="button_dummy" states="draft,amended" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                </xpath>
+
+
+                <xpath expr="/form/header/button[@name='action_view_invoice']" position="before">
+                    <button name="action_button_amendment" states="progress,manual" string="Amendment" type="object" class="oe_highlight" groups="itara_sale_amendment.group_sale_amendment"/>
+                    <button name="action_button_confirm" states="amended" string="Confirm Sale" type="object" groups="itara_sale_amendment.group_sale_amendment"/>
+                </xpath>
+
+                <xpath expr="/form/sheet/group/group/field[@name='pricelist_id']" position="before">
+                    <field name="amendment_no" attrs="{'invisible' : [('amendment_no','=', 0)]}"/>
+                    <field name="date_amendment" attrs="{'invisible' : [('amendment_no','=', 0)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Sale Order Amendment History Parent Menu -->
+
+        <menuitem id="menu_sale_order_amendment_parent" name="Sale Order Amendment" parent="base.menu_base_partner" sequence="3"/>
+
+
+        <!-- Sale Order Amendment History Form View -->
+
+        <record id="view_order_amendment_history_form" model="ir.ui.view">
+            <field name="name">order.amendment.history.form</field>
+            <field name="model">sale.amendment.history</field>
+            <field name="arch" type="xml">
+                <form string="Order Amendment" create="false" delete="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" readonly="True"/>
+                                <field name="partner_id" readonly="True"/>
+                                <field name="partner_invoice_id" readonly="True" groups="sale.group_delivery_invoice_address"/>
+                                <field name="partner_shipping_id" readonly="True" groups="sale.group_delivery_invoice_address"/>
+                                <field name="amendment_no" readonly="True"/>
+                                <field name="project_id" groups="sale.group_analytic_accounting" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="date_order" readonly="True"/>
+                                <field name="date_amendment" readonly="True"/>
+                                <field name="client_order_ref" readonly="True"/>
+                                <field name="pricelist_id" readonly="True"/>
+                                <field name="currency_id" invisible="1" readonly="True"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Order Lines">
+                                <field name="history_line">
+                                    <tree string="Sales Order Lines" create="false" delete="false" editable="bottom">
+                                        <field name="sequence" widget="handle" readonly="True"/>
+                                        <field name="state" invisible="1" readonly="True"/>
+                                        <field name="product_id" groups="base.group_user" readonly="True"/>
+                                        <field name="name" readonly="True"/>
+                                        <field name="product_uom_qty" readonly="True"/>
+                                        <field name="product_uom" groups="product.group_uom" readonly="True"/>
+                                        <field name="product_uos_qty" groups="product.group_uos" invisible="1" readonly="True"/>
+                                        <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1" readonly="True"/>
+                                        <field name="price_unit" readonly="True"/>
+                                        <field name="tax_id" widget="many2many_tags" readonly="True"/>
+                                        <field name="discount" groups="sale.group_discount_per_so_line" readonly="True"/>
+                                        <field name="price_subtotal" readonly="True"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2">
+                                    <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="True"/>
+                                    <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="True"/>
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="amount_total" />
+                                </div>
+                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="True"/>
+                            </group>
+                            <div class="oe_clear"/>
+                                <field name="note" class="oe_inline" placeholder="Terms and conditions..." readonly="True"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Sale Order Amendment History Tree View -->
+
+        <record id="view_order_amendment_history_tree" model="ir.ui.view">
+            <field name="name">order.amendment.history.tree</field>
+            <field name="model">sale.amendment.history</field>
+            <field name="arch" type="xml">
+                <tree string="Order Amendment History" create="false" delete="false">
+                    <field name="name"/>
+                    <field name="date_order"/>
+                    <field name="partner_id"/>
+                    <field name="amendment_no"/>
+                    <field name="date_amendment"/>
+                    <field name="user_id"/>
+                    <field name="amount_total"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Sale Order Amendment History Search View -->
+
+        <record id="view_order_amendment_filter" model="ir.ui.view">
+            <field name="name">sale.order.amendment.select</field>
+            <field name="model">sale.amendment.history</field>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <field name="name" string="Sale Order" filter_domain="['|',('name','ilike',self),('client_order_ref','ilike',self)]"/>
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <filter string="My" domain="[('user_id','=',uid)]" name="my_sale_order_filter"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Sale Order" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Salesperson" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Customer" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Order Month" domain="[]" context="{'group_by':'date_order'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+
+        <!-- Sale Order Amendment History Action View -->
+
+        <record id="action_order_amendment_history" model="ir.actions.act_window">
+            <field name="name">Order Amendment Details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.amendment.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="view_order_amendment_filter"/>
+            <field name="context">{
+                    'search_default_my_sale_order_filter': 1
+                }
+            </field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Sales Order Amendment Details will be display, will amendment the Order.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- Sale Order Amendment History Menu -->
+
+        <menuitem id="menu_sale_amendment_history" action="action_order_amendment_history" name="Order Details" parent="menu_sale_order_amendment_parent" sequence="1"/>
+
+
+    </data>
+</openerp>

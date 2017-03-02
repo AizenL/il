@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+
+        <record id="view_sandv_product_form" model="ir.ui.view">
+            <field name="name">sandv.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <page string="Information" position="after">
+                	<page string = "Other Details">
+	                    <group>
+	                        <group>
+	                            <field name="customer_part_noo"/>
+	                            <field name="product_description"/>
+	                            <field name="product_brand"/>
+				</group>
+				<group>
+	                            <field name="manufacturer_part_no"/>
+	                            <field name="product_type"/>
+	                            <field name="product_material"/>
+	                        </group>
+	                    </group>
+	                </page>
+                </page>
+            </field>
+        </record>
+
+
+
+
+
+
+   
+  </data> 
+</openerp>

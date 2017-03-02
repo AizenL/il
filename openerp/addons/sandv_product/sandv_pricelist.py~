@@ -1,0 +1,351 @@
+from openerp.osv import fields,osv
+from openerp.tools.translate import _
+from lxml import etree
+import time
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from openerp import tools
+from openerp import SUPERUSER_ID,api
+from datetime import timedelta
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
+import openerp.addons.decimal_precision as dp
+from openerp import workflow
+from openerp.tools.float_utils import float_compare
+
+
+import pdb
+
+class product_pricelist_version(osv.osv):
+    _inherit="product.pricelist.version"
+    _columns={
+            'customer_pricelist_id':fields.many2one('sandv.customer.pricelist'),
+    }
+class sandv_customer_pricelist(osv.osv):
+    
+    _name = 'sandv.customer.pricelist'
+    
+    _columns = {
+                
+                'name' :fields.char("Name" , size=256),
+                'pricelist':fields.many2one("product.pricelist","Pricelist"),
+                'start_date':fields.date("Start Date"),
+                'end_date':fields.date("End Date"),
+                
+                'item_list':fields.one2many("item.list","pricelist_id","Item List"),
+                
+                
+                }
+    @api.one
+    def update_pricelist(self):
+        list_product_id=[]
+        pdb.set_trace()
+        version_obj = self.env['product.pricelist.item']
+        version_obj_name=self.env['product.pricelist.version']
+        
+
+        pricelist_name=self.pricelist
+        for items in pricelist_name.version_id:
+            if items.name==self.name:
+                item_ids=items.items_id
+                version_id=items
+                
+            else:
+                item_ids=items.items_id
+                version_id=items
+        date_start=self.start_date
+        date_end=self.end_date
+        version_name=self.name
+        item_list=self.item_list
+        
+        # if pricelist_name.version_id:
+        #     names=self.
+        if not pricelist_name.version_id:
+            #if not pricelist_name.version_id.items_id:
+            version_id=pricelist_name.version_id.create({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,'customer_pricelist_id':self.id})
+            for line in self.item_list:
+                sale_price=line.sale_price
+                il_no=line.product_id
+                item=item_ids.create({'product_id':il_no.id,'name':version_name,'price_surcharge':sale_price,'price_discount':'-1','price_version_id':version_id.id,})
+                list_product_id.append(item.id)
+            pricelist_name.version_id.write({'items_id':[(4,0,list_product_id)]})
+        else:
+            old_version=version_id.search([('customer_pricelist_id','=',self.id),('pricelist_id','=',pricelist_name.id)])
+            if old_version:
+                old_version[0].write({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,'customer_pricelist_id':self.id})
+                #version_id=self.pricelist.version_id
+                #version_id=pricelist_name.version_id.write({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,})
+                old_ids = version_obj.search([('price_version_id','=',version_id.id)])
+                if old_ids:
+                    for old_id in old_ids.ids :
+                        version_id.write({'items_id':[(3,old_id)]})
+                for line in self.item_list:
+                    sale_price=line.sale_price
+                    il_no=line.product_id
+                    item=item_ids.create({'product_id':il_no.id,'name':version_name,'price_surcharge':sale_price,'price_discount':'-1','price_version_id':version_id.id,})
+                    list_product_id.append(item.id)
+                version_id.write({'items_id':[(4,0,list_product_id)]})
+            else:
+                version_id=pricelist_name.version_id.create({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,'customer_pricelist_id':self.id})
+                for line in self.item_list:
+                    sale_price=line.sale_price
+                    il_no=line.product_id
+                    item=item_ids.create({'product_id':il_no.id,'name':version_name,'price_surcharge':sale_price,'price_discount':'-1','price_version_id':version_id.id,})
+                    list_product_id.append(item.id)
+                pricelist_name.version_id.write({'items_id':[(4,0,list_product_id)]})
+
+
+        
+        
+        #pricelist_name_item_ids.create({'product_id':il_no.id,})
+        
+        #if not pricelist_name.version_id:
+            #if not pricelist_name.version_id.items_id:
+         #   pricelist_name.version_id.create({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,'items_id':[(6,0,list_product_id)]})
+                #pricelist_name.version_id.create({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,'items_id':list_item})
+        # if pricelist_name.version_id:
+        #     old_ids = old_items.search(['price_version_id':pricelist_name.version_id.id])
+        #     pricelist_name.version_id.write({'items_id':[(3,old_ids)]})
+        #     pricelist_name.version_id.write({'items_id':[(4,0,list_product_id)]})
+            #pricelist_name.version_id.write({'items_id':[(5)]})
+            #pricelist_name.version_id.write({'items_id':[(6,0,list_product_id)]})
+        #if pricelist_name.version_id:
+         #   pricelist_name.version_id.write({'items_id':[(6,0,list_product_id)]})
+            #pricelist_name.version_id.unlink({'name':version_name,'date_start':date_start,'date_end':date_end,'pricelist_id':pricelist_name.id,})
+
+
+
+
+        #price_list_id=self.pool.get('product.pricelist')
+        #price_list=price_list_id.search(self.pricelist)
+
+
+
+        return True
+
+    
+     
+    
+    
+sandv_customer_pricelist()
+
+class sandv_item_list(osv.osv):
+    
+    _name = 'item.list'
+    
+    
+    
+    def _compute_all_value(self, cr, uid, ids, field_name, arg, context=None):
+        
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+                'net_price': 0.0,
+                'cst_vat': 0.0,
+                'il_landed_price': 0.0,
+                'entry_tax':0.0,
+                'final_il_landed_price':0.0,
+                'sale_price':0.0
+                
+            }
+            
+            mrp = order.mrp
+            discount = order.discount/100
+            cst_vat_percent = order.cst_vat_percent / 100
+            ed = order.ed 
+            margin = order.margin / 100
+            entry_tax_percent = order.entry_tax_percent / 100
+            
+            
+            
+            res[order.id]['net_price'] = mrp - (mrp * discount)
+            
+            res[order.id]['cst_vat'] = res[order.id]['net_price'] * cst_vat_percent
+            
+            if ed == True:
+                
+                res[order.id]['il_landed_price'] = res[order.id]['net_price'] + (res[order.id]['net_price'] * cst_vat_percent )
+                
+            else:
+                
+                res[order.id]['il_landed_price'] = res[order.id]['net_price']
+            
+            
+            res[order.id]['entry_tax'] = res[order.id]['il_landed_price'] * entry_tax_percent
+            
+#             pdb.set_trace()
+            res[order.id]['final_il_landed_price'] = res[order.id]['il_landed_price'] + res[order.id]['entry_tax']
+            
+            res[order.id]['sale_price'] = res[order.id]['final_il_landed_price'] + (res[order.id]['final_il_landed_price'] * margin)
+            
+            
+            
+
+        return res
+
+
+    
+    _columns = {
+                'pricelist_version':fields.many2one('product.pricelist.version'),
+                'sequence' :fields.char("Sequence" , size=256),
+                'product_id':fields.many2one("product.product","IL Part No"),
+                'product_brand':fields.many2one("product.brand","Brand"),
+                'name':fields.char("Product Name" , size=256),
+                
+                'customer_code':fields.char("Customer Code" , size=256),
+                'mrp':fields.float("MRP"),
+                'discount':fields.float("Discount"),
+                'ed':fields.boolean("ED"),
+                'cst_vat_percent':fields.float("CST/VAT %"),
+                'margin':fields.float("Margin %"),
+                'entry_tax_percent':fields.float("Entry Tax %"),
+                
+                
+                'net_price':fields.function(_compute_all_value,  string='Net Price (Inclusive of ED)',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['mrp','discount','ed'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                   
+                
+                
+                'cst_vat':fields.function(_compute_all_value,  string='CST/VAT',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['net_price','cst_vat_percent','ed'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                
+                
+                
+                
+                'il_landed_price':fields.function(_compute_all_value,  string='IL Landed Price',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['ed','net_price','cst_vat_percent'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                
+                
+                
+                'entry_tax':fields.function(_compute_all_value,  string='Entry Tax Amount',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['il_landed_price','entry_tax_percent','ed'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                
+                
+                
+                
+                'final_il_landed_price':fields.function(_compute_all_value,  string='Final IL Landed Price',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['ed','net_price','cst_vat_percent','il_landed_price','entry_tax_percent'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                
+                
+                
+                
+                'sale_price':fields.function(_compute_all_value,  string='Sale Price',
+                    store={
+                        
+                        'item.list':(lambda self, cr, uid, ids, c={}: ids, ['final_il_landed_price','margin','ed'], 10),
+                            
+                    }, multi="item_list_val", track_visibility='always'),
+                
+                
+                
+                
+                'pricelist_id':fields.many2one("sandv.customer.pricelist","Pricelist"),
+                
+                
+                }
+    
+     
+
+    def onchange_product_id(self,cr,uid,ids,product_id):
+        
+        v = {}
+        v['name'] = ' '
+        
+        v['product_brand'] = False
+        
+        if product_id:
+            product_obj = self.pool.get("product.product")
+            product_brow = product_obj.browse(cr,1,product_id)
+            
+            prod_name = product_brow.name
+            
+            if product_brow.product_brand:
+                prod_brand = product_brow.product_brand.id
+                v['product_brand'] = prod_brand
+        
+            v['name'] = prod_name
+
+        
+        
+        return {'value':v}
+
+
+
+
+    def onchange_item_list_value(self,cr,uid,ids,discount,cst_vat_percent,margin,ed,mrp,entry_tax_percent):
+        
+        v = {}
+        res = {}
+        
+        cst_vat_percent = cst_vat_percent / 100
+        margin = margin / 100
+        entry_tax_percent = entry_tax_percent / 100
+        discount=discount/100
+        #pdb.set_trace()
+         
+        
+        
+        res['net_price'] = mrp - (mrp * discount)
+        
+        res['cst_vat'] = res['net_price'] * cst_vat_percent
+        
+        if ed == True:
+            
+            res['il_landed_price'] = res['net_price'] + (res['net_price'] * cst_vat_percent )
+            
+        else:
+            
+            res['il_landed_price'] = res['net_price']
+        
+        
+        res['entry_tax'] = res['il_landed_price'] * entry_tax_percent
+        
+#             pdb.set_trace()
+        res['final_il_landed_price'] = res['il_landed_price'] + res['entry_tax']
+        
+        res['sale_price'] = res['final_il_landed_price'] + (res['final_il_landed_price'] * margin )
+
+        
+        
+        
+        
+        return {'value':res}
+    
+    
+sandv_item_list()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

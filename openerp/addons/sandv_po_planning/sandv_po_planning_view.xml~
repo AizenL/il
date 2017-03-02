@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+   	
+   	
+
+
+  <!-- planning view for products management start  -->
+
+	 <record id="sandv_stock_product_qty_search" model="ir.ui.view">
+            <field name="name">stock.move.search</field>
+            <field name="model">sandv.stock.product.qty</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Stock Moves">
+                    <group>
+                    	
+                      <filter icon="terp-camera_test" string="Qty Out of Stock Products" name="out_of_stock_qty"  domain="[('out_of_stock_qty','=',True)]"  help="Products Out of Qty "/>
+                      
+                    
+                     <field name="product_id" />
+                     <field name="prod_name" />
+                     <field name="date_expected"/>
+                     <field name="origin"/>
+                    
+                   </group>
+                    
+                    <newline/>
+                    <group expand="0" string="Group By..." >
+                        <filter string="Product" name="by_product" icon="terp-accessories-archiver" domain="[]"  context="{'group_by':'product_id'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Ref" name="groupby_picking_id" icon="terp-accessories-archiver" domain="[]"  context="{'group_by':'picking_id'}"/>
+                        
+                        
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+
+  <record id="sandv_stock_product_qty_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">sandv.stock.product.qty</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree  string="Stock Moves" >
+		    		<field name="product_id"/>
+		    		<field name="prod_name"/>
+		    		
+                    <field name="date_expected"/>
+                    <field name="origin"/>
+                    <field name="picking_id" />
+                    <field name="stock_qty" sum="Total"/>
+                    
+                    <field name="product_uom_qty"  />
+                    <field name="tot_do_qty" invisible="1" />
+                    <field name="out_of_stock_qty" invisible="1" />
+                    
+                </tree>
+            </field>
+        </record>
+
+
+ <record id="sandv_stock_product_qty_action" model="ir.actions.act_window">
+            <field name="name">Purchase Planning View</field>
+            <field name="res_model">sandv.stock.product.qty</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="sandv_stock_product_qty_tree"/>
+            <field name="search_view_id" ref="sandv_stock_product_qty_search"/>
+            <!-- <field name="context">{'search_default_out_of_stock_qty':1,'search_default_by_product':1}</field>
+             -->
+             <field name="context">{'search_default_out_of_stock_qty':0}</field>
+            
+        </record>
+        
+              <menuitem action="sandv_stock_product_qty_action" id="sandv_stock_product_qty_action_menu"  sequence="0" parent="purchase.menu_procurement_management"  groups="purchase.group_purchase_user,purchase.group_purchase_manager"/>
+
+
+
+
+			<menuitem action="purchase.purchase_rfq" id="purchase.menu_purchase_rfq"
+            parent="purchase.menu_procurement_management"
+            sequence="2"/>
+
+
+
+
+
+
+
+
+
+
+
+	</data>
+
+</openerp>

@@ -1,0 +1,13 @@
+<openerp>
+    <data>
+        <report
+            id="action_report_exc"
+            string="New"
+            model="account.invoice"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_exc"
+            file="sales_invoice.report_exc"
+            
+            
+        />
+    </data></openerp>

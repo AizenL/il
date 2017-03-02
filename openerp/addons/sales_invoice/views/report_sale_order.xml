@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="report_sale_order">
+
+   
+       
+            <t t-foreach="docs" t-as="o">
+
+<div class="page">
+                	<div class="row">
+
+<style>
+.table_basic{
+	
+	width:100%;
+	height:100%
+	border-collapse: collapse;
+	}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+
+
+
+
+</style>
+<table class="table_basic">
+<tbody>
+<tr style="height: 6px;">
+<td style="width: 100%; height: 6px;" align="center">Sale Order Invoice</td>
+</tr>
+<tr style="height: 95px;">
+<td style="width: 100%; height: 95px;">
+<table class="table_basic">
+<tbody>
+<tr>
+<td style="width: 262px;">
+                		<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="width:100%;max-height:100%"/>
+            			</td>
+<td style="width: 263.333px;">&amp;nbsp;<span t-esc="o.company_id.name"/> &amp;nbsp;<br/> <span t-esc="o.company_id.street"/>&amp;nbsp; <span t-esc="o.company_id.street2"/>,&amp;nbsp;<br /><span t-esc="o.company_id.city"/>, - <span t-esc="o.company_id.zip"/><br />Phone No: <span t-esc="o.company_id.phone"/> /Fax-<span t-esc="o.company_id.fax"/> /<br /><span t-esc="o.company_id.email"/></td>
+<td style="width: 260.667px;">
+<p>&amp;nbsp;PAN No:<span t-esc="o.company_id.partner_id.pan_no"/></p>
+<p>&amp;nbsp;TIN NO:&amp;nbsp; <span t-esc="o.company_id.tin"/></p>
+<p>&amp;nbsp;CIN No:&amp;nbsp; <span t-esc="o.company_id.cin"/></p>
+<p>&amp;nbsp;ECC No: <span t-esc="o.company_id.ecc"/></p>
+</td>
+</tr>
+</tbody>
+</table>
+&amp;nbsp;</td>
+</tr>
+<tr style="height: 59px;">
+<td style="width: 100%; height: 59px;">
+<table class="table_basic">
+<tbody>
+<tr style="height: 213px;">
+<td style="width: 39.2193%; height: 213px;">
+<p>&amp;nbsp;Sale Order To :</p>
+<p>&amp;nbsp;<t t-if="o.partner_id.parent_id.name"><span t-esc="o.partner_id.parent_id.name"/></t>&amp;nbsp;<br/><span t-esc="o.partner_id.name"/></p>
+<p>&amp;nbsp;<span t-esc="o.partner_id.street"/>&amp;nbsp;<span t-esc="o.partner_id.street2"/>&amp;nbsp;<span t-esc="o.partner_id.city"/></p>
+<p>&amp;nbsp;<span t-esc="o.partner_id.state_id.name"/>&amp;nbsp;<span t-esc="o.partner_id.zip"/></p>
+<p>&amp;nbsp;Pan No:<span t-esc="o.partner_id.pan_no"/></p>
+<p>&amp;nbsp;Tin No:<span t-esc="o.partner_id.vat_tin"/></p>
+<p>&amp;nbsp;</p>
+</td>
+<td style="width: 28.205%; height: 213px;">
+<p>&amp;nbsp;Quotation No:<span t-esc="o.name"/></p>
+<p>&amp;nbsp;Concer Person Name:<span t-esc="o.partner_id.concern_person"/></p>
+<p>&amp;nbsp;Tel No: <span t-esc="o.partner_id.phone"/></p>
+<p>&amp;nbsp;Quotation Date: <span t-esc="o.date_order"/></p>
+<p>&amp;nbsp;Email Id:<span t-esc="o.partner_id.email"/></p>
+<p>&amp;nbsp;Enquiry Recived</p>
+<p>&amp;nbsp;</p>
+</td>
+<td style="width: 32.3232%; height: 213px;">
+<p>&amp;nbsp;Quotation From: <span t-esc="o.user_id.name"/> </p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;Mail ID: <span t-esc="o.user_id.email"/></p>
+<p>&amp;nbsp;Tel No: <span t-esc="o.user_id.phone"/></p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+&amp;nbsp;</td>
+</tr>
+<tr style="height: 30px;">
+<td style="width: 100%; height: 30px;">
+<p align="center">Particulars</p>
+</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 100%; height: 15px;">
+<table class="table_basic">
+<tbody>
+<tr style="height: 70px;">
+<td style="width: 2%; height: 70px;">S. No</td>
+<td style="width: 12%; height: 70px;">Product Name</td>
+<td style="width: 10%; height: 70px;">Customer Part No</td>
+<td style="width: 9%; height: 70px;">Make</td>
+<td style="width: 11%; height: 70px;">IL Part.no</td>
+<td style="width: 11%; height: 70px;">Manufacture</td>
+<td style="width: 2%; height: 70px;">Qty</td>
+<td style="width: 10%; height: 70px;">UOM</td>
+<td style="width: 4%; height: 70px;">Basic Unit Price</td>
+<td style="width: 4%; height: 70px;">Amount</td>
+<!-- <td style="width: 5%; height: 70px;">ED</td> -->
+</tr>
+<t t-set="sl_no" t-value="1"/>
+<tr style="height: 70px;" t-foreach="o.order_line" t-as="line">
+<td style="width: 2%; height: 70px;"><span t-esc="sl_no"/></td><t t-set="sl_no" t-value="sl_no+1"/>
+<td style="width: 12%; height: 70px;"><span t-field="line.product_id"/></td>
+<td style="width: 10%; height: 70px;"><span t-field="line.product_id.customer_part_noo"/></td>
+<td style="width: 9%; height: 70px;"><span t-field="line.brand_name"/></td>
+<td style="width: 11%; height: 70px;"><span t-field="line.il_part_no"/></td>
+<td style="width: 11%; height: 70px;"><span t-field="line.product_id.manufacturer_part_no"/></td>
+<td style="width: 2%; height: 70px;"><span t-field="line.product_uom_qty"/></td>
+<td style="width: 10%; height: 70px;"><span t-field="line.product_uom"/></td>
+<td style="width: 4%; height: 70px;"><span t-field="line.price_unit"/></td>
+<td style="width: 4%; height: 70px;"><span t-field="line.price_subtotal"/></td>
+<!-- <td style="width: 5%; height: 70px;"></td> -->
+</tr>
+<tr>
+	<td colspan="9"> Total</td>
+	<td><span t-esc="o.amount_untaxed"/></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr style="height: 56px;">
+<td style="width: 100%; height: 56px;">Amount in Words:INR <span t-esc="o.amount_to_text(doc_ids,'Rupees','Paisa')"/></td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 100%; height: 24px;">Special Remarks:</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 100%; height: 24px;">Vat extra as applicable</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 100%; height: 24px;">Excise Benefit (if applicable) is extra at actuals &amp; will be passed on</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 100%; height: 24px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 100%; height: 24px;" align="center">Industrylane Commercials</td>
+</tr>
+<tr style="height: 62px;">
+<td style="width: 100%; height: 62px;">
+<table class="table_basic">
+<tbody>
+<tr style="height: 23px;">
+<td style="width: 144.2px; height: 23px;">TIN No:</td>
+<td style="width: 169.8px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 157px; height: 69px;" rowspan="3">&amp;nbsp;</td>
+<td style="width: 135px; height: 23px;">ECC No.</td>
+<td style="width: 178px; height: 23px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 23px;">
+<td style="width: 144.2px; height: 23px;">PAN No:</td>
+<td style="width: 169.8px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 135px; height: 23px;">Range</td>
+<td style="width: 178px; height: 23px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 23px;">
+<td style="width: 144.2px; height: 23px;">Commisionerate</td>
+<td style="width: 169.8px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 135px; height: 23px;">Division</td>
+<td style="width: 178px; height: 23px;">&amp;nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 100%; height: 29px;" align="center">Industrylane Bank Details</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 100%; height: 29px;">
+<table class="table_basic">
+<tbody>
+<tr>
+<td style="width: 138.4px;">Bank Name:</td>
+<td style="width: 175.6px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.bank_name"/></td>
+<td style="width: 157px;" rowspan="3">&amp;nbsp;</td>
+<td style="width: 139px;">Account Name</td>
+<td style="width: 174px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.state"/></td>
+</tr>
+<tr>
+<td style="width: 138.4px;">Address</td>
+<td style="width: 175.6px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.owner_name"/>&amp;nbsp; <span t-esc="o.company_id.bank_ids.street"/> &amp;nbsp;&amp;nbsp;<span t-esc="o.company_id.bank_ids.city"/> </td>
+<td style="width: 139px;">Account No.</td>
+<td style="width: 174px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.acc_number"/> </td>
+</tr>
+<tr>
+<td style="width: 138.4px;">Pincode</td>
+<td style="width: 175.6px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.zip"/></td>
+<td style="width: 139px;">IFSC Code</td>
+<td style="width: 174px;">&amp;nbsp;<span t-esc="o.company_id.bank_ids.bank_bic"/></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 100%; height: 29px;" align="center">Terms &amp; Conditions</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 100%; height: 29px;">
+<table class="table_basic">
+<tbody>
+<tr style="height: 23px;">
+<td style="width: 136px; height: 23px;">Payment Terms</td>
+<td style="width: 180px; height: 23px;">&amp;nbsp;<span t-esc="o.sale_order_payment_information.payment_information"/></td>
+<td style="width: 158px; height: 96px;" rowspan="5">&amp;nbsp;</td>
+<td style="width: 139px; height: 23px;">P&amp;F:</td>
+<td style="width: 177px; height: 23px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 23px;">
+<td style="width: 136px; height: 23px;">Delivery Period:</td>
+<td style="width: 180px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 139px; height: 23px;">Freight:</td>
+<td style="width: 177px; height: 23px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 27px;">
+<td style="width: 136px; height: 27px;">Mode of Dispatch:</td>
+<td style="width: 180px; height: 27px;">&amp;nbsp;</td>
+<td style="width: 139px; height: 27px;">Payment Mode</td>
+<td style="width: 177px; height: 27px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 23px;">
+<td style="width: 136px; height: 23px;">Validity:</td>
+<td style="width: 180px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 139px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 177px; height: 23px;">&amp;nbsp;</td>
+</tr>
+<tr style="height: 23px;">
+<td style="width: 136px; height: 23px;">Warranty:</td>
+<td style="width: 180px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 139px; height: 23px;">&amp;nbsp;</td>
+<td style="width: 177px; height: 23px;">&amp;nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 100%; height: 29px;">General Terms &amp; Conditions<br />1 Price Ex- Godown.<br />2 Discount Price quoted is after calculating discount.<br />3 Packing &amp; Forwarding Extra @ 2 %.<br />4 Sales Tax In Karnataka, VAT as Applicable<br />5 Central Sales Tax Out of Karnataka, 2% C.S.T. against 'C' Form OR 14.50% C.S.T. &amp;lsquo;C&amp;rsquo;-Form should be submitted to us strictly after completion of 90 days from the date of billing.<br />Incase of non submission , difference of Tax Amount will be debited to customer account &amp; should be payable by customer.<br />6 Freight Extra on "To Pay" Basis. In case of small parcels, items will be dispatched thru courier service on freight paid basis collected from you prior to dispatch.<br />7 Transportation charges Will be charged extra @ actuals for Higher Ranges &amp; Surface Plate, 2D Height Gauge &amp; etc.,<br />8 Installation &amp; Training<br />Charges<br />Installation &amp; Training charges are extra @ actuals for SJ 210, 2D Height Gauge &amp; etc.,<br />9 Any other charges To be borne by the Customer.<br />10 Payment Terms as mentioned above. (By Cheque/DD/NEFT/RTGS/Credit Card/Debit Card/Cash)<br />11 Delivery Period Refer Delivery Schedule of Page 1 (Subject to prior sale except for Forward Delivery). Stock availability is as per today&amp;rsquo;s stock &amp; Quantity may vary at the time<br />of delivery. Kindly confirm at the release of Purchase Order.<br />12 Validity of Offer 15 Days.<br />13 Despatch Courier Service / Transport Service / By Hand.<br />14 Modvat Not Applicable.<br />15 Calibration Certificate<br />16 Warranty Certificate Warranty Certificate for a period of 12 months is enclosed along with the product. (For Manufacturing Defects Only).<br />17 Certificate of Inspection OEM does not provide Individual CERTIFICATE OF INSPECTION for all types along with its products.<br />Only WARRANTY CERTIFICATE will be provided by OEM.<br />18 Your S.T &amp; C.S.T Reg No. Kindly Mention your CST and TIN Registration No. in the Purchase Order.<br />19 Excise Duty If Applicable<br />20 T &amp; C Terms &amp; Conditions are subject to change without prior notice.<br />21 Jurisdiction Any disputes are subject to Bangalore Jurisdication.<br />22 Other Goods Once Sold Cannot be Taken Back or Exchanged.</td>
+</tr>
+</tbody>
+</table>
+<p>&amp;nbsp;</p>
+</div>
+</div></t>
+        
+</template>
+</data>
+</openerp>

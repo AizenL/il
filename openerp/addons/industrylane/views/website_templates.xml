@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3: -->
+<openerp>
+	<data>
+	
+
+<template id="website.layout" name="Main layout">
+<html t-att-lang="lang and lang.replace('_', '-')"
+          t-att-data-website-id="website.id if editable and website else None"
+          t-att-data-editable="'1' if editable else None"
+          t-att-data-translatable="'1' if translatable else None"
+          t-att-data-view-xmlid="xmlid if editable else None"
+          t-att-data-main-object="repr(main_object) if editable else None"
+          t-att-data-oe-company-name="res_company.name">
+        <head>
+            <meta charset="utf-8" />
+            <t t-if="main_object and 'website_meta_title' in main_object and not title">
+                <t t-set="title" t-value="main_object.website_meta_title"/>
+            </t>
+            <t t-if="main_object and 'name' in main_object and not title and not additional_title">
+                <t t-set="additional_title" t-value="main_object.name"/>
+            </t>
+            <t t-if="not title">
+                <t t-set="title"><t t-if="additional_title"><t t-raw="additional_title"/> | </t><t t-esc="(website or res_company).name"/></t>
+            </t>
+
+            <meta name="viewport" content="initial-scale=1"/>
+            <meta name="description" t-att-content="main_object and 'website_meta_description' in main_object
+                and main_object.website_meta_description or website_meta_description"/>
+            <meta name="keywords" t-att-content="main_object and 'website_meta_keywords' in main_object
+                and main_object.website_meta_keywords or website_meta_keywords"/>
+            <meta name="generator" content="Odoo"/>
+            <title><t t-esc="title"/></title>
+
+            <t t-set="languages" t-value="website.get_languages() if website else None"/>
+            <t t-if="request and request.website_multilang and website">
+                <t t-foreach="website.get_alternate_languages(request.httprequest)" t-as="lg">
+                    <link rel="alternate" t-att-hreflang="lg['hreflang']" t-att-href="lg['href']"/>
+                </t>
+            </t>
+
+            <t t-call-assets="web.assets_common" t-js="false"/>
+            <t t-call-assets="website.assets_frontend" t-js="false"/>
+
+            <t t-raw="head or ''" name='layout_head'/>
+	<!-- mobile responsive meta -->
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		
+			<link rel="stylesheet" href="/industrylane/static/src/css/style.css" />
+			<link rel="stylesheet" href="/industrylane/static/src/css/responsive.css" />
+			<!-- Color css -->
+			<link rel="stylesheet" id="jssDefault" href="/industrylane/static/src/css/color.css" />            
+            
+        </head>
+        <body>
+
+            <div id="wrapwrap"  class="boxed_wrapper">
+<section class="top-bar">
+	<div class="container">
+		<div class="top-bar-left pull-left">
+			<div id="polyglotLanguageSwitcher">
+
+			</div>
+		</div>
+		<div class="top-bar-right pull-right">			
+			<div class="top-info">
+                <ul id="top_menu">
+
+                                    
+                                    
+                                    <li><span>No1 :</span> World’s Leading Industrial Solution Provider INDIA</li>
+
+                                    <li class="divider" t-ignore="true" t-if="website.user_id != user_id"/>
+                                    <li class="dropdown" t-ignore="true" t-if="website.user_id != user_id">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <b>
+                                                <span t-esc="user_id.name"/>
+                                                <span class="caret"></span>
+                                            </b>
+                                        </a>
+                                        <ul class="dropdown-menu js_usermenu" role="menu">
+                                            <li><a href="/web" role="menuitem">My Account</a></li>
+                                            <li class="divider"/>
+                                            <li><a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a></li>
+                                        </ul>
+                                    </li>
+                 </ul>				
+			</div>
+			<div class="social">
+				<ul>
+					<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+					<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+					<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+					<li><a href="#"><i class="fa fa-youtube"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>           
+
+<header class="header">
+	<div class="container">
+		<div class="logo pull-left">
+			<a class="navbar-brand" href="/" t-field="res_company.name"/>
+		</div>
+		<div class="header-right pull-right">
+			<div class="single-header-right">
+				<div class="icon-box">
+					<i class="flaticon-placeholder"></i>
+				</div>
+				<div class="content-box">
+					<b>No.58, 3rd floor, Railway Parallel Road,</b>
+					<p>Kumara Park West, Bengaluru - 560020.</p>
+				</div>
+			</div>
+			<div class="single-header-right">
+				<div class="icon-box">
+					<i class="flaticon-technology"></i>
+				</div>
+				<div class="content-box">
+					<b>+(91) 890 00 0000</b>
+					<p>+(91) 890 00 0000</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</header> 
+<section class="mainmenu-wrapper stricky">
+	<div class="container">
+		<nav class="mainmenu-holder pull-left">
+			<div class="nav-header">
+				<ul class="navigation">
+					<t t-foreach="website.menu_id.child_id" t-as="submenu">
+                       <t t-call="website.submenu"/>
+                	</t>
+                </ul>
+			</div>
+			<div class="nav-footer hidden-lg">
+				<ul>
+					<li><button class="menu-expander"><i class="fa fa-list-ul"></i></button></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</section>
+
+<section class="rev_slider_wrapper ">
+	<div id="slider1" class="rev_slider"  data-version="5.0">
+		<ul>
+			<li data-transition="slidingoverlayleft">
+				<img src="/industrylane/static/src/img/slider/il01.jpg"  alt="" width="1920" height="705" data-bgposition="top center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="1"/>
+				<div class="tp-caption sfl tp-resizeme factory-caption-h1" 
+			        data-x="right" data-hoffset="0" 
+			        data-y="top" data-voffset="90" 
+			        data-whitespace="nowrap"
+			        data-transform_idle="o:1;" 
+			        data-transform_in="o:0" 
+			        data-transform_out="o:0" 
+			        data-start="500">
+					Factory Press - Solution for <br/>all Industrial Business 
+			    </div>
+			</li>
+			<li data-transition="slidingoverlayleft">
+				<img src="/industrylane/static/src/img/slider/il02.jpg"  alt=""  width="1920" height="705" data-bgposition="top center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="2"/>
+
+				<div class="tp-caption sfl tp-resizeme factory-caption-h1" 
+			        data-x="left" data-hoffset="0" 
+			        data-y="top" data-voffset="90" 
+			        data-whitespace="nowrap"
+			        data-transform_idle="o:1;" 
+			        data-transform_in="o:0" 
+			        data-transform_out="o:0" 
+			        data-start="500">
+					Committed to Superior<br/>Quality and Results 
+			    </div>
+			</li>
+			<li data-transition="slidingoverlayleft">
+				<img src="/industrylane/static/src/img/slider/il03.jpg"  alt=""  width="1920" height="705" data-bgposition="top center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="2"/>
+				
+				<div class="tp-caption sfl tp-resizeme factory-caption-h1 text-center" 
+			        data-x="center" data-hoffset="0" 
+			        data-y="top" data-voffset="90" 
+			        data-whitespace="nowrap"
+			        data-transform_idle="o:1;" 
+			        data-transform_in="o:0" 
+			        data-transform_out="o:0" 
+			        data-start="500">
+					We are World-Class Designers and<br/>Industrial Engineers.
+			    </div>
+			</li>
+		</ul>
+	</div>
+</section>
+<section class="call-to-action">
+	<div class="container">
+		<p>Industry Lane has consistently embraced innovation to provide a superior level of excellence. <a href="#">Request Quote</a></p>
+	</div>
+</section>
+<section class="our-services section-padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-sm-6">
+				<div class="single-our-service">
+					<div class="img-box">
+						<img src="/industrylane/static/src/img/our-services/service01.jpg" alt="Awesome Image"/>
+						<div class="overlay">
+							<div class="box">
+								<div class="box-content">
+									<a href="agricultural-engineering.html">Read More <i class="fa fa-angle-double-right"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href="#"><h3>Bolts</h3></a>
+					<p>Browse our complete line of premium quality bolting products, including all standard specifications as well as structural bolting. In spec and delivered on time for your most demanding project requirements.</p>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6">
+				<div class="single-our-service">
+					<div class="img-box">
+						<img src="/industrylane/static/src/img/our-services/service02.jpg" alt="Awesome Image"/>
+						<div class="overlay">
+							<div class="box">
+								<div class="box-content">
+									<a href="chemical.html">Read More <i class="fa fa-angle-double-right"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href="#"><h3>Nuts</h3></a>
+					<p>The perfect compliment to our high quality bolting products. Shop our complete line of hex and application specific nuts to meet your most demanding hardware requirements.</p>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0">
+				<div class="single-our-service">
+					<div class="img-box">
+						<img src="/industrylane/static/src/img/our-services/service03.jpg" alt="Awesome Image"/>
+						<div class="overlay">
+							<div class="box">
+								<div class="box-content">
+									<a href="material.html">Read More <i class="fa fa-angle-double-right"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<a href="#"><h3>Screws</h3></a>
+					<p>View our comprehensive selection of premium quality, application specific screw products. Engineered to provide optimum fastening performance while offering a fast, clean, easy installation.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="call-to-action-home">
+	<div class="container">
+		<h3>We are the world class <span>engineering manufacturer</span><br/>providing the highest quality products, services and<br/>solutions to our customers.</h3>
+	</div>
+</section>
+
+<section class="contact-section section-padding">
+	<div class="container">
+		<div class="section-title">
+			<h2><span>Our Clients</span></h2>
+		</div>
+
+		<div class="client-carousel owl-carousel owl-theme">
+			<div class="item">
+				<img src="/industrylane/static/src/img/clients/1.jpg" alt="Awesome Image"/>
+			</div>
+			<div class="item">
+				<img src="/industrylane/static/src/img/clients/2.jpg" alt="Awesome Image"/>
+			</div>
+			<div class="item">
+				<img src="/industrylane/static/src/img/clients/3.jpg" alt="Awesome Image"/>
+			</div>
+			<div class="item">
+				<img src="/industrylane/static/src/img/clients/4.jpg" alt="Awesome Image"/>
+			</div>
+			<div class="item">
+				<img src="/industrylane/static/src/img/clients/5.jpg" alt="Awesome Image"/>
+			</div>
+		</div>
+	</div>	
+</section>
+
+
+
+				
+<!--                 <main>
+                    <t t-raw="0"/>                   
+                    
+                </main>
+              
+    -->           
+<!-- 
+<template id="website.homepage" name="Homepage" page="True" priority="29">
+    <t t-call="website.layout">
+ <div id="wrap">
+        <div class="oe_structure"/>
+        <div class="container">
+            <h1>Contact us</h1>
+            <div class="row">
+
+
+            </div>
+        </div>
+        <div class="oe_structure"/>
+      </div>
+    </t>
+   
+</template>    -->           
+                <footer class="bottom-footer">
+                    <div id="footer_container">
+            
+                    </div>
+                </footer>
+            </div>
+
+            <t t-call-assets="web.assets_common" t-css="false"/>
+            <t t-call-assets="website.assets_frontend" t-css="false"/>
+            
+
+	<!-- jQuery js -->
+	<script src="/industrylane/static/src/assets/jquery/jquery-1.11.3.min.js"></script>
+	<!-- bootstrap js -->
+	<script src="/industrylane/static/src/assets/bootstrap/js/bootstrap.min.js"></script>
+	<!-- jQuery ui js -->
+	<script src="/industrylane/static/src/assets/jquery-ui-1.11.4/jquery-ui.js"></script>
+	<!-- owl carousel js -->
+	<script src="/industrylane/static/src/assets/owl.carousel-2/owl.carousel.min.js"></script>
+	<!-- jQuery validation -->
+	<script src="/industrylane/static/src/assets/jquery-validation/dist/jquery.validate.min.js"></script>
+	<!-- mixit up -->
+	<script src="/industrylane/static/src/assets/jquery.mixitup.min.js"></script>
+	<script src="/industrylane/static/src/assets/jquery.fitvids.js"></script>
+	
+	<!-- revolution slider js -->
+	<script src="/industrylane/static/src/assets/revolution/js/jquery.themepunch.tools.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/jquery.themepunch.revolution.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.carousel.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.kenburn.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.migration.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+	<script src="/industrylane/static/src/assets/revolution/js/extensions/revolution.extension.video.min.js"></script>
+
+	<!-- fancy box -->
+	<script src="/industrylane/static/src/assets/fancyapps-fancyBox/source/jquery.fancybox.pack.js"></script>
+	<script src="/industrylane/static/src/assets/Polyglot-Language-Switcher-master/js/jquery.polyglot.language.switcher.js"></script>
+	<script src="/industrylane/static/src/assets/nouislider/nouislider.js"></script>
+	<script src="/industrylane/static/src/assets/bootstrap-touch-spin/jquery.bootstrap-touchspin.js"></script>
+
+	<script src="/industrylane/static/src/assets/jquery-appear/jquery.appear.js"></script>
+	<script src="/industrylane/static/src/assets/jquery.countTo.js"></script>
+	<!-- Style-switcher  -->
+	<script type="text/javascript" src="/industrylane/static/src/assets/jQuery.style.switcher.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.2/js.cookie.min.js"></script>
+
+	<!-- theme custom js  -->
+	<script id="map-script" src="/industrylane/static/src/js/default-map.js"></script>
+	<script src="/industrylane/static/src/js/custom.js"></script>    
+        </body>
+    </html>
+</template>
+
+
+<template id="website.layout_footer_copyright" inherit_id="website.layout" name="Footer Copyright">
+    <xpath expr="//footer" position="inside">
+		<div class="container">
+			<div class="left-text pull-left">
+				<p>© 2016 Industry Lane</p>
+			</div>
+			<div class="right-text pull-right">
+				<ul class="social">
+					<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+					<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+					<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+					<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+				</ul>
+			</div>
+		</div>        
+    </xpath>
+</template>
+
+
+<template id="website.layout_logo_show" inherit_id="website.layout" customize_show="True" name="Show Logo">
+    <xpath expr="//header//a[@class='navbar-brand']" position="replace">
+        <a href="/" class="navbar-brand logo">
+           <img src="/industrylane/static/src/img/theme/logo.png" alt="Industry Line" id="theme-logo" />
+        </a>
+    </xpath>
+</template>
+
+<template id="website.editor_head" inherit_id="website.layout" name="Editor" groups="base.group_website_publisher,base.group_website_designer">
+    <xpath expr='//t[@t-call-assets="website.assets_frontend"][@t-js]' position="after">
+        <t t-call-assets="website.assets_editor" t-js="false"/>
+    </xpath>
+    <xpath expr='//t[@t-call-assets="website.assets_frontend"][@t-css]' position="after">
+        <t t-call-assets="website.assets_editor" t-css="false"/>
+    </xpath>
+</template>
+
+<template id="website.footer_custom" inherit_id="website.layout" name="Footer">
+    <xpath expr="//div[@id='footer_container']" position="replace">
+        <div class="oe_structure" id="footer">
+            <section data-snippet-id='three-columns'>
+                <div class="container">
+                    <div class="row">
+
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </xpath>
+</template>
+
+<template id="website.footer_default" inherit_id="website.footer_custom" customize_show="True" name="Automatic Footer">
+    <xpath expr="//div[@id='footer']" position="replace">
+        <div class="container hidden-print">
+            <div class="row">
+
+            </div>
+        </div>
+    </xpath>
+</template>
+
+<template id="website.show_sign_in" customize_show="True" inherit_id="website.layout" name="Show Sign In">
+    <xpath expr="//ul[@id='top_menu']" position="inside">
+        <li class="divider" groups="base.group_public"/>
+        <li groups="base.group_public" class="dropdown">
+  			<a class="dropdown-toggle" href="#" data-toggle="dropdown">Sign In <strong class="caret"></strong></a>
+            <div class="dropdown-menu" id="login-dp">
+                           <form class="oe_login_form" role="form" t-attf-action="/web/login{{ '?debug' if debug else '' }}" method="post" onsubmit="this.action = this.action + location.hash">
+
+                    <t t-call="web.database_select"/>
+
+                    <div class="form-group field-login">
+                        <label for="login" class="control-label">Email</label>
+                        <input type="text" name="login" t-att-value="login" id="login" class="form-control" required="required" autofocus="autofocus"/>
+                    </div>
+
+                    <div class="form-group field-password">
+                        <label for="password" class="control-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" required="required" t-att-autofocus="'autofocus' if login else None"/>
+                    </div>
+
+                    <p class="alert alert-danger" t-if="error">
+                        <t t-esc="error"/>
+                    </p>
+                    <p class="alert alert-success" t-if="message">
+                        <t t-esc="message"/>
+                    </p>
+
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    <div class="clearfix oe_login_buttons">
+                        <button type="submit" class="btn btn-primary">Log in</button>
+                    </div>
+
+                </form>
+            </div>
+        </li>
+       
+        <li groups="base.group_public" class="dropdown">
+            <!--  <a t-attf-href="/web/login">
+                <b>Sign in</b>
+            </a> -->
+        </li>           
+    </xpath>
+</template>
+	</data>
+</openerp>

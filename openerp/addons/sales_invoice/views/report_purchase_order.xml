@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_purchase_order">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="row">
+                        <style>@charset "utf-8";
+    body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+    .border-black td {
+        border-top: 1px solid black !important;
+    }
+    .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+    }
+    .table-condensed > tbody > tr {
+        page-break-inside: avoid !important;
+    }
+    .zero_min_height {
+        min-height: 0px !important;
+    }
+	.break{
+     page-break-inside: avoid !important;
+    }
+table{
+	font-size:12px;
+	line-height:18px;
+	width:100%;
+	border-collapse: collapse;
+    page-break-inside: avoid !important;
+
+	}
+p{
+padding:0px;
+margin:0px;
+}
+/* vertical-align Top Middle*/
+.vat{
+vertical-align: top;
+}
+.vam{
+vertical-align: middle;
+}
+
+
+table, td, th {
+
+}
+
+/* table Border */
+.ttb{
+border-top:1px solid #ccc;
+border-bottom:1px solid #ccc;
+}
+.ttop{
+border-top:1px solid #ccc;
+}
+.tbottom{
+border-bottom:1px solid #ccc;
+}
+
+.tleft{
+border-left:1px solid #ccc;
+}
+
+.tright{
+border-right: 1px solid #ccc;
+}
+.padding_lr{
+padding-left:5px;
+padding-right:5px;
+}
+.padding_tb{
+padding-top:5px;
+padding-bottom:5px;
+}
+.padding_all{
+padding:2px;
+}
+h2{
+font-size:18px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+h4{
+font-size:14px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+.grid{
+border:1px solid #ccc;
+}
+.grid td{
+}
+.bold{
+font-weight:bold;
+}
+.small{
+font-size:10px;
+line-height:14px;
+}
+.ptpx{
+padding:10px;
+}
+</style>
+                        <table class="grid" >
+                            <tbody>
+                                <tr class="tbottom">
+                                    <td  align="center" class="padding_all"><h2>Purchase Order</h2></td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all vam"  align="center">
+                                            <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" />
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="67%" class="padding_all vat">
+                                                        <p>
+                                                            <span t-esc="o.company_id.name"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.company_id.street"/>  <span t-esc="o.company_id.street2"/>,
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.company_id.city"/> - <span t-esc="o.company_id.zip"/><br/>
+                                                            <span t-esc="o.company_id.state_id.name"/>
+                                                        </p>
+                                                        <p>Phone No: 
+                                                            <span t-esc="o.company_id.phone"/><br/>
+                                                           Fax : 
+                                                            <span t-esc="o.company_id.fax"/>
+                                                        </p>
+                                                        <p>Email Id: 
+                                                            <span t-esc="o.company_id.email"/>
+                                                        </p>
+                                                    </td>
+                                                    <td width="33%" class="padding_all vam">
+                                                        <p>PAN No:
+                                                            <span t-esc="o.company_id.partner_id.pan_no"/>
+                                                        </p>
+                                                        <p>TIN NO: 
+                                                            <span t-esc="o.company_id.partner_id.vat_tin"/>
+                                                        </p>
+                                                        <p>CIN No: 
+                                                            <span t-esc="o.company_id.cin"/>
+                                                        </p>
+                                                        <p>ECC No: 
+                                                            <span t-esc="o.company_id.ecc"/>
+                                                        </p>
+                                                        <p>Service Tax No:</p>
+                                                        <p>TAN No:</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="34%"  class="padding_all vat">
+                                                        <p>To,</p>
+                                                        <p>
+                                                            <span t-esc="o.partner_id.name"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.partner_id.street"/><br/>
+                                                            <span t-esc="o.partner_id.street2"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.partner_id.city"/><br/>
+                                                            <span t-esc="o.partner_id.state_id.name"/>
+                                                        </p>
+                                                        <p>PAN No:
+                                                            <span t-esc="o.partner_id.pan_no"/>
+                                                        </p>
+                                                        <p>TIN No: 
+                                                            <span t-esc="o.partner_id.vat_tin"/>
+                                                        </p>
+                                                        <p>Concern Person Name:
+                                                            <span t-esc="o.partner_id.concern_person"/>
+                                                        </p>
+                                                        <p>Tel No:
+                                                            <span t-esc="o.partner_id.phone"/>
+                                                        </p>
+                                                    </td>
+                                                    <td width="33%"  class="tleft padding_all vat">
+                                                        <p>Purchase Order No: 
+                                                            <span t-esc="o.name"/>
+                                                        </p>
+                                                        <p>PO DATE: 
+                                                            <span t-esc="o.date_order"/>
+                                                        </p>
+                                                        <p>PO Valid Up-To: </p>
+                                                        <p>Expected Delivery Date: 
+                                                            <span t-esc="o.minimum_planned_date"/>
+                                                        </p>
+                                                    </td>
+                                                    <td width="33%"  class="tleft padding_all vat">
+                                                        <p>Delivery Address(Shipping Address):</p>
+                                                        <p>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.name"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.street"/>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.street2"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.city"/>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.zip"/>
+                                                        </p>
+                                                        <p>
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.state_id.name"/>
+                                                        </p>
+                                                        <!--<p>Land Mark (If Any)</p>-->
+                                                        <p>TIN No: 
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.vat_tin"/>
+                                                        </p>
+                                                        <p>Contact Person Name: 
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.concern_person"/>
+                                                        </p>
+                                                        <p>Tel No: 
+                                                            <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.mobile"/>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all vam">
+                                        <p>Dear Sir/Madam,
+                                            <br/>
+We are pleased to placing our order on you for supplying of following items,
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all" align="center">
+                                       <h4 class="bold">Particulars</h4>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr class="tbottom">
+                                                    <td class="padding_all" align="center">S.No</td>
+                                                    <td class="tleft padding_all" align="center">IL Part No</td>
+                                                    <td class="tleft padding_all" align="center">Manufacture Part No</td>
+                                                    <td class="tleft padding_all" align="center">Brand</td>
+                                                    <td class="tleft padding_all" align="center">Product Description</td>
+                                                    
+                                                    <td class="tleft padding_all" align="center">Qty</td>
+                                                    <td class="tleft padding_all" align="center">UOM</td>
+                                                    <td class="tleft padding_all" align="center">Rate in INR</td>
+                                                    <td class="tleft padding_all" align="center">Taxes</td>
+                                                    <td class="tleft padding_all" align="center">Amount in INR</td>
+                                                </tr>
+                                                <t t-set="sl_no" t-value="1"/>
+                                                <tr class="tbottom" t-foreach="o.order_line" t-as="line" >
+                                                    <td class="padding_all" align="center">
+                                                        <span t-esc="sl_no"/>
+                                                    </td>
+                                                    <t t-set="sl_no" t-value="sl_no+1"/>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.il_part_no"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_id.manufacturer_part_no"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="left">
+                                                        <span t-field="line.brand_name"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="left">
+                                                        <span t-field="line.product_id"/>
+                                                    </td>
+                                                    
+                                                    <!--<td class="tleft padding_all" align="center"></td>-->
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_qty"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_uom"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="right">
+                                                        <span t-field="line.price_unit"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="right">
+                                                        <span t-field="line.taxes_id"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="right">
+                                                        <span t-field="line.price_subtotal"/>
+                                                    </td>
+                                                </tr>
+                                                <tr class="">
+                                                    <td colspan="9" class= "padding_all bold" align="right">Total</td>
+                                                    <td class= "padding_all tleft bold" align="right">
+                                                        <span t-field="o.amount_untaxed"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all bold">Amount in Words:
+                                        <span t-esc="o.amount_to_text(doc_ids,'Rupees','Paisa')"/>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class= "padding_all" align="center"><h4 class="bold">Terms and Condition</h4></td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td  class= "ptpx small">
+                                        <p>1.The Above Prices: FOR</p>
+                                        <p>2. Terms of Payment: 
+                                            <span t-esc="o.purchase_payment.purchase_payment_information"/>
+                                        </p>
+                                        <p>3.Excise Duty and Sales Tax ED Invoice to accompany every shipment</p>
+                                        <p>4. Vat/Cst Extra: As applicable</p>
+                                        <p>5. Mode of Dispatch: By Road</p>
+                                        <p>6.Packing Charges: Inclusive</p>
+                                        <p>7. Freight: 
+                                            <span t-esc="o.purchase_shipping.purchase_shipping_information"/>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class= "ptpx small">
+                                        <p>TERMS AND CONDITIONS:</p>
+                                        <p>Clearly mention PO No.,vendor code,part No.along with UOM in all your invoices(M).</p>
+                                        <p>Refer additional terms&amp;amp;Conditions annexure attached along with this PO.</p>
+                                        <p>This is computer generated PO,No signature is required.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="20px">
+
+
+
+                                    </td>
+
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td class= "padding_all" width="50%">
+                                                        <p class="bold">Special Instruction</p>
+                                                        <p></p>
+                                                        <p></p>
+                                                        <p></p>
+                                                    </td>
+                                                    <td class= "tleft padding_all" width="50%">
+                                                        <p align="center" class="bold">for IndustryLane Solutions Pvt. Ltd</p>
+                                                        <br/>
+                                                        <br/>
+                                                        <br/>
+                                                        <p align="left" class="bold">Authorised Signatory</p>
+                                                        <p align="left" class="bold">Date</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class= "ptpx small">Notes:
+                                        <br />1) The dates mentioned above are delivery dates at Industrylane.
+                                        <br />2) Your acceptance of delivery schedules to be sent within one working day (24 hrs) from
+                                        <br />the time of receipt of our order. Otherwise we will treat this as acceptable to you.
+                                        <br />3) Our both firm &amp; tentative schedules should be planned in advance &amp; if any issues to be
+                                        <br />communicated well in advance
+                                        <br />4) Scan copy of Commercial Invoice with Vehicle# to be emailed to the buyer for the issual
+                                        <br />of E-Sugam for the despatches from outside Karnataka
+                                        <br />5) Any changes in the above delivery schedules will be communicated well in advance.
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class= "ptpx small">
+                                        <p>General Terms and Conditions of Purchase:
+                                            <br />1. DELIVERY:
+                                            <br />a) The goods or services shall be deemed to be delivered only when the buyer has taken delivery. Seller shall be liable or responsible for any damage, destruction
+                                            <br />deterioration and/or loss to/of in the goods and compensate the buyer accordingly.A50
+                                            <br />b) Time is the essence of the contract and therefore seller shall be liable to pay to the buyer for any direct damage caused due to such delayed delivery or non-performance
+                                            <br />of the contract, unless the delay or non-performance of the whole or a part of the contracts is directly or indirectly caused by /due to acts of god or any force major beyond
+                                            <br />the control of the seller.
+                                            <br />c) The goods shall be delivered /dispatched strictly as per instructions given in the purchase order. All materials to be delivered at our warehouse/works should reach on
+                                            <br />working days between 10.00Am &amp; 5.00Pm; Goods will not be in warded during weekends &amp; Holidays w/o prior approval.
+                                            <br />d) Goods supplied against this order must be properly packed (Conforming to special instructions given by the buyers (if any for sale transport by road or rail to the
+                                            <br />specified destination irrespective of where they are delivered.
+                                            <br />2. PRICE:
+                                            <br />a. A50The+A50 price agreed upon is fixed &amp; when so mentioned specifically, exclusive of all levies by the central or state government now applicable to the goods &amp; the
+                                            <br />buyer shall not be liable for any fresh cesses, duties, taxes, or any other levies with only the seller should meet.
+                                            <br />b. The seller shall not modify, revise &amp;/ or vary the price of the goods unless notice is given to the buyer &amp; accepted by him in writing.
+                                            <br />3. DEFECTIVE SUPPLIES:
+                                            <br />a) The buyer shall give notice of any defects in the goods to the seller within 15 days from the date of receipt of the goods. Where the defects cannot be noticed by the
+                                            <br />buyer immediately but only on utilizing the goods in the manufacturing processes, the buyer shall have the right to the claim the requisite compensation or replacement of
+                                            <br />the seller within 10days on the notice. The defective goods shall be returned to the seller at his cost+A50
+                                            <br />b) If the replacement is not so made within time as stated in the previous paragraph, the buyer shall have the liberty to get such goods substituted from other sellers in the
+                                            <br />market and the seller shall pay to the buyer the costs thereof.
+                                            <br />c) The buyer shall not be responsible for any damage, penalties etc. for infringement of a patent registered design.
+                                            <br />d) Seller shall indemnify the buyer for compensation payable on account of product supplied. The compensation amount together damage if any shall be recovered in full.
+                                            <br />e) Irrespective of the fact that the goods are delivered to buyer by the seller at the sellers place or at the buyers said office or at the buyers works or are dispatched as per the
+                                            <br />buyer instruction by rail or by road the goods shall always be subject to detailed examination at the buyers works or such other destination specified in the order for
+                                            <br />ascertaining whether the goods are in conform with the contract or not and until the in no event the buyer shall be deemed to have accepted such goods.
+                                            <br />4. REJECTIONS:
+                                            <br />a) Where goods are rejected by the Buyers as not conforming to specifications &amp; standards and the goods are returned to the sellers the proportionate customs duty, cost of
+                                            <br />freight, loading, unloading and any other charges incidental there to should be borne by the sellers.
+                                            <br />b) Where a part of the supplies are rejected as not conforming to the specifications and standards agreed to, the buyer has the right to pass the bills of the sellers after
+                                            <br />deducting the value of rejected supplies proportionate freight and other charges etc. /Seller should remove the rejected goods from buyers place at his own cost.
+                                            <br />c) If the goods are not delivered as specified in the order or as may be agreed to otherwise, the buyer will have the option not to accept the goods.
+                                            <br />d) Where supplies made against documents retired through Banks are rejected in whole or in part by the buyer, the seller should effect payment of the value thereof within
+                                            <br />15days of notice of such rejection by the buyer.
+                                            <br />e) Within 7days from the receipt of the intimation by the buyer of his refusal to accept the goods the seller shall remove the rejected goods from the buyer's works /
+                                            <br />warehouse at his own cost. The buyer shall not be responsible for or be held liable for any loss or deterioration of the rejected goods The seller shall pay to the buyer
+                                            <br />reasonable storage charges for such rejected goods for the period exceeding 15days as foresaid.
+                                            <br />5. WARRANTY:
+                                            <br />a) The seller shall offer the warranty of goods supplied which will be in line with that offered by the Buyer to his customers. The seller will make good all such warranty
+                                            <br />rejection.
+                                            <br />b) All non-conforming materials, components products &amp; services that can cause product safety, reliability and warranty issues, will be claimed against the supplier.
+                                            <br />c) The amount of warranty cost that shall be debited by the buyer to the seller and will be recovered on a back to back basis either individually or in assembly as charged to
+                                            <br />the buyer by its end customer.
+                                            <br />6. DESPATCH:
+                                            <br />a) The seller shall dispatch all supplies through the authorized carriers of Buyers choice. If not so, shall notify the Buyer before dispatch. In other cases if excessive rates
+                                            <br />are fixed by the seller, such excess freight charges shall be to sellers account.
+                                            <br />b) All the materials to be booked on door delivery basis unless asked otherwise. Where instruction are given to the carriers for door delivery and the carriers do not effect
+                                            <br />door delivery, proportionate freight, loading, unloading and incidental charges that may be paid by the Buyer, shall be to the seller's account.
+                                            <br />c) If the seller shall not follow the Sales Tax Regulations and consequently if the Buyer has any penalty or other expensive loading etc., at check posts, the seller shall make
+                                            <br />good such loss sustained by the Buyer.
+                                            <br />7. LIEN:
+                                            <br />a) The Buyer shall be entitled to a general lien on the goods in his possession under this contract for any money due from the seller to the Buyer.
+                                            <br />8. ACCOUNT STATEMENT:
+                                            <br />a) Statements of accounts to be provided by 25th of every month in the prescribed format, if there is any delay or pending that will lead to hold /delay in forthcoming
+                                            <br />payment to the respective supplier.
+                                            <br />9. INSPECTION/AUDIT&amp;QUALITY SYSTEMS:
+                                            <br />a) The seller shall allow the buyer or its authorized representative / job works / customer to conduct the audit of quality systems of the seller. Supplier is responsible for
+                                            <br />establishing CP/CPK&gt;1.67 for all critical dimensions.
+                                            <br />10. SAVINGS:
+                                            <br />a) Any cost reduction by changing the Tool process: (No:-of stages in Press tool/ No. of cavities in moulds etc.) has to be passed on to the Buyer.
+                                        </p>
+                                        <p>11. EOHS REQUIREMENT:
+                                            <br />a) Supplier supplying hazardous substance should provide updated information on material safety MSDS. All material suppliers should supply materials through authorized
+                                            <br />transporters who are following all requirements under motor vehicle act.
+                                            <br />12. INCOTERMS:
+                                            <br />a) As mutually agreed between the Buyer &amp; Seller.
+                                            <br />13. VOLUME PROJECTIONS:
+                                            <br />a) The volume projected /estimated in our letter is based on the market /customer inputs &amp; are only indicative. The component price will not be linked to actual off-take.
+                                            <br />Investment if any to cater higher volume requirement or repetition of tooling will be made by you.
+                                            <br />16. SPECIAL NOTES:
+                                            <br />a) Form "C" will be issued on execution of supplies provided
+                                            <br />b) A statement showing the Bill Nos., amount, date &amp; corresponding P.O. No. &amp; date is submitted
+                                            <br />c) Clear mention of "Corm posting address is given.
+                                            <br />17. DISPUTES:
+                                            <br />a) In the event of any contradictions between the above conditions and the general conditions of the seller, The Buyer conditions will prevail.
+                                            <br />b) This contract shall be deemed to have made at Bangalore and all dispuits if any shall be related to this contract shall be instituted in jurisdictions of Bangalore.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p></p>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>

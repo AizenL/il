@@ -1,0 +1,226 @@
+from openerp.osv import osv, fields
+from openerp import tools
+from datetime import datetime
+from datetime import date
+import time
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+from openerp.exceptions import ValidationError
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT
+import re
+
+from openerp.tools.translate import _
+
+class mom_meeting(osv.Model):
+	_name = "mom.meeting"
+	_rec_name = 'meet_ref'
+	_inherit = 'mail.thread'
+	STATUS_SELECTION=[
+		('Board A', 'Block A - Board Room'),
+		('Board B', 'Block B - Board Room'),
+		('Block B1', 'Block B - Discussion Room - 1'),
+		('Block B2', 'Block B - Discussion Room - 2'),
+		('DMC', 'Delivery Manager'"s"' Cabin'),
+		('PC', 'Prasad'"s"' Cabin'),
+		('MC', 'Mithil'"s"' Cabin'),
+		('SC', 'Subodh'"s"' Cabin'),
+	]
+	_columns = {
+		'ch_prsn': fields.many2one('hr.employee','Chair Person',required=True),
+		'prj_name': fields.char('Project Name',size=45,required=True),
+		'mdt': fields.datetime('Date',required=True),
+		'min_prp':fields.many2one('hr.employee','Minutes Prepared',required=True),
+		'loc':fields.selection(STATUS_SELECTION,'Location',required=True),
+		'nxt_mt':fields.datetime('Next Meetings'),
+		'pom':fields.text(''),
+		'matp':fields.one2many('mom.person','ename_id','Employee name'),
+		'newa':fields.one2many('mom.new','ename_i','New Attendees'),
+		'meet_agenda':fields.one2many('mom.agenda','meetin_agenda','Meeting Agenda'),
+		'meet_notes':fields.text(''),
+		'depat':fields.char('Department'),
+		'action':fields.one2many('mom.action','meeting_id','Action Items'),
+		'meet_ref': fields.many2one('calendar.event', 'Meeting ID',required=True),
+		'emp_name': fields.many2one('hr.employee','New attendee')
+		}
+
+	def _check_nxt_date(self, cr, uid, ids, context=None):
+			today = datetime.now()
+			'''yesterday = today - timedelta(days=1)'''
+			for rec in self.browse(cr, uid, ids, context=context):
+				if rec.nxt_mt:
+					from_date = datetime.strptime(str(rec.nxt_mt), "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+					today1 = today.strftime("%Y-%m-%d")
+					'''yesterday1 = yesterday.strftime("%Y-%m-%d")'''
+					if from_date < today1: 
+						return False
+			return True
+
+	def _check_from_date(self, cr, uid, ids, context=None):
+			today = datetime.now()
+			'''yesterday = today - timedelta(days=1)'''
+			for rec in self.browse(cr, uid, ids, context=context):
+				if rec.mdt:
+					from_date = datetime.strptime(str(rec.mdt), "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
+					today1 = today.strftime("%Y-%m-%d")
+					'''yesterday1 = yesterday.strftime("%Y-%m-%d")'''
+					if from_date > today1: 
+						return False
+			return True
+
+	_constraints = [
+		(_check_from_date, 'You can not choose future date...!', ['mdt']),
+		(_check_nxt_date, 'You can not choose past date...!', ['nxt_mt']),
+        ]
+
+				
+ 	def get_meet_dets(self, cr, uid, ids, meet_ref, context=None):
+ 		val = {}
+		res = []
+		
+ 		if meet_ref:
+			for det in self.pool.get('calendar.event').browse(cr,uid,meet_ref,context=context):
+				for asst in det.attendee_ids:
+					user_id = self.pool.get('res.users').search(cr, uid, [('partner_id','=',asst.partner_id.id)])
+					emp_id = self.pool.get('hr.employee').search(cr, uid, [('user_id','in',user_id)])
+					val = {
+						'empname' : emp_id[0],
+						'wk_mail': asst.partner_id.email,
+						}
+					res.append(val)
+			val.update({'matp':res})
+ 			'''for det in self.pool.get('calendar.event').browse(cr,uid,meet_ref,context=context):
+ 					val = {
+ 						'pom' : det.description,
+ 						}'''
+ 		return {'value': val}
+	
+	def create(self, cr, uid, vals, context=None):
+		new_id = super(mom_meeting, self).create(cr, uid, vals, context=context)
+		self.message_post(cr, uid, [new_id], body=_("MoM created"), context=context)
+		return new_id
+		
+mom_meeting()
+
+class mom_new(osv.Model):
+	_name = 'mom.new'
+	_columns = { 
+			'empname':fields.many2one('hr.employee','New Attendees'),
+			'ename_i' : fields.many2one('mom.meeting','New Attendees'),
+			'wk_mail':fields.char('Mail'),
+			'wk_cnt':fields.char('Contact'),
+			}
+			
+	def get_emp_det(self, cr, uid, ids, empname, context=None):
+	    val={}
+	    if empname:
+	        employee = self.pool.get('hr.employee').browse(cr, uid, empname, context=context)
+	        val = {
+					'depat' : employee.department_id and employee.department_id.id or False,
+					'wk_mail' : employee.work_email,
+					'wk_cnt' : employee.work_phone
+				}
+	    return {'value': val}
+mom_new()
+class mom_person(osv.Model):
+	_name = 'mom.person'
+	_columns = { 
+			'name':fields.char('Employee'),
+			'empname':fields.many2one('hr.employee','Attendees'),
+			'ename_id' : fields.many2one('mom.meeting','Attend Person'),
+			'ename_i' : fields.many2one('mom.meeting','New Attendees'),
+			'depat':fields.many2one('hr.department','Department'),
+			'wk_mail':fields.char('Mail'),
+			'wk_cnt':fields.char('Contact'),
+			}
+			
+	def get_emp_det(self, cr, uid, ids, emp_i, context=None):
+	    val={}
+	    if emp_i:
+	        employee = self.pool.get('hr.employee').browse(cr, uid, emp_i, context=context)
+	        val = {
+					'depat' : employee.department_id and employee.department_id.id or False,
+					'wk_mail' : employee.work_email,
+					'wk_cnt' : employee.work_phone
+				}
+	    return {'value': val}
+mom_person()
+			
+
+class mom_action(osv.Model):
+	_name = 'mom.action'
+	_columns = { 
+				'act_ion' : fields.char('Action'),
+				'meeting_id' : fields.many2one('mom.meeting','Meeting Id'),
+				'asgnd_to': fields.many2one('res.users','Assigned To'),
+				'due_date': fields.date('Due Date'),
+				'Status'  : fields.selection([
+        ('Yet to Start','Yet To Start'),
+        ('In Progress', 'In Progress'),
+		('Done', 'Done'),
+        ], 'Status', readonly= False, select=True, default='Yet to Start'),
+			}
+	
+	def _check_due_date(self, cr, uid, ids, context=None):
+			today =datetime.today().date()
+			'''yesterday = today - timedelta(days=1)'''
+			for rec in self.browse(cr, uid, ids, context=context):
+				if rec.due_date:
+					'''from_date = datetime.date.strptime(str(rec.due_date), "%Y-%m-%d").strftime("%Y-%m-%d")'''
+					today1 = today.strftime("%Y-%m-%d")
+					'''yesterday1 = yesterday.strftime("%Y-%m-%d")'''
+					if rec.due_date < today1: 
+						return False
+			return True
+
+	_constraints = [
+		(_check_due_date, 'You can not choose past date...!', ['due_date']),
+        ]
+mom_action()
+
+class mom_agenda(osv.osv):
+	_name='mom.agenda'
+	_columns = { 
+				'agenda' : fields.char('Action'),
+				'meetin_agenda' : fields.many2one('mom.meeting','Meeting Id'),
+			}
+class mom_view(osv.osv):
+	_name='mom.view'
+	_columns = {
+				'meet_view' : fields.many2one('mom.meeting','Meeting Id'),
+				'view_mp':fields.one2many('mom.sec','meet_id','Employee name'),
+			}
+	
+	def get_detail_emp(self, cr, uid, ids, meet_view, context=None):
+		val = {}
+		res = []
+		if meet_view:
+			for mom in self.pool.get('mom.meeting').browse(cr,uid,meet_view,context=context):
+				for m in mom.action:
+					val = {
+						'action' : m.act_ion,
+						'asgnd' : m.asgnd_to.id or False,
+						'd_date' : m.due_date,
+						'stats' : m.Status,
+						}
+					res.append(val)
+			val.update({'view_mp':res})
+		return {'value': val}
+	
+	
+class mom_sec(osv.osv):
+	_name='mom.sec'
+	_columns = {
+				'action' : fields.char('Action'),
+				'meet_id' : fields.many2one('mom.view','Meeting Id'),
+				'asgnd': fields.many2one('res.users','Assigned To'),
+				'd_date': fields.date('Due Date'),
+				'stats'  : fields.char('Status'),
+			}
+
+class mom_ac(osv.osv):
+	_name='mom.ac'
+	_inherit='mom.action'
+	_columns = {
+				'new_field':fields.char('Action'),
+			}
+			

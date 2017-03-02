@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Top menu item -->
+        
+
+      <record id="view_move_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group/group[@name='quants_grp']" position="after">
+                   <field name="unit_price"/></xpath>
+                <xpath expr="//form/group/group[@name='quants_grp']" position="before">
+
+                
+                <group colspan="4">
+                   
+                                     
+                                    
+                                          <separator string="Manufacturer/Dealer Details" colspan="4"/>
+                                  
+                                   <field name="new_stock_id" nolabel="1">
+
+                                        <form>
+                                            <group><group>
+                                            <field name="type_stage" on_change="onchange_type(type_stage)"/>
+                                            <field name="new_company_selection" on_change="onchange_information(new_company_selection)"/>
+
+                                            <field name="comapny_name" />
+                                             <field name="addrress"/>
+                                            <field name="reg_num"/>
+                                           
+                                            <field name="range"/>
+                                            <field name="division"/>
+                                            <field name="commissionerate"/>
+                                           
+                                            <field name="invoice_no"/>
+                                            <field name="invoice_date"/>
+                                            <field name="tarrif"/>
+                                            <field name="quantity"/>
+                                             <field name="rate_bed_amount"/>
+                                              <field name="rate_ed_cess_amount"/>
+                                            </group><group>
+                                        
+                                        <field name="assessable_value"/>
+                                        <field name="bed_amount"/>
+                                        <field name="ed_cess_amount"/>
+                                        <field name="sec_ed_cess_amount"/>
+                                        <field name="total_duty_amount"/>
+                                        <field name="duty_per_unit"/>
+                                        <field name="rate_sec_ed_cess_amount"/>
+                                        <field name="saed"/>
+                                        
+                                        
+                                        <field name="seller"/></group></group>
+                                    </form>
+
+
+                                    <tree string="Manufacturer" >
+                                        <field name="type_stage"/>
+                                        <field name="new_company_selection" />
+                                        <field name="comapny_name" />
+                                        <field name="reg_num"/>
+                                        <field name="division"/>
+                                        <field name="invoice_no"/>
+                                        <field name="invoice_date"/>
+                                        <field name="tarrif"/>
+                                        <field name="quantity"/>
+                                        <field name="assessable_value"/>
+                                        <field name="bed_amount"/>
+                                        <field name="ed_cess_amount"/>
+                                        <field name="sec_ed_cess_amount"/>
+                                        <field name="total_duty_amount"/>
+                                        <field name="duty_per_unit"/>
+                                        <field name="saed"/>
+
+                                       
+                                    </tree> 
+                                </field>
+                                </group>
+
+                    </xpath>
+
+
+            </field>
+        </record>
+        <record id="stock_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//tree/field[@name='product_id']" position="after">
+                <field name="price_unit"/></xpath>
+        </field>
+        </record>
+        <record model="ir.ui.view" id="stock_move_sequence_view">
+            <field name="name">stock.move.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="before">
+                   <field name="sequence"/>
+                </field>
+                 <field name="product_id" position="after">
+                    <field name="il_part_no"/>
+                </field>
+            </field>
+                
+               
+
+            </record>
+      <record id="stock_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//form/header/button[@name='action_confirm']" position="after">
+                    <button name="internal_consumption"  string="Internal  Use" type="object" class="oe_highlight" attrs="{'invisible': ['|','|',('partner_id','!=',584),('state', '!=', 'done'),('internal_use','=',True)]}" groups="base.group_user"/>
+                </xpath>
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="replace">
+                <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+               <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
+                <field name="select_stage"/>
+                <field name="internal_use" invisible='True'/></xpath>
+
+                <xpath expr="//form/sheet/group/group/field[@name='date']" position="replace">
+                <field name="date" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/field[@name='min_date']" position="replace">
+                <field name="min_date" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">
+                <field name="sale_order_ref" string="Customer Reference" invisible="context.get('default_picking_type_id')==1"/>
+
+                    <field name="referance" string="Vendor Reference" invisible="context.get('default_picking_type_id')==2"/></xpath>
+
+                <xpath expr="//form/sheet/group/group/div/field[@name='owner_id']" position="replace">
+                <field name="owner_id" attrs="{'readonly':[('state','!=','draft')]}" groups="stock.group_tracking_owner"/></xpath>
+
+                 <xpath expr="//form/sheet/group/group/field[@name='origin']" position="replace">
+                <field name="origin" attrs="{'readonly':[('state','!=','draft')]}" placeholder="e.g. PO0032" class="oe_inline"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='move_type']" position="replace">
+                <field name="move_type" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='picking_type_id']" position="replace">
+                <field name="picking_type_id" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='date_done']" position="replace">
+                <field name="date_done" attrs="{'readonly':[('state','!=','draft')]}" groups="base.group_no_one"/></xpath>
+
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='priority']" position="replace">
+                <field name="priority" attrs="{'readonly':[('state','!=','draft')]}"/></xpath>
+                   <!--<xpath expr="//form/sheet/group/group/field[@name='partner_id']" position="after">-->
+
+                   <!--<field name="partner_id"/>-->
+
+
+        </field>
+    </record>
+
+ <record id="account_invoice_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='invoice_cancel']" position="after">
+                     <button name="print_all_copies_invoice" string="Print All Copies (Excise)" type="object"  attrs="{'invisible':['|','|',('sent','=',True), ('state', '!=', 'open'),('journal_id', '=',11),]}" class="oe_highlight" groups="base.group_user" />
+                     <button name="print_extra_invoice" string="Print Extra (Excise)" type="object"  attrs="{'invisible':['|','|',('sent','=',False), ('state', '!=', 'open'),('journal_id','=',11)]}" class="oe_highlight" groups="base.group_user" />
+                    <!--  <button name="print_commerciaal_invoice" string="Print All Copies Commercial" type="object"  attrs="{'invisible':['|','|',('state', '!=', 'open'),('sent','!=',False)]}" class="oe_highlight" groups="stock_saify.account_invoice_group_user" /> -->
+                     <button name="print_commerciaal_invoice" string="Print All Copies (Commercial)" type="object"  attrs="{'invisible':['|','|',('state', '!=', 'open'),('sent','!=',False),('journal_id','=',1)]}" class="oe_highlight" groups="base.group_user" />
+                     <button name="print_commerciaal_extra_invoice" string="Print Extra (Commercial)" type="object"  attrs="{'invisible':['|','|',('state', '!=', 'open'),('sent','=',False),('journal_id','=',1) ]}" class="oe_highlight" groups="base.group_user" />
+                 </xpath>
+
+
+               <xpath expr="//form/sheet/group/group/field[@name='date_invoice']" position="after">
+                <field name="select_stage"/><field name="invoice_datetime"/></xpath>
+                   <xpath expr="//form/sheet/notebook/page/group/field[@name='payment_term']" position="replace">
+                    <field name="payment_term" groups="base.group_erp_manager"/>
+                <field name="pay_term"/>
+                       <field name="ship_term"/>
+
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='name']" position="after">
+                    <field name="customer_part_no"/>
+                </xpath>
+                 <!--<xpath expr="//form/sheet/group/group/field[@name='date_invoice']" position="replace">-->
+                 <!--<field name="date_invoice" on_change="onchange_date(date_invoice,account_payment_terms)"/></xpath>-->
+      </field>
+    </record>
+
+    <record id="account_invoice_supplier_form" model="ir.ui.view">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//field[@name='date_invoice']" position="after">
+                <field name="invoice_datetime"/></xpath>
+                   <xpath expr="//field[@name='tax_line']" position="after">
+                <group> <field name="payment_term" groups="base.group_erp_manager"/><field name="pay_term"/>
+                       <field name="ship_term"/></group>
+
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page/field/tree/field[@name='name']" position="after">
+                    <field name="customer_part_no"/>
+                </xpath>
+                 <xpath expr="//field[@name='payment_term']" position="replace">
+                     <field name="payment_term" options="{'no_create': True}" on_change="onchange_payment_term_date_invoice(payment_term, date_invoice)" invisible="True"/>
+                 </xpath>
+                 <!--<xpath expr="//form/sheet/group/group/field[@name='date_invoice']" position="replace">-->
+                 <!--<field name="date_invoice" on_change="onchange_date(date_invoice,account_payment_terms)"/></xpath>-->
+      </field>
+    </record>
+
+      <record id="stock_vpicktree" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+
+         <field name="arch" type="xml">
+             <xpath expr="//tree" position="replace">
+                <tree fonts="bold:backorder_id" colors="red:backorder_id==True;blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date;" string="Picking list">
+                    <field name="sale_order_ref" string="Customer Reference" invisible="context.get('default_picking_type_id')==1"/>
+
+                    <field name="referance" string="Vendor Reference" invisible="context.get('default_picking_type_id')==2"/>
+                    <field name="name" string="Warehouse Ref"/>
+                    <field name="location_dest_id"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="min_date" invisible="1"/>
+                    <field name="origin"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id"/>
+                    <field name="state"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="picking_type_id" invisible="1"/>
+                </tree></xpath>
+            </field>
+        </record>
+        <record id="invoice_tree" model="ir.ui.view">
+            <field name="name">account.invoice.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+                <tree colors="red:sent==True;blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state == 'cancel'" string="Invoice">
+                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="commercial_partner_id" invisible="1"/>
+                    <field name="date_invoice"/>
+                    <field name="number"/>
+                    <field name="reference" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                    <field name="user_id" string="Responsible"/>
+                    <field name="date_due"/>
+                    <field name="origin"/>
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+                    <field name="residual" sum="Residual Amount"/>
+                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+                    <field name="amount_total" sum="Total Amount"/>
+                    <field name="state"/>
+                    <field name="sent" invisible="1" />
+                    <field name="type" invisible="context.get('type',True)"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_view_picking_internal_search" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="sale_order_ref" string="Customer Reference" invisible="context.get('default_picking_type_id')==1"/>
+                <field name="referance" string="Vendor Reference" invisible="context.get('default_picking_type_id')==2"/>
+
+                    </xpath>
+            </field>
+        </record>
+
+      
+        
+      
+    </data>
+</openerp>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="report_purchase_order_quotation">
+
+    
+        <t t-foreach="docs" t-as="o">
+            
+  
+
+
+               
+
+        
+          
+
+                <div class="page">
+                	<div class="row">
+       		<style>@charset "utf-8";
+/* CSS Document */
+.table_basic{
+	border:1px solid #000; 
+	width:100%;
+	height:100%
+	border-collapse: collapse;
+	}
+.table_row{
+	border:1px solid #000; 
+	}
+.table_address{
+      border-right:1px solid #000; 
+      width: 263px;
+      height: 366px;
+
+      }
+.table_bottom{
+	border-right:1px solid #000; 
+	width: 403px;
+	}
+.particulars_table{
+	width: 78px; 
+	height: 70px;
+	border-right:1px solid #000; 
+}
+.attribute{
+font-size:2px;
+}
+table{page-break-inside:auto}tr{page-break-inside:avoid;page-break-after:auto}
+</style>
+
+
+<table class="table_basic" >
+<tbody>
+<tr style="height: 6px;">
+<td style="width: 804px; height: 6px;" align="center">Purchase Order Quotation</td>
+</tr>
+<tr class="table_row">
+<td style="width: 804px; height: 95px;">
+                	
+                	
+                		<div class="col-xs-3">
+                		<img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo" style="max-height: 100px;"/>
+            			</div></td>
+</tr>
+<tr >
+<td style="width: 804px; height: 59px;">
+<table style="height: 100%;" width="100%">
+<tbody>
+<tr style="height: 213px;">
+<td style="width: 395.8px; height: 213px;">
+<p><span t-esc="o.company_id.name"/></p>
+<p><span t-esc="o.company_id.street"/>&amp;nbsp;,<span t-esc="o.company_id.street2"/>,</p>
+<p><span t-esc="o.company_id.city"/>-<span t-esc="o.company_id.zip"/>&amp;nbsp;State: <span t-esc="o.company_id.state_id.name"/></p>
+<p>Phone No: <span t-esc="o.company_id.phone"/> /Fax- <span t-esc="o.company_id.fax"/> /</p>
+<p>Email Id: <span t-esc="o.company_id.email"/></p>
+<p>&amp;nbsp;</p>
+</td>
+<td style="width: 395.2px; height: 213px;">
+<p>PAN No:<span t-esc="o.company_id.partner_id.pan_no"/></p>
+<p>TIN NO: <span t-esc="o.company_id.tin"/></p>
+<p>CIN No: <span t-esc="o.company_id.tin"/></p>
+<p>ECC No: <span t-esc="o.company_id.ecc"/></p>
+<p>Service Tax No:</p>
+<p>TAN No:</p>
+<p>&amp;nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+&amp;nbsp;</td>
+</tr>
+<tr style="height: 71px;">
+<td style="width: 804px; height: 71px;">
+<table class="table_basic">
+<tbody>
+<tr style="height: 366px;">
+<td class="table_address">
+<p>To,</p>
+<p>Vendor Name:<span t-esc="o.partner_id.name"/></p>
+<p>Vendor Address:<span t-esc="o.partner_id.street"/>&amp;nbsp;<span t-esc="o.partner_id.street2"/></p>
+<p>City:<span t-esc="o.partner_id.city"/>&amp;nbsp;<span t-esc="o.partner_id.state_id.name"/></p>
+<p>PAN No:<span t-esc="o.partner_id.pan_no"/></p>
+<p>TIN No: <span t-esc="o.partner_id.vat_tin"/></p>
+<p>Concern Person Name:<span t-esc="o.partner_id.concern_person"/></p>
+<p>Tel No:<span t-esc="o.partner_id.phone"/></p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+</td>
+<td class="table_address">
+<p>Purchase Order No: <span t-esc="o.name"/></p>
+<p>PO DATE: <span t-esc="o.date_order"/></p>
+<p>PO Valid Up-To: </p>
+<p>Expected Delivery Date: <span t-esc="o.minimum_planned_date"/></p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+</td>
+<td class="table_address">
+<p>Delivery Address(Shipping Address):</p>
+<p><span t-esc="o.picking_type_id.default_location_dest_id.partner_id.name"/></p>
+<p> <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.street"/>&amp;nbsp;<span t-esc="o.picking_type_id.default_location_dest_id.partner_id.street2"/></p>
+<p><span t-esc="o.picking_type_id.default_location_dest_id.partner_id.city"/>&amp;nbsp;&amp;nbsp;<span t-esc="o.picking_type_id.default_location_dest_id.partner_id.zip"/></p>
+<p><span t-esc="o.picking_type_id.default_location_dest_id.partner_id.city"/>&amp;nbsp;&amp;nbsp; <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.state_id.name"/></p>
+<!--<p>Land Mark (If Any)</p>-->
+<p>TIN No: <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.vat_tin"/></p>
+<p>Contact Person Name: <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.concern_person"/></p>
+<p>Tell No: <span t-esc="o.picking_type_id.default_location_dest_id.partner_id.mobile"/></p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr style="height: 95px;">
+<td style="width: 804px; height: 95px;">
+<p>Dear Sir/Madam,</p>
+<p>We Are Pleased To Placing Our Order On You For Supplying of Following Items,</p>
+</td>
+</tr>
+<tr class="table_row">
+<td style="width: 804px; height: 30px;">
+<p align="center">Particulars</p>
+</td>
+</tr>
+<tr>
+<td style="width: 100%; height: 30px;">
+<table class="table_basic">
+<tbody>
+<tr class="table_row">
+<td class="particulars_table">&amp;nbsp;S.No</td>
+<td class="particulars_table">&amp;nbsp;IL Part No</td>
+<td class="particulars_table">&amp;nbsp;Manufacture Part No</td>
+<td class="particulars_table">&amp;nbsp;Brand</td>
+<td class="particulars_table">&amp;nbsp;Product Description</td>
+
+<td class="particulars_table">&amp;nbsp;Qty</td>
+<td class="particulars_table">&amp;nbsp;UOM</td>
+<td class="particulars_table">&amp;nbsp;Tax</td>
+</tr>
+<t t-set="sl_no" t-value="1"/>
+<tr class="table_row" t-foreach="o.order_line" t-as="line" >
+                    <td class="particulars_table">&amp;nbsp;<span t-esc="sl_no"/></td>
+                    <t t-set="sl_no" t-value="sl_no+1"/>
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.il_part_no"/></td>
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.product_id.manufacturer_part_no"/></td>
+                    
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.brand_name"/></td>
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.product_id"/></td>
+                   
+ 			
+		                <td class="particulars_table">&amp;nbsp;<span t-field="line.product_qty"/></td>
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.product_uom"/></td>
+                    <td class="particulars_table">&amp;nbsp;<span t-field="line.taxes_id"/></td>
+		    </tr>
+
+                 
+
+
+</tbody>
+</table>
+</td>
+</tr>
+
+<tr class="table_row">
+<td style="width: 804px; height: 29px;" align="center">Terms and Condition</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 804px; height: 29px;">
+<p>1.Theq Above Prices&amp;nbsp; FOR</p>
+<p>2. Terms of Payment :&amp;nbsp; <span t-esc="o.purchase_payment.purchase_payment_information"/></p>
+<p>3.Excise Duty and Sales Tax ED Invoice to accompany every shipment</p>
+<p>4. Vat/Cst Extra as applicable</p>
+<p>5. Mode of Dispatch By Road</p>
+<p>6.Packing Charges Inclusive</p>
+<p>7. Freight Inclusive</p>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 804px; height: 29px;">
+<p>TERMS AND CONDITIONS:</p>
+<p>Clearly mention PO No.,vendor code,part No.along with UOM in all your invoices(M).</p>
+<p>Refer additional terms&amp;amp;Conditions annexure attached along with this PO.</p>
+<p>This is computer generated PO,No signature is required.</p>
+</td>
+</tr>
+<tr style="height: 29px;">
+<td style="width: 804px; height: 29px;">
+<table class="table_basic">
+<tbody>
+<tr>
+<td class="table_bottom">
+<p>&amp;nbsp;Special Instruction</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;</p>
+</td>
+<td class="table_bottom">
+<p>&amp;nbsp;for IndustryLane Solutions Pvt. Ltd</p>
+<p>&amp;nbsp;</p>
+<p>&amp;nbsp;Authorised Signatory</p>
+<p>&amp;nbsp;Date</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+
+
+</tbody>
+</table>
+<p>&amp;nbsp;</p>
+
+</div>
+
+
+</div>  
+            </t>
+        
+</template>
+</data>
+</openerp>

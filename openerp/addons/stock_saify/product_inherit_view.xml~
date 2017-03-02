@@ -1,0 +1,41 @@
+<openerp>
+    <data>
+
+
+
+<record id="product_product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.template.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+               
+                 <field name='default_code' position="attributes">
+                        <attribute name="string">IL Part NO</attribute></field>
+                <field name="type" position="after">
+                    <field name="type_quantity1" string="Quantity Type"/>
+                    <field name="min_quantity1"/>
+                </field>
+
+
+            </field>
+        </record>
+
+
+        <record id="sandv_product_supplierinfo_tree_view" model="ir.ui.view">
+            <field name="name">sandv.product.supplierinfo.tree.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+            <field name="arch" type="xml">
+                    <field name="min_qty" position="after">
+	                    <field name="supplier_price"/>
+		    </field>
+                    <field name="delay" position="replace">
+	                    <field name="delay" invisible="1"/>
+		    </field>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

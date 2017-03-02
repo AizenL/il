@@ -1,0 +1,31 @@
+                                    <t t-if="request.env.user.name != 'Public user'">
+                     <t t-set="website_sale_order" t-value="website.sale_get_order()"/>
+                     <t t-esc="website_sale_order"></t>
+<!--SHOPPING CART DROPDOWN  -->
+<div t-att-class=" 'col-xs-12 col-sm-12 col-md-3 animate-dropdown top-cart-row' if website_sale_order and website_sale_order.cart_quantity else 'hidden'">
+   <div class="dropdown dropdown-cart">
+      <a href="/shop/cart" class="lnk-cart">
+         <div class="items-cart-inner">
+            <div class="basket">
+               <i class="glyphicon glyphicon-shopping-cart"></i>
+            </div>
+            <div class="basket-item-count"><span class="count"><!--  <t t-esc="len(website_sale_order.order_line)"></t> --></span></div>
+            <div class="total-price-basket">
+               <span class="lbl">cart -</span>
+               <span class="total-price">
+<!--                  <span  class="value" t-field="website_sale_order.amount_total"  t-field-options='{
+                     "widget": "monetary",
+                     "display_currency": "user_id.partner_id.property_product_pricelist.currency_id"
+                     }'>
+                     </span>  --> 
+               </span>
+            </div>
+         </div>
+      </a>
+   </div>
+   <!-- /.dropdown-cart -->
+   <!-- SHOPPING CART DROPDOWN : END -->		
+</div>                                          		
+       		
+				
+				</t>

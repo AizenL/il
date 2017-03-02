@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+        <!-- Purchase order inherit for amendment fields and additional buttons -->
+
+        <record id="purchase_order_form_amendment_inherits" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="/form/sheet/notebook/page/group/div/button[@name='button_dummy']" position="replace">
+                    <button name="button_dummy" states="draft,amended" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                </xpath>
+
+
+                <xpath expr="/form/header/button[@name='purchase_confirm']" position="before">
+                    <button name="action_button_amendment" states="approved" string="Amendment" type="object" class="oe_highlight" groups="itara_purchase_amendment.group_purchase_amendment"/>
+                </xpath>
+
+                <xpath expr="/form/header/button[@name='picking_ok']" position="after">
+                    <button name="purchase_confirm" states="amended" string="Confirm Order" class="oe_highlight" groups="itara_purchase_amendment.group_purchase_amendment"/>
+                </xpath>
+
+                <xpath expr="/form/sheet/group/group/field[@name='related_usage']" position="after">
+                    <field name="amendment_no" attrs="{'invisible' : [('amendment_no','=', 0)]}"/>
+                    <field name="date_amendment" attrs="{'invisible' : [('amendment_no','=', 0)]}"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

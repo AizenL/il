@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<!-- Purchase Order Lines Extended view -->
+    	<record model="ir.ui.view" id="purchase_lines_extended_form_view">
+            <field name="name">purchase.lines.extended.form.view</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="view_type">form</field>
+
+            <field name="arch" type="xml">
+                <field name="amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}" position="after">
+                    <field name="other_charges" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                </field>
+                <field name="price_unit" position ="after">
+                	<field name="pandf_value" invisible = "1"/>
+                	<field name="freight_value" invisible = "1"/>
+                	<field name="insurance_value" invisible = "1"/>
+                	<field name="excise_value" invisible = "1"/>
+                	<field name="vat_value" invisible = "1"/>
+            	</field>
+                
+            </field>
+        </record>
+
+    </data>
+</openerp>

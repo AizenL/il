@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+	<record id="sandv_hr_payroll_variables_form" model="ir.ui.view">
+            <field name="name">Salary Vairable Amount</field>
+            <field name="model">sandv.hr.payroll.variables</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+            <form string="Salary Variable Amount">
+				<header>
+		                    <field name="state" widget="statusbar"/>
+				</header>
+				<sheet>
+					<group col="4">
+						<group>
+						    <field name="name" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+					        <field name="start_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+					        <field name="end_date" required="1" attrs="{'readonly':[('state','!=','draft')]}"/>
+						</group>
+						<group>
+							<field name="variable_pay_rating" attrs="{'readonly':[('state','!=','draft')]}"/>
+					        <field name="other_allowances" attrs="{'readonly':[('state','!=','draft')]}"/>
+				            <field name="other_deductions" attrs="{'readonly':[('state','!=','draft')]}"/>
+						</group>
+			        </group>
+				</sheet>
+            </form>     
+            </field>
+    </record>       
+        
+   <record id="sandv_hr_payroll_variables_tree" model="ir.ui.view">
+            <field name="name">Salary Vairable Amount Tree</field>
+            <field name="model">sandv.hr.payroll.variables</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+		<tree string="Salary Variable Amount">
+			<field name="name" />
+			<field name="start_date" />
+			<field name="end_date" />
+			<field name="variable_pay_rating" attrs="{'readonly':[('state','!=','draft')]}"/>
+			<field name="other_allowances" attrs="{'readonly':[('state','!=','draft')]}"/>
+			<field name="other_deductions" attrs="{'readonly':[('state','!=','draft')]}"/>  
+			<field name="state"/>                             
+		</tree>     
+             </field>
+        </record>        
+      
+      
+        <record id="sandv_hr_payroll_variables_search" model="ir.ui.view">
+            <field name="name">Salary Vairable Amount Search</field>
+            <field name="model">sandv.hr.payroll.variables</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Salary Variable Amount">
+			<field name="name" />
+			<field name="start_date" />
+			<field name="end_date" />
+               </search>
+            </field>
+        </record>   
+         
+       <record id="sandv_hr_payroll_variables_action" model="ir.actions.act_window">
+            <field name="name">Salary Vairable Amount</field>
+            <field name="res_model">sandv.hr.payroll.variables</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="sandv_hr_payroll_variables_action" id="sandv_hr_payroll_variables_menu" parent="hr_payroll.menu_hr_root_payroll" sequence="3" string="Salary Variable Amounts"/> 
+
+
+
+
+    </data>
+</openerp>

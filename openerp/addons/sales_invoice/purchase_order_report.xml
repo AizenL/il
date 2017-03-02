@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="action_other_mom10"
+            string="Purchase Order Invoice"
+            model="purchase.order"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_purchase_order"
+            file="sales_invoice.report_purchase_order"
+        />
+
+ <record id="paper_purchase_order" model="report.paperformat">
+        <field name="name">Purchase Order </field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+</record>
+
+
+    <record id="sales_invoice.action_other_mom10" model="ir.actions.report.xml">
+    <field name="paperformat_id" ref="sales_invoice.paper_purchase_order" />
+</record>
+  
+       <!--  <report 
+        string="Purchase Order" 
+        id="purchase.action_report_purchase_order" 
+        model="purchase.order" 
+        report_type="qweb-pdf"
+        name="purchase.report_purchaseorder" 
+        file="purchase.report_purchaseorder" 
+        menu="False"
+        header="False"    />
+        <report 
+        string="Request for Quotation" 
+        id="purchase.report_purchase_quotation" 
+        model="purchase.order" 
+        report_type="qweb-pdf"
+        name="purchase.report_purchasequotation" 
+        file="purchase.report_purchasequotation" 
+        menu="False"
+        header="False"    />
+   -->
+
+
+    
+
+      </data>
+</openerp>

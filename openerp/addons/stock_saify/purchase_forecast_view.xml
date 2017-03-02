@@ -1,0 +1,103 @@
+<openerp>
+    <data>
+
+        <record id="purchase_forecast_tree" model="ir.ui.view">
+            <field name="name">purchase.forecast.tree</field>
+            <field name="model">purchase.forecast</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Forecast" create="false">
+                    <field name="il_part"/>
+                    <field name="product_id"/>
+                    <field name="so_date"/>
+                    <field name="order_id"/>
+                    <field name="product_uom_qty"/>
+                    <field name="qty_in_stock"/>
+                    <field name="qty_to_purchase"/>
+		    <field name="state"/>
+		    <field name="rfq_ref"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="purchase_forecast_filter" model="ir.ui.view">
+            <field name="name">purchase.forecast.filter</field>
+            <field name="model">purchase.forecast</field>
+            <field name="arch" type="xml">
+                <search string="Search Purchase Forecast">
+                    <field name="product_id"/>
+                    <field name="il_part"/>
+                    <field name="so_date"/>
+                    <field name="order_id"/>
+                    <field name="state"/>
+                    <filter string="Show New" domain="[('state','=','draft')]" name="draft_state_filter"/>
+                    <filter string="Show RFQ Created" domain="[('state','=','inprogress')]" name="rfq_created_state_filter"/>
+                    <filter string="Show PO Created" domain="[('state','=','pocreated')]" name="po_created_state_filter"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" domain="[]" name="group_by_product" context="{'group_by':'product_id'}"/>
+                        <filter string="SO Date" domain="[]" context="{'group_by':'so_date'}"/>
+                        <filter string="SO Ref" domain="[]" context="{'group_by':'order_id'}"/>
+                        <filter string="Status" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="purchase_forecast_action" model="ir.actions.act_window">
+            <field name="name">Purchase Planning</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.forecast</field>
+            <field name="context">{'search_default_draft_state_filter': 1,'search_default_group_by_product': 1,}</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Purchase Planning View records gets created automatically
+                by Odoo based on stock availability and sale orders.
+              </p>
+            </field>
+
+        </record>
+
+        <menuitem action="purchase_forecast_action" id="purchase_forecast_menu"
+            parent="purchase.menu_procurement_management"
+            sequence="-1"/>
+
+
+        <record id="purchase_forecast_wizard_form" model="ir.ui.view">
+            <field name="name">purchase.forecast.wizard.form</field>
+            <field name="model">purchase.forecast.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Create RFQ">
+                	<header>
+                        <button icon="gtk-go-down" string="Create RFQ" name="create_rfq" type="object" class="oe_highlight"/>
+                	</header>
+                <sheet>
+			<group colspan="4">
+                            <field name="partner_id" on_change="onchange_partner_id(partner_id, context)" context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}" options="{'no_quick_create': True, 'no_create_edit' : True}" required="1"/>
+
+				<field name="date_order" required="1"/>
+
+                            <field domain="[('type','=','purchase')]" name="pricelist_id" groups="product.group_purchase_pricelist" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+
+
+			</group>
+                </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <act_window name="Create RFQ"
+            res_model="purchase.forecast.wizard"
+            src_model="purchase.forecast"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_purchase_forecast_wizard"/>
+
+    </data>
+</openerp>

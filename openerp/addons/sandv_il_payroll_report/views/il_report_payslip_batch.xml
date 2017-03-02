@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="report_invoice">
+            <div class="workbook">
+                <div class="worksheet" name="Invoicing Report" fixpages="1" wpages="1" hpages="0">
+
+            <table>
+              
+               <tbody>
+                    <tr>
+                        <td easyfx="font: bold on; align: horiz center;"><strong><center>EMPLOYEE NAME</center></strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>DESIGNATION</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>WORK-EMAIL</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><center><strong>BANK ACC</strong></center></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>BASIC</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>ACCOMODATION ALLOWANCE</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>OVERTIME</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>FOOD ALLOWANCE</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>OTHER ALLOWENCES</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;" ><strong>GROSS</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>TELIPHONE INT.CALL/FINE</strong></td>        
+                        <td easyfx="font: bold on; align: horiz center;"><strong>LOAN</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong>OTHER DEDUCTION</strong></td>
+                        <td easyfx="font: bold on; align: horiz center;"><strong><center>TOTAL DEDUCTION</center></strong></td> 
+                        <td easyfx="font: bold on; align: horiz center;"><strong><center>NET</center></strong></td>
+                    </tr>
+
+                    <tr>
+                        <t t-foreach="docs" t-as="o">
+                            <tr t-foreach="o.slip_ids" t-as="jj">
+                                <t t-if="jj">
+                                    <td ><span t-esc="jj.employee_id.name"/></td>
+                                    <td ><span t-field="jj.employee_id.job_id.name"/></td>
+                                    <td ><span t-field="jj.employee_id.work_email"/></td>
+                                    <td class="text-right"><span t-field="jj.employee_id.bank_account_id.acc_number"/></td>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                        <span t-if="line_ids.code == 'BASIC'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                        <span t-if="line_ids.code == 'AA'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                    
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'OT'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'FA'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'OA'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'GROSS'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'Tel'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'Loan'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'OD'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                       <span>
+                                            <td class="text-right">
+                                                <span t-esc="docs.get_total_deduction(jj.id)"/>
+                                            </td>
+                                        </span>
+                                       
+
+                                    <t t-foreach="jj.line_ids" t-as="line_ids">
+                                        <t t-if="line_ids">
+                                       <span t-if="line_ids.code == 'NET'">
+                                            <td class="text-right">
+                                                <span t-field="line_ids.total"/>
+                                            </td>
+                                        </span>
+                                        </t>
+                                    </t>
+                                </t>
+                            </tr>
+                        </t>
+                    </tr>
+
+               </tbody>     
+            </table>
+    
+    </div></div>
+
+       
+    <!-- </t> -->
+    </template>
+</data>
+</openerp>
+  
+               

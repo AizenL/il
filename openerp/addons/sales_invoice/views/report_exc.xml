@@ -1,0 +1,687 @@
+<openerp>
+   <data>
+      <template id="report_exc">
+      	 <t t-foreach="docs" t-as="o">
+
+<style>
+body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+
+table{
+    font-size:12px;
+    line-height:18px;
+    width:100%;
+    border-collapse: collapse;
+
+    }
+
+p{
+padding:1px;
+margin:1px;
+}
+.vat{
+vertical-align: top;
+}
+.vam{
+vertical-align: middle;
+}
+
+.gridlist th{
+    background: #eee none repeat scroll 0 0;
+    vertical-align: top;
+}
+.gridlist td{
+font-size:11px;
+}
+
+table{
+    font-size:12px;
+    line-height:18px;
+    width:100%;
+    border-collapse: collapse;
+
+    }
+table, td, th,tr {
+ page-break-inside: avoid !important;
+}
+
+
+.ttb{
+border-top:1px solid #ccc;
+border-bottom:1px solid #ccc;
+}
+.ttop{
+border-top:1px solid #ccc;
+}
+.tbottom{
+border-bottom:1px solid #ccc;
+}
+
+.tleft{
+border-left:1px solid #ccc;
+}
+
+.tright{
+border-right: 1px solid #ccc;
+}
+.padding_lr{
+padding-left:5px;
+padding-right:5px;
+}
+.padding_tb{
+padding-top:5px;
+padding-bottom:5px;
+}
+.padding_all{
+padding:1px;
+}
+h2{
+font-size:18px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+h4{
+font-size:14px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+.grid{
+border:1px solid #ccc;
+}
+.grid td{
+}
+.bold{
+font-weight:bold;
+}
+.small{
+font-size:10px;
+line-height:14px;
+}
+
+       table.main{
+    margin-top:0px;
+       }
+       .page,
+       .header{
+       border:0px solid #000;
+       }
+ </style>
+
+          
+            <div class="header">
+                 
+               <div class="row">
+ 
+                  <p align="center">
+                     EXCISE INVOICE
+                     <br />
+                     (ISSUE OF INVOICE UNDER RULE 11 OF CENTRAL EXCISE RULES 2002)
+                     <br />
+                     <t t-esc="dict(o.fields_get(allfields=['select_stage'])['select_stage']['selection'])[o.select_stage]" />
+                  </p>
+                  <!-- <p style="text-align:right;" t-esc="o._context['names']" /> -->
+               </div>
+           </div>
+            <div class="page">
+
+               <div class="row">
+               	Hello
+               	<table class="gridlist">
+                                 <tbody>
+                                    <tr class="tbottom">
+                                       <th class="padding_all bold" align="center">Sl No</th>
+                                       <th class="padding_all bold tleft" align="left">Description of Goods</th>
+                                       <th class="padding_all bold tleft" align="center">Tariff / HSN Classification</th>
+                                       <th class="padding_all bold tleft" align="center">IL Part No</th>
+                                       <th class="padding_all bold tleft" align="center">Customer No</th>
+                                       <th class="padding_all bold tleft" align="center">VAT %</th>
+                                       <th class="padding_all bold tleft" align="center">Quantity</th>
+                                       <th class="padding_all bold tleft" align="right">Rate</th>
+                                       <th class="padding_all bold tleft" align="center">per</th>
+                                       <th class="padding_all bold tleft" align="center">Disc.%</th>
+                                       <th class="padding_all bold tleft" align="right">Amount (INR)</th>
+                                    </tr>
+                                    <t t-set="sl_no" t-value="1" />
+                                    <t t-set="qty" t-value="0" />
+                                    <t t-set="amount_total" t-value="0" />
+                                    <tr  class="tbottom" t-foreach="o.invoice_line" t-as="line">
+                                       <td class="padding_all"   align="center">
+                                          <span t-esc="sl_no" />
+                                       </td>
+                                       <t t-set="sl_no" t-value="sl_no+1" />
+                                       <td class="padding_all tleft"   align="left">
+                                          <span t-field="line.name" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+					    <t t-set="tarrif_detail" t-value="o.get_tariff(line.lot_id)" />
+					    <span t-esc="tarrif_detail"/>
+					</td>
+
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.product_id.default_code" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.customer_part_no" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.invoice_line_tax_id.name" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.quantity" />
+                                       </td>
+                                       <t t-set="qty" t-value="qty+line.quantity" />
+                                       <td class="padding_all tleft" align="right">
+                                          <span t-field="line.price_unit" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.uos_id" />
+                                       </td>
+                                       <td class="padding_all tleft" align="center">
+                                          <span t-field="line.discount" />
+                                       </td>
+                                       <td class="padding_all tleft" align="right">
+                                          <span t-field="line.price_subtotal" />
+                                       </td>
+                                       <t t-set="amount_total" t-value="amount_total+line.price_subtotal" />
+                                    </tr>
+                                    <tr class="tbottom">
+                                       <td class="padding_all"  align="right" colspan="10">Untaxed Amount</td>
+                                       <td class="padding_all tleft bold" align="right">
+                                          <span t-field="o.amount_untaxed" />
+                                       </td>
+                                    </tr>
+                                    <tr class="tbottom">
+                                       <td class="padding_all" align="right" colspan="10">Tax Amount</td>
+                                       <td class="padding_all bold tleft" align="right">
+                                          <span t-field="o.amount_tax" />
+                                       </td>
+                                    </tr>
+                                    <tr class="tbottom">
+                                       <td class="padding_all"  align="right" colspan="10">Total</td>
+                                       <td class="padding_all bold tleft" align="right">
+                                          <span t-esc="o.amount_total" />
+                                       </td>
+                                    </tr>
+                                    <tr class="tbottom">
+                                       <td class="padding_all" colspan="11">
+                                          Amount Chargeable (in words) : INR
+                                          <span t-esc="o.exi_amount_to_text(doc_ids,'Rupees','Paisa')" />
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td class="padding_all" colspan="11">
+                                          VAT Amount (in words) INR
+                                          <span t-esc="o.exi_amount_to_text_tax(doc_ids,'Rupees','Paisa')" />
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                              <t t-set="invoice_id" t-value="o.id" />
+                        <t t-set="xyz" t-value="o.get_invoice_lot_id(invoice_id)" />
+                        
+                        <t t-set="lot_ids" t-value="xyz['invoice_lot_id']"/>
+                        <br/>
+                        <br/>
+                        <t t-set="new_stock" t-value="o.lot_get_product_get_detail(lot_ids,invoice_id)"/>
+                        <!-- <span t-esc="new_stock"/> -->
+                        <t t-if="new_stock">
+                           <tr class="tbottom">
+                              <td>
+                                 <!-- Start Second Row -->
+                                 <table class="gridlist">
+                                    <tbody>
+                                       <tr class="tbottom">
+                                          <th class="padding_all bold" align="center">Sl No</th>
+                                          <th class="padding_all bold tleft" align="center">Description of Goods</th>
+                                          <th class="padding_all bold tleft" align="center">Quantity</th>
+                                          <th class="padding_all bold tleft" align="center">Assessable Value</th>
+                                          <th class="padding_all bold tleft" align="center">Rate of BED</th>
+                                          <th class="padding_all bold tleft" align="center">Bed Amount</th>
+                                          <th class="padding_all bold tleft" align="center">Rate Ed Cess</th>
+                                          <th class="padding_all bold tleft" align="center">Ed Cess Amount</th>
+                                          <th class="padding_all bold tleft" align="center">Rate of Sec Ed Cess</th>
+                                          <th class="padding_all bold tleft" align="center">Sec Ed CessAmount</th>
+                                       </tr>
+                                       <t t-set="sl_no" t-value="1" />
+                                       <t t-set="ed_cess_amount" t-value="0" />
+                                       <t t-set="sec_ed_cess_amount" t-value="0" />
+                                       <t t-set="bed_amount" t-value="0" />
+                                       <tr class="tbottom" t-foreach="new_stock" t-as="product1">
+                                           <td class="padding_all"   align="center">
+                                             <span t-esc="sl_no" />
+                                          </td>
+                                          <t t-set="sl_no" t-value="sl_no+1" />
+                                           <td class="padding_all tleft"   align="left">
+                                             <span t-esc="product1['product_name']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['invoice_quantity']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['assessable_value']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['rate_bed_amount']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['bed_amount']" />
+                                             <t t-set="bed_amount" t-value="bed_amount+product1['bed_amount']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['rate_ed_cess_amount']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['ed_cess_amount']" />
+                                          </td>
+                                          <t t-set="ed_cess_amount" t-value="ed_cess_amount+product1['ed_cess_amount']" />
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['rate_sec_ed_cess_amount']" />
+                                          </td>
+                                          <td class="padding_all tleft"  align="right">
+                                             <span t-esc="product1['sec_ed_cess_amount']" />
+                                          </td>
+                                          <t t-set="sec_ed_cess_amount" t-value="sec_ed_cess_amount+product1['sec_ed_cess_amount']" />
+                                       </tr>
+                                       <tr class="tbottom">
+                                          <td colspan="5" class="padding_all" align="right">Total</td>
+                                          <td align="right" class="padding_all tleft bold">
+                                             <span t-esc="bed_amount" />
+                                          </td>
+                                          <td align="right" class="padding_all tleft"/>
+                                          <td align="right" class="padding_all tleft bold">
+                                             <span t-esc="ed_cess_amount" />
+                                          </td>
+                                          <td align="right" class="padding_all tleft" />
+                                          <td align="right" class="padding_all tleft bold">
+                                             <span t-esc="sec_ed_cess_amount" />
+                                          </td>
+                                       </tr>
+                                       <tr class="tbottom">
+                                          <td class="padding_all" colspan="10">
+                                             Amount of Duty (in words) :
+                                             <span t-esc="o.total_duty_amount_to_text_tax(doc_ids,'Rupees','Paisa',bed_amount)" />
+                                          </td>
+                                       </tr>
+                                       <tr class="tbottom">
+                                          <td class="padding_all" colspan="10">
+                                             Amount of Cess (in words) : INR
+                                             <span t-esc="o.cess_amount_to_text_tax(doc_ids,'Rupees','Paisa',sec_ed_cess_amount,ed_cess_amount)" />
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                                 <!-- End Second Row -->
+                              </td>
+                           </tr>
+                        </t>
+
+                        <t t-foreach="xyz" t-as="a">
+                           <t t-if="a=='dealer'">
+                              <t t-foreach="a_value" t-as="b">
+                                 <t t-set="e" t-value="b_value" />
+                                 <tr class="tbottom">
+                                    <td>
+                                       <table>
+                                          <tr class="tbottom">
+                                             <td class="padding_all">
+                                                Name &amp; Address    of    Supplier    of goods
+                                                <br />
+                                                <span t-esc="e['supplier_name']" />
+                                                <br />
+                                                <span t-esc="e['supplier_address']" />
+                                             </td>
+                                             <td class="tleft">
+                                                <table>
+                                                   <tr class="tbottom">
+                                                      <td class="padding_all">
+                                                         Excise    Regn    No    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_excise_reg_no']" />
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td class="padding_all">
+                                                         Range    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_range']" />
+                                                      </td>
+                                                   </tr>
+                                                </table>
+                                             </td>
+                                             <td class="tleft">
+                                                <table class="table_basic">
+                                                   <tr class="tbottom">
+                                                      <td class="padding_all">
+                                                         Division    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_division_name']" />
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td class="padding_all">
+                                                         Commissionerate     :
+                                                         <br />
+                                                         <span t-esc="e['supplier_commissionerate']" />
+                                                      </td>
+                                                   </tr>
+                                                </table>
+                                             </td>
+                                             <td class="padding_all tleft">Invoice    No.    /    Date</td>
+                                             <td class="padding_all tleft">Seller    RG    23D    No.</td>
+                                          </tr>
+                                          <tr class="tbottom">
+                                             <td class="padding_all" colspan="5" height="20" />
+                                          </tr>
+                                          <tr class="tbottom">
+                                             <td colspan="5">
+                                                <!-- Start Row Three -->
+                                                <table class="gridlist">
+                                                   <tbody>
+                                                      <tr class="tbottom">
+                                                         <th class="padding_all bold" align="center">Sl No</th>
+                                                         <th class="padding_all bold tleft" align="left">Description of Goods</th>                                              <th class="padding_all bold" align="center">Tariff<br />Classification</th>
+                                                         <th class="padding_all bold tleft" align="center">Quantity</th>
+                                                         <th class="padding_all bold tleft" align="center">Invoice No./Date</th>
+                                                         <th class="padding_all bold tleft" align="center">Assessable Value</th>
+                                                         <th class="padding_all bold tleft" align="right">BED Amount</th>
+                                                         <th class="padding_all bold tleft" align="right">Ed Cess Amount</th>
+                                                         <th class="padding_all bold tleft" align="right">Sec Ed CessAmount</th>
+                                                         <th class="padding_all bold tleft" align="right">Total Duty Amount</th>
+                                                         <th class="padding_all bold tleft" align="center">Duty per Unit</th>
+                                                      </tr>
+                                                      <t t-set="sl_no" t-value="1" />
+                                                      <t t-set="assessable_value" t-value="0" />
+                                                      <t t-set="bed_amount" t-value="0" />
+                                                      <t t-set="ed_cess_amount" t-value="0" />
+                                                      <t t-set="sec_ed_cess_amount" t-value="0" />
+                                                      <t t-set="quantity" t-value="0" />
+                                                      <t t-set="ed_cess_amount" t-value="0" />
+                                                      <t t-set="total_duty_amount" t-value="0" />
+                                                      <t t-set="duty_per_unit" t-value="0" />
+                                                      <t t-set="sl_no" t-value="1" />
+                                                      <t t-set="supplier" t-value="b" />
+                                                      <t t-set="product" t-value="o.lot_get_product_detail(lot_ids,supplier)" />
+                                                      <!-- <span t-esc="b"/> -->
+                                                      <tr class="tbottom" t-foreach="product" t-as="product1">
+                                                         <td class="padding_all" align="center">
+                                                            <span t-esc="sl_no" />
+                                                         </td>
+                                                         <t t-set="sl_no" t-value="sl_no+1" />
+                                                         <td class="padding_all tleft" align="left">
+                                                            <span t-esc="product1['product_name']" />
+                                                         </td>
+                                                         <td class="padding_all tleft" align="center">
+                                                            <span t-esc="product1['tarrif']" />
+                                                         </td>
+                                                         <td class="padding_all tleft" align="center">
+                                                            <span t-esc="product1['quantity']" />
+                                                         </td>
+                                                         <t t-set="quantity" t-value="quantity+product1['quantity']" />
+                                                         <td class="padding_all tleft" align="center">
+                                                            <span t-esc="product1['invoice_no']" />
+                                                         </td>
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['assessable_value']" />
+                                                         </td>
+                                                         <t t-set="assessable_value" t-value="assessable_value+product1['assessable_value']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['bed_amount']" />
+                                                         </td>
+                                                         <t t-set="bed_amount" t-value="bed_amount+product1['bed_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['ed_cess_amount']" />
+                                                         </td>
+                                                         <t t-set="ed_cess_amount" t-value="ed_cess_amount+product1['ed_cess_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['sec_ed_cess_amount']" />
+                                                         </td>
+                                                         <t t-set="sec_ed_cess_amount" t-value="sec_ed_cess_amount+product1['sec_ed_cess_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['total_duty_amount']" />
+                                                         </td>
+                                                         <t t-set="total_duty_amount" t-value="total_duty_amount+product1['total_duty_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['duty_per_unit']" />
+                                                         </td>
+                                                         <t t-set="duty_per_unit" t-value="duty_per_unit+product1['duty_per_unit']" />
+                                                      </tr>
+                                                      <tr  class="tbottom">
+                                                         <td class="padding_all" colspan="5" align="right">Total</td>
+
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="assessable_value" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="bed_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="ed_cess_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="sec_ed_cess_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="total_duty_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="duty_per_unit" />
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="tbottom" >
+                                                         <td class="padding_all" colspan="11">
+                                                            Amount of Duty (in words) :
+                                                            <span t-esc="o.total_duty_amount_to_text_tax(doc_ids,'Rupees','Paisa',total_duty_amount)" />
+                                                         </td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td class="padding_all" colspan="11">
+                                                            Amount of Cess (in words):
+                                                            <span t-esc="o.cess_amount_to_text_tax(doc_ids,'Rupees','Paisa',sec_ed_cess_amount,ed_cess_amount)" />
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                                <!-- End Row Three -->
+                                             </td>
+                                          </tr>
+                                      </table></td></tr></t></t></t>
+                                      <t t-foreach="xyz" t-as="a">
+                           <t t-if="a=='manufacturer'">
+                              <t t-foreach="a_value" t-as="b">
+                                 <t t-set="e" t-value="b_value" />
+                                 <tr>
+                                    <td>
+                                       <table>
+                                          <tr class="tbottom">
+                                             <td class="padding_all">
+                                                Name &amp; Address    of    Supplier    of goods
+                                                <br />
+                                                <span t-esc="e['supplier_name']" />
+                                                <br />
+                                                <span t-esc="e['supplier_address']" />
+                                             </td>
+                                             <td class="tleft">
+                                                <table class="table_basic">
+                                                   <tr class="tbottom">
+                                                      <td class="padding_all">
+                                                         Excise    Regn    No    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_excise_reg_no']" />
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td class="padding_all">
+                                                         Range    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_range']" />
+                                                      </td>
+                                                   </tr>
+                                                </table>
+                                             </td>
+                                             <td class="tleft">
+                                                <table class="table_basic">
+                                                   <tr class="tbottom">
+                                                      <td class="padding_all">
+                                                         Division    :
+                                                         <br />
+                                                         <span t-esc="e['supplier_division_name']" />
+                                                      </td>
+                                                   </tr>
+                                                   <tr>
+                                                      <td class="padding_all">
+                                                         Commissionerate     :
+                                                         <br />
+                                                         <span t-esc="e['supplier_commissionerate']" />
+                                                      </td>
+                                                   </tr>
+                                                </table>
+                                             </td>
+                                             <td class="padding_all tleft">Invoice    No.    /    Date</td>
+                                             <td class="padding_all tleft">Seller    RG    23D    No.</td>
+                                          </tr>
+                                          <tr class="tbottom">
+                                             <td class="padding_all" colspan="5" height="20" />
+                                          </tr>
+                                          <tr class="tbottom">
+                                             <td colspan="5">
+                                                <!-- Start Row Four -->
+                                                <table  class="gridlist">
+                                                   <tbody>
+                                                      <tr class="tbottom">
+                                                         <th class="padding_all bold" align="center">Sl No</th>
+                                                         <th class="padding_all bold tleft" align="left">Description of Goods</th>
+                                                         <th class="padding_all bold tleft" align="center">
+                                                            Tariff Classification
+                                                         </th>
+                                                         <th class="padding_all bold tleft" align="center">Quantity</th>
+                                                         <th class="padding_all bold tleft" align="center">Invoice No./Date</th>
+                                                         <th class="padding_all bold tleft" align="center">
+                                                            Assessable Value
+                                                         </th>
+                                                         <th class="padding_all bold tleft" align="right">
+                                                            BED Amount
+                                                         </th>
+                                                         <th class="padding_all bold tleft" align="right">Ed Cess Amount</th>
+                                                         <th class="padding_all bold tleft" align="right">Sec Ed CessAmount</th>
+                                                         <th class="padding_all bold tleft" align="right">Total Duty Amount</th>
+                                                         <th class="padding_all bold tleft" align="right">Duty per Unit</th>
+                                                      </tr>
+                                                      <t t-set="sl_no" t-value="1" />
+                                                      <t t-set="assessable_value" t-value="0" />
+                                                      <t t-set="bed_amount" t-value="0" />
+                                                      <t t-set="ed_cess_amount" t-value="0" />
+                                                      <t t-set="sec_ed_cess_amount" t-value="0" />
+                                                      <t t-set="quantity" t-value="0" />
+                                                      <t t-set="ed_cess_amount" t-value="0" />
+                                                      <t t-set="total_duty_amount" t-value="0" />
+                                                      <t t-set="duty_per_unit" t-value="0" />
+                                                      <t t-set="sl_no" t-value="1" />
+                                                      <t t-set="supplier" t-value="b" />
+                                                      <t t-set="product" t-value="o.lot_get_product_detail(lot_ids,supplier)" />
+                                                      <tr class="tbottom" t-foreach="product" t-as="product1">
+                                                         <td class="padding_all">
+                                                            <span t-esc="sl_no" />
+                                                         </td>
+                                                         <t t-set="sl_no" t-value="sl_no+1" />
+                                                         <td class="padding_all tleft"  align="left">
+                                                            <span t-esc="product1['product_name']" />
+                                                         </td>
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['tarrif']" />
+                                                         </td>
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['quantity']" />
+                                                         </td>
+                                                         <t t-set="quantity" t-value="quantity+product1['quantity']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['invoice_no']" />
+                                                         </td>
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['assessable_value']" />
+                                                         </td>
+                                                         <t t-set="assessable_value" t-value="assessable_value+product1['assessable_value']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['bed_amount']" />
+                                                         </td>
+                                                         <t t-set="bed_amount" t-value="bed_amount+product1['bed_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['ed_cess_amount']" />
+                                                         </td>
+                                                         <t t-set="ed_cess_amount" t-value="ed_cess_amount+product1['ed_cess_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['sec_ed_cess_amount']" />
+                                                         </td>
+                                                         <t t-set="sec_ed_cess_amount" t-value="sec_ed_cess_amount+product1['sec_ed_cess_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['total_duty_amount']" />
+                                                         </td>
+                                                         <t t-set="total_duty_amount" t-value="total_duty_amount+product1['total_duty_amount']" />
+                                                         <td class="padding_all tleft"  align="right">
+                                                            <span t-esc="product1['duty_per_unit']" />
+                                                         </td>
+                                                         <t t-set="duty_per_unit" t-value="duty_per_unit+product1['duty_per_unit']" />
+                                                      </tr>
+                                                      <tr class="tbottom">
+                                                          <td class="padding_all"  align="right" colspan="5">Total</td>
+
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="assessable_value" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="bed_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="ed_cess_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="sec_ed_cess_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="total_duty_amount" />
+                                                         </td>
+                                                         <td class="padding_all tleft bold"  align="right">
+                                                            <span t-esc="duty_per_unit" />
+                                                         </td>
+                                                      </tr>
+                                                      <tr class="tbottom">
+                                                         <td class="padding_all" colspan="11">
+                                                            Amount of Duty (in words):
+                                                            <span t-esc="o.total_duty_amount_to_text_tax(doc_ids,'Rupees','Paisa',total_duty_amount)" />
+                                                         </td>
+                                                      </tr>
+                                                      <tr>
+                                                         <td class="padding_all" colspan="11">
+                                                            Amount of Cess (in words):
+                                                            <span t-esc="o.cess_amount_to_text_tax(doc_ids,'Rupees','Paisa',sec_ed_cess_amount,ed_cess_amount)" />
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                                <!-- End Row Four -->
+                                             </td>
+                                          </tr>
+                                       </table>
+                                    </td>
+                                 </tr>
+                              </t>
+                           </t>
+                        </t>
+                        
+
+                              
+               </div>
+           </div>
+
+
+
+
+       </t>
+   </template>
+</data>
+</openerp>

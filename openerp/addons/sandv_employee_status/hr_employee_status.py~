@@ -1,0 +1,102 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+import re
+from openerp import addons
+import logging
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp import tools
+import datetime
+from openerp import workflow
+
+
+import pdb
+
+##### Selection Values Declaration
+
+
+_EMPLOYEE_STATUS = [('notice_period' , 'Notice Period'),('probation' , 'Probation'),('temporary','Temporary'),('permanent','Permanent'),('terminated','Terminated'),('resigned','Resigned'),('absconded','Absconded')]
+################################################################################################
+
+class hr_employee(osv.osv):
+    
+    _inherit = 'hr.employee'
+    _columns = {
+    'employee_status_line' : fields.one2many('employee.history.lines','hr_id','Employee Status History Lines'),
+    'status' : fields.selection(_EMPLOYEE_STATUS, 'Employee Status',readonly = True),
+    }
+
+hr_employee()
+
+class employee_history_lines(osv.osv):
+	_name = "employee.history.lines"
+	_columns = {
+	'hr_id' : fields.many2one('hr.employee','HR Reference'),
+	'status' : fields.selection(_EMPLOYEE_STATUS, 'Employee Status'),
+	'start_date' : fields.date('Start Date'),
+    'end_date': fields.date('End Date'),
+	}
+employee_history_lines()
+
+class hr_holidays(osv.osv):
+	_inherit = "hr.holidays"
+
+
+	def approve_leaves_yearly(self, cr, uid, ids, context=None):
+		print "\n\n\n\n\n++++++cron"
+		hr_holiday_obj = self.pool.get('hr.holidays')
+		hr_employee = self.pool.get('hr.employee')
+		now = datetime.datetime.now()
+		#Contains all ids for the model scheduler.demo
+	  	hr_employee_ids = hr_employee.search(cr, uid, [('status', '=', 'permanent')], context=context) 
+	  	if hr_employee_ids:
+	  		for emp in hr_employee_ids:
+	  			emp_browse = hr_employee.browse(cr, uid, emp, context=context)
+	  			hr_emp_id = hr_holiday_obj.create(cr, uid,{
+	                'name' : u'Allocation for' + ' ' + emp_browse.name + '-April' + str(now.year),
+	                'holiday_type' : 'employee',
+	                'holiday_status_id' : 1,
+	                'employee_id' : emp_browse.id,
+	                'number_of_days_temp' : 14,
+	                'type': 'add',
+	                })
+	  			workflow.trg_validate(uid, 'hr.holidays', hr_emp_id,'validate',cr)
+	  			print "\n\n\n\nfinish"
+	def approve_leaves_yearly_october(self, cr, uid, context=None):
+		hr_holiday_obj = self.pool.get('hr.holidays')
+		hr_employee = self.pool.get('hr.employee')
+		now = datetime.datetime.now()
+		#Contains all ids for the model scheduler.demo
+	  	hr_employee_ids = hr_employee.search(cr, uid, [('status', '=', 'permanent')], context=context) 
+	  	if hr_employee_ids:
+	  		for emp in hr_employee_ids:
+	  			emp_browse = hr_employee.browse(cr, uid, emp, context=context)
+	  			hr_emp_id = hr_holiday_obj.create(cr, uid,{
+	                'name' : u'Allocation for' + ' ' + emp_browse.name + '-October' + str(now.year),
+	                'holiday_type' : 'employee',
+	                'holiday_status_id' : 1,
+	                'employee_id' : emp_browse.id,
+	                'number_of_days_temp' : 13,
+	                'type': 'add',
+	                })
+	  			workflow.trg_validate(uid, 'hr.holidays', hr_emp_id,'validate',cr)
+
+hr_holidays()		    

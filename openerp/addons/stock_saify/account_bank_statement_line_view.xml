@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+   <data>
+   	
+
+
+
+  		 <record id="account_bank_statement_form_view" model="ir.ui.view">
+            <field name="name">account.bank.statement.form</field>
+            <field name="model">account.bank.statement</field>
+             <field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+                
+		              <xpath expr="//button[@name='button_cancel']" position="after">
+		                	<button string="Update Bank Statement" type="action" states="draft" name="%(view_import_bank_wizard)d" class="oe_highlight"
+       help="Finish Order"/>
+		                	
+                  </xpath>
+               
+            </field>
+      </record>
+    </data>
+</openerp>
+

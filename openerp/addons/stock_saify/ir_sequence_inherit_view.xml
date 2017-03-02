@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Sequences -->
+        <record id="sequence_view_new" model="ir.ui.view">
+            <field name="model">ir.sequence</field>
+            <field name="inherit_id" ref="base.sequence_view"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/sheet/group/field[@name='active']" position="after">
+                        <field name="reset_required"/></xpath>
+                    </field>
+                </record>
+            </data>
+        </openerp>
+        

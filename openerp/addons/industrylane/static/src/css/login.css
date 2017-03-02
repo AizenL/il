@@ -1,0 +1,56 @@
+body.oe_single_form {
+    background: rgba(0, 0, 0, 0) url("/web/static/src/img/bg.png") no-repeat scroll 0 0 / cover ;
+    font-family: "Open Sans",sans-serif;
+}
+
+body.oe_single_form .app-cross {
+    width: 30%;
+}
+body.oe_single_form .app-cross {
+    width: 30% !important;
+}
+body.oe_single_form .app-cross {
+  background: #fff none repeat scroll 0 0;
+    border-radius: 8px !important;
+    box-shadow: 1px -2px 5px 0 rgba(0, 0, 0, 0.75);
+    height: auto;
+    left: 0;
+    margin: 5% auto 0;
+    padding: 20px;
+    position: relative;
+    text-align: center;
+    top: 0;
+    width: 25%;
+}
+body.oe_single_form .form-control {
+	 height: 50px;	
+}
+
+body.oe_single_form .submit button[type="submit"] {
+    background: #1aaa53 none repeat scroll 0 0;
+}
+
+body.oe_single_form .submit button[type="submit"] {
+  background: #92c622 url("/web/static/src/img/arrow.png") no-repeat scroll 255px 17px;
+    border: medium none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 300;
+    height: 55px;
+    outline: medium none;
+    padding: 10px;
+    transition: all 0.3s ease 0s;
+    width: 100%;
+}
+
+body.oe_single_form  header{
+	display:none;
+	
+}
+
+body.oe_single_form .oe_website_login_container {
+    margin: 40px auto;
+    width: 100%;
+}

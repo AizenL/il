@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+            id="action_other_quotation"
+            string="Sale Quotation Report"
+            model="sale.quotation"
+            report_type="qweb-pdf"
+            name="sales_invoice.report_sale_quotation"
+            file="sales_invoice.report_sale_quotation"
+        />
+   <record id="paper_sale_quotation" model="report.paperformat">
+        <field name="name">Sale Quotation </field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">10</field>
+        <field name="dpi">90</field>
+</record>
+
+
+    <record id="sales_invoice.action_other_quotation" model="ir.actions.report.xml">
+    <field name="paperformat_id" ref="sales_invoice.paper_sale_quotation" />
+</record>
+  
+
+
+
+
+
+
+
+
+
+        <!-- <report 
+            id="sale.report_sale_order"
+            string="Quotation / Order"
+            model="sale.order" 
+            report_type="qweb-pdf"
+            file="sale.report_saleorder" 
+            name="sale.report_saleorder"
+            menu="False"
+            header="False"
+        />
+
+
+ -->
+
+    
+
+      </data>
+</openerp>

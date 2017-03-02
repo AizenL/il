@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="tax_state_configuration_tree_view" model="ir.ui.view">
+            <field name="name">tax.state.configuration.view</field>
+            <field name="model">state.tax.config</field>
+            <field name="arch" type="xml">
+                <tree string="Tax Configuration-State wise">
+                    <field name="state_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+
+    	<!-- Tax configuration -->
+    	<record model="ir.ui.view" id="tax_state_configuration_form_view">
+            <field name="name">tax.state.configuration.view</field>
+            <field name="model">state.tax.config</field>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Line">
+                    <field name="state_id"/>
+                    <field colspan="4" mode="tree" name="tax_lines" nolabel="1" widget="one2many_list">
+                        <tree editable="top" string="Taxes">
+                            <field name="tax_id" />
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="action_state_tax_config" model="ir.actions.act_window">
+            <field name="name">State Wise-Tax Configuration</field>
+            <field name="res_model">state.tax.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="tax_state_configuration_tree_view"/>
+        </record>
+
+
+        <menuitem id="menu_tax_state_configuration_parent_view" name="Tax Configuration Matrix" parent="account.menu_finance" sequence="150"/>
+        <menuitem action="action_state_tax_config" id="menu_tax_state_configuration" name="State Wise-Tax Configuration" parent="menu_tax_state_configuration_parent_view" sequence="1"/>
+
+
+        <record id="tax_invoice_configuration_tree_view" model="ir.ui.view">
+            <field name="name">tax.invoice.configuration.view</field>
+            <field name="model">invoice.tax.config</field>
+            <field name="arch" type="xml">
+                <tree string="Tax Configuration-Invoicing Based">
+                    <field name="order_state_id"/>
+                    <field name="delivery_state_id"/>
+                    <field name="material_state_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+
+        <!-- Tax configuration -->
+        <record model="ir.ui.view" id="tax_invoice_configuration_form_view">
+            <field name="name">tax.invoice.configuration.view</field>
+            <field name="model">invoice.tax.config</field>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Line">
+                    <group col = "2" colspan="2">
+                        <field name="order_state_id"/>
+                        <field name="delivery_state_id"/>
+                        <field name="material_state_id"/>
+                    </group>
+                    <field colspan="4" mode="tree" name="tax_lines" nolabel="1" widget="one2many_list">
+                        <tree editable="bottom" string="Taxes">
+                            <field name="state_id" on_change="onchange_state_id(state_id, tax_id)"/>
+                            <field name="tax_id" widget="selection"/>
+                        </tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="action_invoice_tax_config" model="ir.actions.act_window">
+            <field name="name">Address Based - Tax Configuration</field>
+            <field name="res_model">invoice.tax.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="tax_invoice_configuration_tree_view"/>
+        </record>
+
+
+        <menuitem action="action_invoice_tax_config" id="menu_tax_invoice_configuration" name="Address Based - Tax Configuration" parent="menu_tax_state_configuration_parent_view" sequence="2"/>
+
+
+    </data>
+</openerp>

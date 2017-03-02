@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+
+
+        <!-- Stock Quant Extended view -->
+    	<record model="ir.ui.view" id="cust_invoice_lines_extended_form_view">
+            <field name="name">cust.invoice.lines.extended.form.view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="view_type">form</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">                
+                <field name="price_unit" position ="after">
+                	<field name="pandf_value"/>
+                	<field name="freight_value"/>
+                	<field name="insurance_value"/>
+            	</field> 
+                <field name="amount_tax" nolabel="1" widget="monetary" options="{'currency_field': 'currency_id'}" position="after">
+                    <field name="other_charges" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                </field>
+                <group class="oe_subtotal_footer oe_right" position="before">
+                    <group>
+                        <group width="800%%">                           
+                            <field name="packing_charges" />
+                            <field name="freight_charges"/>
+                            <field name="insurance_charges"/>                                
+                        </group>
+                    </group>
+                </group>             	
+            </field>
+        </record>
+
+
+
+    </data>
+</openerp>

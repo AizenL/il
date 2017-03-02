@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+        <!-- <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">sandv.product.form2</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="account.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+            <xpath expr="//page/group/label[@for='categ_id']" position="attributes">
+                                    <attribute name="invisible">1</attribute></xpath>
+
+                <xpath expr="//page/group/div/field[@name='categ_id']" position="attributes">
+                                    <attribute name="invisible">1</attribute></xpath>
+            </field>
+        </record> -->
+
+
+
+        <record id="product_product_template_only_form_view" model="ir.ui.view">
+            <field name="name">sandv.product.variant.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+
+                <!-- <xpath expr="//page/field[@name='attribute_line_ids']" position="after">
+                        <field name="sandv_attribute_line_ids" widget="one2many_list" context="{'show_attribute': False}">
+                            <tree string="Variants" editable="bottom">
+                                <field name="attribute_id"/>
+                                <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                            </tree>
+                        </field>
+                    </xpath> -->
+
+
+                
+                    <xpath expr="//page[@string='Variants']" position="after">
+                    <page name="sandvvariants" string="SandV Variants">
+                    
+                       
+                        <field name="sandv_attribute_line_ids" widget="one2many_list" context="{'show_attribute': False}">
+                            <tree string="Variants" editable="bottom">
+                                <field name="attribute_id"/>
+                                <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                            </tree>
+                        </field>
+                   
+                </page></xpath>
+            </field>
+        </record>
+
+
+        <record id="view_sandv_product_form" model="ir.ui.view">
+            <field name="name">sandv.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+
+                <page string="Information" position="after">
+                	<page string = "Other Details">
+                       <!--  <group><field name="categ_id" colspan="2" string="Product Category" modifiers="{'required': true}"/></group> -->
+	                    <group>
+	                        <group>
+	                            <field name="customer_part_noo"/>
+	                            <field name="product_description"/>
+	                            <field name="product_brand"/>
+				</group>
+				<group>
+	                            <field name="manufacturer_part_no"/>
+	                            <!--<field name="product_type"/>-->
+	                            <!--<field name="product_material"/>-->
+	                        </group>
+	                    </group>
+	                </page>
+                </page>
+            </field>
+        </record>
+
+        <record id="product_product_product_tree_view" model="ir.ui.view">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='attribute_value_ids']" position="replace">
+                     <field name="attribute_value_ids" widget="many2many_tags" invisible="1"/>
+
+                </xpath>
+
+                    </field>
+                </record>
+        <record id="product_product_kanban_view" model="ir.ui.view">
+            <field name="name">Product Kanban</field>
+            <field name="model">product.product</field>
+            
+            <field name="inherit_id" ref="product.product_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban/templates/t/div/div/h4/a/field[@name='attribute_value_ids']" position="replace">
+                     <field name="attribute_value_ids" invisible="1"/>
+
+                </xpath>
+
+                    </field>
+                </record>
+
+
+	   <record id="sale_product_brand_form" model="ir.ui.view">
+            <field name="name">product.brand</field>
+            <field name="model">product.brand</field>
+
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                        <field name="name"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+	  <record id="action_product_brand" model="ir.actions.act_window">
+            <field name="name">Product Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+
+       </record>
+
+
+	  <menuitem action="action_product_brand"
+            id="menu_shipping_terms" sequence="1"
+
+            parent="base.menu_base_config"/>
+
+     <record id="sandv_attribute_tree_view" model="ir.ui.view">
+            <field name="name">product.attribute.tree</field>
+            <field name="model">sandv_product.attribute</field>
+            <field name="arch" type="xml">
+                <tree string="Variant Values" editable="top">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sandv_attribute_action" model="ir.actions.act_window">
+            <field name="name">SandV Attributes</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sandv_product.attribute</field>
+            <field name="view_mode">tree</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem action="sandv_attribute_action"
+            id="menu_attribute_action"
+            parent="product.prod_config_main" sequence="9" />
+
+
+        <record id="sandv_variants_tree_view" model="ir.ui.view">
+            <field name="name">sandv_product.attribute.value.tree</field>
+            <field name="model">sandv_product.attribute.value</field>
+            <field name="arch" type="xml">
+                <tree string="Variant Values" editable="top">
+                    <field name="sequence" widget="handle"/>
+                    <field name="attribute_id"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sandv_variants_action" model="ir.actions.act_window">
+            <field name="name">SandV Attribute Values</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sandv_product.attribute.value</field>
+            <field name="view_mode">tree</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem action="sandv_variants_action"
+            id="menu_variants_action"
+            parent="product.prod_config_main" sequence="10" />
+
+
+	  <!--<record id="sale_product_type_form" model="ir.ui.view">-->
+            <!--<field name="name">product.type</field>-->
+            <!--<field name="model">product.type</field>-->
+
+            <!--<field name="arch" type="xml">-->
+                <!--<form>-->
+                    <!--<sheet>-->
+                        <!--<group>-->
+                        <!--<field name="name"/>-->
+                    <!--</group>-->
+                    <!--</sheet>-->
+                <!--</form>-->
+            <!--</field>-->
+        <!--</record>-->
+
+
+	  <!--<record id="action_product_type" model="ir.actions.act_window">-->
+            <!--<field name="name">Product Type</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">product.type</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">tree,form</field>-->
+
+       <!--</record>-->
+
+
+	  <!--<menuitem action="action_product_type"-->
+            <!--id="menu_product_type" sequence="1"-->
+
+            <!--parent="base.menu_base_config"/>-->
+
+
+
+	  <!--<record id="sale_product_material_form" model="ir.ui.view">-->
+            <!--<field name="name">product.material</field>-->
+            <!--<field name="model">product.material</field>-->
+
+            <!--<field name="arch" type="xml">-->
+                <!--<form>-->
+                    <!--<sheet>-->
+                        <!--<group>-->
+                        <!--<field name="name"/>-->
+                    <!--</group>-->
+                    <!--</sheet>-->
+                <!--</form>-->
+            <!--</field>-->
+        <!--</record>-->
+
+
+	  <!--<record id="action_product_material" model="ir.actions.act_window">-->
+            <!--<field name="name">Product Material</field>-->
+            <!--<field name="type">ir.actions.act_window</field>-->
+            <!--<field name="res_model">product.material</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">tree,form</field>-->
+
+       <!--</record>-->
+
+
+	  <!--<menuitem action="action_product_material"-->
+            <!--id="menu_product_materials" sequence="1"-->
+
+            <!--parent="base.menu_base_config"/>-->
+
+
+
+
+
+
+
+   
+  </data> 
+</openerp>

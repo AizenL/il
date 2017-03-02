@@ -1,0 +1,14 @@
+<openerp>
+    <data noupdate="1">
+        <record id="ir_cron_scheduler_hr_holidays_inherited_April_action" model="ir.cron">
+            <field name="name">Leave Allocation for April</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">12</field>
+            <field name="interval_type">months</field>
+            <field name="numbercall">1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'hr.holidays'" name="model"/>
+            <field eval="'approve_leaves_yearly'" name="function"/>
+        </record>
+   </data>
+</openerp>

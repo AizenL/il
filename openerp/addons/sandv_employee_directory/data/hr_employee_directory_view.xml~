@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+
+    <!--Employee form view -->
+    <record model="ir.ui.view" id="sandv_view_employee_form">
+        <field name="name">SANDV HR Form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr = "//form/sheet/div[@class='oe_title']" position = "replace">
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <label for="employee_type" class="oe_edit_only" />
+                    <field name="employee_type" widget="selection" create="false"/>
+                    <label for="category_ids" class="oe_edit_only" groups="base.group_hr_user"/>
+                    <field name="category_ids" widget="many2many_tags" placeholder="e.g. Part Time" groups="base.group_hr_user"/>
+                    <label for="work_email" class="oe_edit_only"/>
+                    <field name="work_email" widget="email"/>
+                    <label for="work_phone" class="oe_edit_only"/>
+                    <field name="work_phone"/>
+                </div>
+            </xpath>
+            
+            <xpath expr = "//form/sheet/notebook/page[@string='Public Information']/group/group[@string='Position']/field[@name='coach_id']" position = "replace">
+                <field name="coach_id" invisible = "1"/>
+            </xpath>
+
+            <xpath expr = "//form/sheet/notebook/page[@string='Personal Information']" position = "replace">
+                <page string="Personal Information" groups="base.group_hr_user">
+                    <group>
+                        <group>
+                            <field name="country_id" options='{"no_open": True, "no_create": True}'/>
+                            <field name="gender"/>
+                            <field name="marital"/>
+                            <field name="blood_group" />
+                            <field name="personal_email" widget="email" on_change="onchange_personal_email(personal_email)"/>
+                            <field name="personal_phone"/>
+                            <field name="birthday"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+
+            <page string="Personal Information" position="after">
+                <page string="Family Details">
+                    <field name="related_ids" nolabel="1">
+                        <separator string="Family Details"/>
+                        <tree string="Family Details">
+                            <field name="name"/>
+                            <field name="last_name"/>
+                            <field name="birth_date"/>
+                            <field name="age"/>                            
+                            <field name="gender"/>
+                            <field name="relation_id"/>                            
+                            <field name="telephone"/>
+                            <field name="is_dependent"/>
+                            <field name="is_salaried"/>
+                            <field name="salary_details"/>
+                            <field name="is_emergency"/>
+                        </tree>
+                        <form string="Family Details">
+                            <group string = "Family Details">
+                                <group>
+                                    <field name="name"/>
+                                    <field name="last_name"/>
+                                    <field name="birth_name"/>
+                                    <field name="age"/>                                    
+                                    <field name="relation_id"/>
+                                    <field name="birth_date"/>
+                                    <field name="gender"/>
+                                </group>
+                                <group>
+                                    <field name="telephone"/>
+                                    <field name="is_dependent"/>
+                                    <field name="is_salaried" attrs="{'invisible': [('is_dependent', '=', 'True')]}" />
+                                    <field name="salary_details" attrs="{'invisible': [('is_salaried', '=', 'False')]}" />
+                                    <field name="is_emergency"/>
+                                    <field name="child_class"/>
+                                </group>
+                                <group>
+                                    <field name="note"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+
+
+
+                </page>
+
+                <page string="Contact Information">
+                    <field name="address_ids" nolabel="1">
+                        <tree string="Contact Information">
+                            <field name="name" />
+                            <field name="address_info"/>
+                            <field name="street" />
+                            <field name="street2" />
+                            <field name="state_id" />
+                            <field name="country_id" />
+                            <field name="phone" />
+                            <field name="mobile" />
+                            <field name="zip" />
+                        </tree>
+                        <form string="Contact Information">
+                          <group>
+                            <group>
+                               <field name="name" />
+                              <field name="street" placeholder="Street1"/>
+                              <field name="street2" placeholder="Street2"/>
+                              <field name="city" />
+                              <field name="state_id" />
+                              <field name="country_id"/>
+                            </group>
+                            <group>
+                                <field name="address_info"  placeholder="Permanet , Temparary , Emergency etc.." />
+                                <field name="phone" />
+                                <field name="mobile"/>
+                                <field name="zip" />
+                                <field name="status"/>
+                            </group>
+                          </group>
+                        </form>
+
+                    </field>
+                </page>
+
+                <page string="Bank Details">
+                    <field name="bank_details_line" nolabel="1">
+                        <tree string="Bank Details">
+                            <field name="bank_account_id" />
+                            <field name="is_salary_account"/>
+                        </tree>
+                        <form string="Bank Details">
+                            <group>
+                                <group>
+                                    <field name="bank_account_id" />
+                                    <field name="is_salary_account"/>
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+
+                
+                <page string="Identification Details">
+                    <field name="identification_details_lines" nolabel="1">
+                        <tree string="Identification Details">
+                            <field name="id_type" />
+                            <field name="id_number"/>
+                            <field name="id_issued_date" />
+                            <field name="id_expiry_date" />
+                            <field name="id_issued_by" />
+                            <field name="upload_id" />
+                        </tree>
+                        <form string="Identification Details">
+                            <group>
+                                <group>
+                                    <field name="id_type" />
+                                    <field name="id_number"/>
+                                    <field name="id_issued_date" />
+                                </group>
+                                <group>
+                                    <field name="id_expiry_date" />
+                                    <field name="id_issued_by" />
+                                    <field name="upload_id" />
+                                </group>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+
+                <page string="Education Details">
+                    <field name="education_details_line" nolabel="1">
+                        <form string="Education Details">
+                            <group>
+                                <group>
+                                    <field name="name" />
+                                    <field name="highest_qualitfication"/>
+                                    <field name="marks_obtained" />
+                                </group>
+                                <group>
+                                    <field name="grade" />
+                                    <field name="year_of_passing" />
+                                    <field name="edu_active" />
+                                    <field name="upload_edu_docs" />
+                                </group>
+                            </group>
+                        </form>
+                        <tree string="Education Details">
+                            <field name="name" />
+                            <field name="highest_qualitfication"/>
+                            <field name="marks_obtained" />
+                            <field name="grade" />
+                            <field name="year_of_passing" />
+                            <field name="edu_active" />
+                            <field name="upload_edu_docs" />
+                        </tree>
+
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="hr_contract_inherited">
+        <field name="name">hr.contract.inherited</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr = "/form/sheet/notebook/page[@string='Information']/group/group[@string='Salary and Advantages']" position = "replace">
+                <group name="salary_and_advantages" string="Salary and Advantages">
+                    <field name="wage"/>
+                    <field name="advantages" nolabel="1" placeholder="Advantages..." colspan="2"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+<!-- ##############################Employee Relation Ship Master ####################### -->
+
+        <record id="family_related_tree_view" model="ir.ui.view">
+            <field name="name">family.related.tree.view</field>
+            <field name="model">employee.relation</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Relation">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="family_related_form_view" model="ir.ui.view">
+            <field name="name">family.related.form.view</field>
+            <field name="model">employee.relation</field>
+            <field name="arch" type="xml">
+                <form string="Employee Relation">
+                    <group>
+                        <field name = "name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="action_family_relation_configuration" model="ir.actions.act_window">
+            <field name="name">Employee Relation Types</field>
+            <field name="res_model">employee.relation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="family_related_tree_view"/>
+        </record>
+        <menuitem action="action_family_relation_configuration" id="menu_family_relation_types_id" parent="hr.menu_hr_configuration" sequence="100"/>
+
+
+<!-- ##############################Employee Relation Ship Master End ####################### -->
+
+<!-- ##############################Employee Type Master Start####################### -->
+
+    <record id="employee_type_master_tree_view" model="ir.ui.view">
+        <field name="name">employee_type_master_tree_view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <tree string="Employee Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="employee_type_master_form_view" model="ir.ui.view">
+        <field name="name">employee_type_master_form_view</field>
+        <field name="model">employee.type</field>
+        <field name="arch" type="xml">
+            <form string="Employee Type">
+                <group>
+                    <field name = "name"/>
+                </group>
+                <group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_employee_type_master" model="ir.actions.act_window">
+        <field name="name">Employee Type</field>
+        <field name="res_model">employee.type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="employee_type_master_tree_view"/>
+    </record>
+
+    <menuitem action="action_employee_type_master" id="menu_employee_type_master" parent="hr.menu_hr_configuration" sequence="99"/>
+<!-- ##############################Employee Type Master  End####################### -->
+    </data>
+</openerp>

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_sale_quotation">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="row">
+                        <style>
+    body {
+        color: #000 !important;
+        word-wrap: break-word;
+    }
+    .border-black td {
+        border-top: 1px solid black !important;
+    }
+    .table-condensed > thead > tr > th {
+        border-bottom: 1px solid black !important;
+    }
+    .table-condensed > tbody > tr {
+        page-break-inside: avoid !important;
+    }
+    .zero_min_height {
+        min-height: 0px !important;
+    }
+	
+table{
+	font-size:12px;
+	line-height:18px;
+	width:100%;
+	border-collapse: collapse;
+    page-break-inside: avoid !important;
+
+	}
+p{
+padding:0px;
+margin:0px;
+}
+/* vertical-align Top Middle*/
+.vat{
+vertical-align: top;
+}
+.vam{
+vertical-align: middle;
+}
+
+
+table, td, th {
+
+}
+
+/* table Border */
+.ttb{
+border-top:1px solid #ccc;
+border-bottom:1px solid #ccc;
+}
+.ttop{
+border-top:1px solid #ccc;
+}
+.tbottom{
+border-bottom:1px solid #ccc;
+}
+
+.tleft{
+border-left:1px solid #ccc;
+}
+
+.tright{
+border-right: 1px solid #ccc;
+}
+.padding_lr{
+padding-left:5px;
+padding-right:5px;
+}
+.padding_tb{
+padding-top:5px;
+padding-bottom:5px;
+}
+.padding_all{
+padding:5px;
+}
+h2{
+font-size:18px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+h4{
+font-size:14px;
+margin-top:5px;
+margin-bottom:5px;
+padding-top:5px;
+padding-bottom:5px;
+}
+.grid{
+border:1px solid #ccc;
+}
+.grid td{
+}
+.bold{
+font-weight:bold;
+}
+.small{
+font-size:10px;
+line-height:14px;
+}
+<!-- ttop tbottom tleft tright -->
+
+
+</style>
+
+                        <table class="grid">
+                            <tbody>
+	                                <tr>
+                                    <td align="center"><h2>Quotation</h2></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr class="ttb">
+                                                    <td class="padding_all vam" width="40%" align="center" valign="center">
+                                                        <img t-if="o.company_id.logo" t-att-src="'data:image/png;base64,%s' % o.company_id.logo"/>
+                                                    </td>
+                                                    <td  width="30%" class="tleft padding_all">
+                                                        <span t-esc="o.company_id.name"/>
+                                                        <br/>
+                                                        <span t-esc="o.company_id.street"/> 
+                                                        <span t-esc="o.company_id.street2"/>,
+                                                        <br />
+                                                        <span t-esc="o.company_id.city"/>, - 
+                                                        <span t-esc="o.company_id.zip"/>
+                                                        <br />Phone No: 
+                                                        <span t-esc="o.company_id.phone"/> /Fax-
+                                                        <span t-esc="o.company_id.fax"/> /
+                                                        <br />
+                                                        <span t-esc="o.company_id.email"/>
+                                                    </td>
+                                                    <td  width="30%" class="tleft padding_all">
+                                                        <p>PAN No:
+                                                            <span t-esc="o.company_id.partner_id.pan_no"/>
+                                                        </p>
+                                                        <p>TIN NO: 
+                                                            <span t-esc="o.company_id.partner_id.vat_tin"/>
+                                                        </p>
+                                                        <p>CIN No: 
+                                                            <span t-esc="o.company_id.cin"/>
+                                                        </p>
+                                                        <p>ECC No: 
+                                                            <span t-esc="o.company_id.ecc"/>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="padding_all">
+                                                        <p>Quotation To :</p>
+                                                        <p>
+                                                            <t t-if="o.partner_id.parent_id.name">
+                                                                <span t-esc="o.partner_id.parent_id.name"/>
+                                                            </t>
+                                                            <br/>
+                                                            <span t-esc="o.partner_id.name"/>
+                                                            <br/>
+                                                            <span t-esc="o.partner_id.street"/>
+                                                            <br/>
+                                                            <span t-esc="o.partner_id.street2"/>
+                                                            <br/>
+                                                            <span t-esc="o.partner_id.city"/>
+                                                            <br/>
+
+                                                            <span t-esc="o.partner_id.state_id.name"/>
+                                                            <span t-esc="o.partner_id.zip"/>
+                                                            <br/>
+                                                        </p>
+                                                        <p>Pan No:
+                                                            <span t-esc="o.partner_id.pan_no"/>
+                                                        </p>
+                                                        <p>Tin No:
+                                                            <span t-esc="o.partner_id.vat_tin"/>
+                                                        </p>
+                                                    </td>
+                                                    <td  width="30%" class="tleft padding_all vat">
+                                                        <p>Sale Order No:
+                                                            <span t-esc="o.name"/>
+                                                        </p>
+                                                        <p>Concer Person Name:
+                                                            <span t-esc="o.partner_id.concern_person"/>
+                                                        </p>
+                                                        <p>Tel No: 
+                                                            <span t-esc="o.partner_id.phone"/>
+                                                        </p>
+                                                        <p>Quotation Date: 
+                                                            <span t-esc="o.date_order"/>
+                                                        </p>
+                                                        <p>Email Id:
+                                                            <span t-esc="o.partner_id.email"/>
+                                                        </p>
+                                                        <p>Enquiry Recived</p>
+                                                    </td>
+                                                    <td  width="30%" class="tleft padding_all vat">
+                                                        <p>Quotation From: 
+                                                            <span t-esc="o.user_id.name"/>
+                                                        </p>
+                                                        <p></p>
+                                                        <p>Mail ID: 
+                                                            <span t-esc="o.user_id.email"/>
+                                                        </p>
+                                                        <p>Tel No: 
+                                                            <span t-esc="o.user_id.phone"/>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>		
+                                <tr class="tbottom">
+                                    <td align="center"><h4 class="bold">Particulars</h4></td>
+                                </tr>                                
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="padding_all" align="center">S. No</td>
+                                                    <td class="tleft padding_all " align="center">Product Name</td>
+                                                    <td class="tleft padding_all" align="center">Customer Part No</td>
+                                                    <td class="tleft padding_all" align="center">Make</td>
+                                                    <td class="tleft padding_all" align="center">IL Part No.</td>
+                                                    <td class="tleft padding_all" align="center">Manufacturer Part No.</td>
+                                                    <td class="tleft padding_all" align="center">Qty</td>
+                                                    <td class="tleft padding_all" align="center">UOM</td>
+                                                    <td class="tleft padding_all" align="right">Basic Unit Price</td>
+                                                    <td class="tleft padding_all" align="center">ED</td>
+                                                </tr>
+                                                <t t-set="sl_no" t-value="1"/>
+                                                <tr class="ttop" t-foreach="o.order_line" t-as="line">
+                                                    <td class="padding_all" align="center">
+                                                        <span t-esc="sl_no"/>
+                                                    </td>
+                                                    <t t-set="sl_no"  t-value="sl_no+1"/>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_id"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_id.customer_part_noo"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.brand_name"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.il_part_no"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_id.manufacturer_part_no"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_uom_qty"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center">
+                                                        <span t-field="line.product_uom"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="right">
+                                                        <span t-field="line.price_unit"/>
+                                                    </td>
+                                                    <td class="tleft padding_all" align="center"> </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all">Special Remarks:</td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all">Vat extra as applicable</td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td class="padding_all">Excise Benefit (if applicable) is extra at actuals &amp; will be passed on</td>
+                                </tr>
+
+                                <tr class="tbottom">
+                                    <td class="padding_all" align="center"><h4 class="bold">Industrylane Commercials</h4></td>
+                                </tr>
+                                <tr class="tbottom">
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="25%" class="padding_all  tbottom">TIN No:</td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">
+                                                        <span t-esc="o.company_id.partner_id.vat_tin"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">ECC No.</td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">
+                                                        <span t-esc="o.company_id.ecc"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="25%"  class="padding_all  tbottom">PAN No:</td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">
+                                                        <span t-esc="o.company_id.partner_id.pan_no"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">Range</td>
+                                                    <td width="25%"  class="padding_all tleft tbottom">
+                                                        <span t-esc="o.company_id.partner_id.range"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="25%"  class="padding_all">Commisionerate:</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.partner_id.commissionerae"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft">Division</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.partner_id.division"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td  class="padding_all tbottom" align="center"><h4 class="bold">Industrylane Bank Details</h4></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Bank Name:</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.bank_ids.bank_name"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft">Account Name</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.bank_ids.partner_id.name"/>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Address</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.bank_ids.owner_name"/> 
+                                                        <span t-esc="o.company_id.bank_ids.street"/> 
+                                                        <span t-esc="o.company_id.bank_ids.city"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft" >Account No.</td>
+                                                    <td width="25%"  class="padding_all tleft" >
+                                                        <span t-esc="o.company_id.bank_ids.acc_number"/>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Pincode</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.bank_ids.zip"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft">IFSC Code</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.company_id.bank_ids.bank_bic"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td  class="padding_all tbottom" align="center"><h4 class="bold">Terms &amp; Conditions</h4></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Payment Terms</td>
+                                                    <td width="25%"  class="padding_all tleft">
+                                                        <span t-esc="o.sale_order_payment_information.payment_information"/>
+                                                    </td>
+                                                    <td width="25%"  class="padding_all tleft" owspan="5"></td>
+                                                    <td width="25%"  class="padding_all tleft">P&amp;F:</td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Delivery Period:</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft">Freight:</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Mode of Dispatch:</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft">Payment Mode</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Validity:</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                </tr>
+                                                <tr class="tbottom">
+                                                    <td width="25%"  class="padding_all">Warranty:</td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                    <td width="25%"  class="padding_all tleft"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td  class="padding_all small ttop" align="left">
+                                                	<h4>General Terms &amp; Conditions</h4>
+			                                        <br />1 Price Ex- Godown.
+			                                        <br />2 Discount Price quoted is after calculating discount.
+			                                        <br />3 Packing &amp; Forwarding Extra @ 2 %.
+			                                        <br />4 Sales Tax In Karnataka, VAT as Applicable
+			                                        <br />5 Central Sales Tax Out of Karnataka, 2% C.S.T. against 'C' Form OR 14.50% C.S.T. &amp;lsquo;C&amp;rsquo;-Form should be submitted to us strictly after completion of 90 days from the date of billing.
+			                                        <br />Incase of non submission , difference of Tax Amount will be debited to customer account &amp; should be payable by customer.
+			                                        <br />6 Freight Extra on "To Pay" Basis. In case of small parcels, items will be dispatched thru courier service on freight paid basis collected from you prior to dispatch.
+			                                        <br />7 Transportation charges Will be charged extra @ actuals for Higher Ranges &amp; Surface Plate, 2D Height Gauge &amp; etc.,
+			                                        <br />8 Installation &amp; Training
+			                                        <br />Charges
+			                                        <br />Installation &amp; Training charges are extra @ actuals for SJ 210, 2D Height Gauge &amp; etc.,
+			                                        <br />9 Any other charges To be borne by the Customer.
+			                                        <br />10 Payment Terms as mentioned above. (By Cheque/DD/NEFT/RTGS/Credit Card/Debit Card/Cash)
+			                                        <br />11 Delivery Period Refer Delivery Schedule of Page 1 (Subject to prior sale except for Forward Delivery). Stock availability is as per today&amp;rsquo;s stock &amp; Quantity may vary at the time
+			                                        <br />of delivery. Kindly confirm at the release of Purchase Order.
+			                                        <br />12 Validity of Offer 15 Days.
+			                                        <br />13 Despatch Courier Service / Transport Service / By Hand.
+			                                        <br />14 Modvat Not Applicable.
+			                                        <br />15 Calibration Certificate
+			                                        <br />16 Warranty Certificate Warranty Certificate for a period of 12 months is enclosed along with the product. (For Manufacturing Defects Only).
+			                                        <br />17 Certificate of Inspection OEM does not provide Individual CERTIFICATE OF INSPECTION for all types along with its products.
+			                                        <br />Only WARRANTY CERTIFICATE will be provided by OEM.
+			                                        <br />18 Your S.T &amp; C.S.T Reg No. Kindly Mention your CST and TIN Registration No. in the Purchase Order.
+			                                        <br />19 Excise Duty If Applicable
+			                                        <br />20 T &amp; C Terms &amp; Conditions are subject to change without prior notice.
+			                                        <br />21 Jurisdiction Any disputes are subject to Bangalore Jurisdication.
+			                                        <br />22 Other Goods Once Sold Cannot be Taken Back or Exchanged.
+
+									</td>
+                                </tr>                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</openerp>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <!--Employee form view -->
+    <record model="ir.ui.view" id="employee_status_form_view">
+        <field name="name">employee_status_form_view_hr</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="sandv_employee_directory.sandv_view_employee_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr = "//form/sheet" position = "before">
+
+	    <header>
+		<button name="%(action_change_employee_status)d" string="Change Employee Status" type="action" class="oe_highlight" groups="base.group_hr_user"/>
+	    </header>
+	    <xpath>
+
+            <xpath expr="//field[@name='work_phone']" position="after">
+			<label for="status" groups="base.group_hr_user"/>
+                        <field name="status"/>
+            </xpath>
+
+            <xpath expr = "//form/sheet/notebook/page[@string='HR Settings']" position = "after">
+                <page string="Employee Status History" groups="base.group_hr_user">
+                    <field name="employee_status_line" nolabel="1">
+                        <tree string = "Employee Status History" editable="bottom">
+                            <field name = "status"/>
+                            <field name = "start_date"/>
+                            <field name = "end_date"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>        
+        </field>
+    </record>
+
+<!--     <record model="ir.ui.view" id="hr_holidays_button_view">
+        <field name="name">hr_holidays_button_view</field>
+        <field name="model">hr.holidays</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_new" />
+        <field name="arch" type="xml">
+            <button string="Confirm" name="confirm" states="draft" type="workflow" class="oe_highlight" position="after">
+                <button string="test" name="approve_leaves_yearly"  type="object" class="oe_highlight"/>
+            </button>
+   
+        </field>
+    </record>
+ -->
+
+
+
+    </data>
+</openerp>

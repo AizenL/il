@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+from openerp import models, fields, api
+from _dbus_bindings import String
+import random
+from openerp.exceptions import ValidationError
+from twisted.application.strports import _DEFAULT
+from matplotlib.mathtext import Char
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+
+
+class hr_interview_evaluation(models.Model):
+    _name = "hr.interview.evaluation"
+
+    assessment_id = fields.Many2one('hr.interview.evaluation','Candidate Reference')
+    interviewer_id = fields.Many2one('hr.employee','Name of the Interviewer')
+    department_id = fields.Many2one('hr.department','Department')
+    job_id = fields.Many2one('hr.job','Designation')
+    name = fields.Char(string = 'Name Of the Candidate',size=256)
+    applicant_id = fields.Many2one('hr.applicant','Candidate')
+    total_years_exp = fields.Float('Total Years of Experience')
+    position_applied = fields.Many2one('hr.job','Position Applied')
+    current_location = fields.Char('Current Location')
+    interview_date = fields.Datetime('Interview Date')
+    current_work_location = fields.Char('Currently Working at')
+    mode_of_source = fields.Many2one('hr.recruitment.source','Mode Of Sourcing')
+    current_designation = fields.Char('Current Designation')
+    tech_comments = fields.Text('Technical Test Comments(if any)')
+    email_comments = fields.Text('Email Test Comments')
+    excel_comments = fields.Text('Excel Test Comments')
+    comments = fields.Text('Comments')
+    assessment_line = fields.One2many('interviewer.assessment', 'assessment_id', 'Interviewer Assessment Lines')
+    hr_lines = fields.One2many('hr.assessment','hr_assessment_id','HR Assessment Line')
+    total_assessment = fields.Integer('Total Assessment')
+
+
+
+    _defaults = {
+    'interviewer_id' : lambda obj, cr, uid, context: uid,
+    'interview_date' : fields.Date.today(),
+    }
+
+    @api.multi
+    def onchange_interviewer_id(self, interviewer_id=False):
+        if interviewer_id:
+            interviewer = self.env['hr.employee'].browse(interviewer_id)
+            return {
+                'value': {
+                    'department_id': interviewer.department_id.id or False,
+                    'job_id': interviewer.job_id.id or False,
+                }
+            }
+        return {}
+
+    @api.multi
+    def onchange_applicant_id(self, applicant_id=False):
+        if applicant_id:
+            applicant = self.env['hr.applicant'].browse(applicant_id)
+            return {
+                'value': {
+                    'name': applicant.partner_name or False,
+                    'position_applied': applicant.job_id.id or False,
+                }
+            }
+        return {}
+
+
+class interviewer_assessment(models.Model):
+    _name = "interviewer.assessment"
+
+    assessment_id = fields.Many2one('hr.interview.evaluation','Candidate Reference')
+    communication_rating = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Communication')
+    attitude = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Attitude /Behavior ')
+    job_knowledge = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Job Knowledge ')
+    computer_skills = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Computer Skills ')
+    potential_rate = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Learnability/ Potential ')
+    business_acumen = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Business Acumen')
+    education = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Education ')
+    relevant_job_exp = fields.Selection([('1', '1 - Poor'),('2', '2 - Below Average'),('3', '3 - Average'),('4', '4 - Good'),('5', '5 - Outstanding')],'Relevant Job Experience')
+
+class hr_assessment(models.Model):
+    _name = "hr.assessment"
+
+    hr_assessment_id = fields.Many2one('hr.interview.evaluation','Interview Evaluation Reference')
+    current_ctc = fields.Integer('Current Salary (CTC)')
+    notice_period = fields.Integer('Notice Period')
+    gross_salary = fields.Integer('Gross salary & Take home ')
+    residing_at = fields.Text('Residing at')
+    last_appraisal_received = fields.Date('Last Appraisal Received')
+    job_change_reason = fields.Text('Reason for Job change')
+    salary_expectation = fields.Integer('Salary Expectations')
+    gaps_any = fields.Selection([('yes', 'Yes'),('no', 'No')],'Gaps in Tenure ')
+    final_status = fields.Selection([('selected', 'Selected'),('not-selected', 'Rejected')],'Final Status')
+
+class hr_applicant(models.Model):
+	_inherit = "hr.applicant"
+
+	interview_evaluation_id = fields.Many2one('hr.interview.evaluation','Interviewer Evaluation',domain="[('applicant_id','=',id),('interviewer_id','=',user_id.id)]")
+	interviewer_name = fields.Char('Interviewer Name',size=256)
+	interviewer_department = fields.Many2one('hr.department','Interviewer Department')
+	interviewer_overall_assessment = fields.Integer('Interviewer Marks')
+
+
+    @api.multi
+    def onchange_interview_evaluation_id(self, interview_evaluation_id=False):
+        if interview_evaluation_id:
+            interview_evaluation = self.env['hr.interview.evaluation'].browse(interview_evaluation_id)
+            return {
+                'value': {
+                    'interviewer_name': interview_evaluation.interviewer_id.id or False,
+                    'interviewer_department': interview_evaluation.interviewer_id.id or False,
+                    'interviewer_overall_assessment': interview_evaluation.total_assessment or False,
+                }
+            }
+        return {}

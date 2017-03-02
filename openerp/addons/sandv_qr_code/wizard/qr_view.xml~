@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="qr_code_generarate_id_new">
+            <field name="name">qr.code.generarate.id.new</field>
+            <field name="model">qr.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Generate QR"> 
+                     <header>
+                        <button name="do_generate" string="Generate QR Code" type="object"/>
+                        or 
+                        <button string="Cancel" class ="oe_link" special="cancel"/>
+                    </header>
+                </form>
+            </field>
+        </record>
+     
+        <record id="action_qr_generate_wizard" model="ir.actions.act_window">
+            <field name="name">Generate QR Code</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">qr.wizard</field>
+         
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+
+        </record>
+        <act_window name="Generate QR Code"
+            res_model="qr.wizard"
+            src_model="product.master"
+            view_mode="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+            id="action_view_generate_qr_code"/>
+
+
+<!-- Scan QR -->
+        <record model="ir.ui.view" id="qr_code_scan">
+            <field name="name">qr.code.scan</field>
+            <field name="model">scan.qr.code</field>
+            <field name="arch" type="xml">
+                <form string="Scan QR Code"> 
+                     <header>
+                        <button name="do_scan" string="Scan QR Code" type="object"/>
+                        or 
+                        <button string="Cancel" class ="oe_link" special="cancel"/>
+                    </header>
+                </form>
+            </field>
+        </record>
+     
+        <record id="action_qr_scan_wizard" model="ir.actions.act_window">
+            <field name="name">Scan QR Code</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">scan.qr.code</field>
+         
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+
+        </record>
+        <act_window name="Scan QR Code"
+            res_model="scan.qr.code"
+            src_model="product.master"
+            view_mode="form"
+            target="new"
+            multi="True"
+            key2="client_action_multi"
+            id="action_view_scan_qr_code"/>
+
+    </data>
+</openerp>

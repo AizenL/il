@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="sandv_default_acc_type_form_view" model="ir.ui.view">
+            <field name="name">sandv.default.acc.type.form.view</field>
+            <field name="model">account.config.settings</field>
+            <field name="inherit_id" ref="purchase.view_account_config"/>
+            <field name="arch" type="xml"> 
+                <separator name="analytic_account" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </separator>
+                <group name="analytic_account_purchase" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </group> 
+                <xpath expr="//group[@name='analytic_account_purchase']/div" position="inside">
+                    <div>
+                        <label for="default_receivable_acc"/>
+                        <field name="default_receivable_acc" class="oe_inline"/>  
+                    </div>
+                    <div>
+                        <label for="default_payable_acc"/>
+                        <field name="default_payable_acc" class="oe_inline"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

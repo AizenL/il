@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="assets_frontend" inherit_id="website.assets_frontend" name="Shop">
+  <xpath expr="." position="inside">
+
+
+<!-- Font Awesome -->
+
+	<link rel="stylesheet" href="/website_industrylane/static/src/fonts/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/website_industrylane/static/src/fonts/flaticon/flaticon.css"/>
+    <link href="/website_industrylane/static/src/css/animate.min.css" rel="stylesheet"/>
+
+	<link href="/website_industrylane/static/src/css/magnific-popup.css" rel="stylesheet"/>
+	<link href="/website_industrylane/static/src/css/responsive-menu.css" rel="stylesheet"/>
+    <link href="/website_industrylane/static/src/css/owl.carousel.css" rel="stylesheet"/>
+    <link href="/website_industrylane/static/src/css/panels.css" rel="stylesheet"/>
+    <link href="/website_industrylane/static/src/css/bootstrap.min.css" rel="stylesheet"/>
+	    
+	     
+	<link href="//fonts.googleapis.com/css?family=Roboto%3A400%2C700%7CSource+Sans+Pro%3A700%2C900&amp;subset=latin" rel="stylesheet"/>
+	<link href="/website_industrylane/static/src/css/style.css" rel="stylesheet"/>  	
+	<script src="/website_industrylane/static/src/js/modernizr.custom.24530.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700" rel="stylesheet"/>
+	<link rel="shortcut icon" href="/website_industrylane/static/src/images/fav.png"/>      
+
+    <script src="/website_industrylane/static/src/js/jquery.easing-1.3.pack.js" type="text/javascript"></script>
+    <script src="/website_industrylane/static/src/js/bootstrap/bootstrap.min.js"></script>
+	<script src="/website_industrylane/static/src/js/bootstrap/carousel.js"></script>
+	<script src="/website_industrylane/static/src/js/bootstrap/transition.js"></script>
+	<script src="/website_industrylane/static/src/js/bootstrap/button.js"></script>
+	<script src="/website_industrylane/static/src/js/bootstrap/collapse.js"></script>
+	<script src="/website_industrylane/static/src/js/bootstrap/validator.js"></script>
+
+	<script src="/website_industrylane/static/src/js/underscore.js"></script>
+    <script type="text/javascript" src="/website_industrylane/static/src/js/jquery.isotope.min.js"></script>
+
+	<script src="/website_industrylane/static/src/js/NumberCounter.js"></script>
+	<script src="/website_industrylane/static/src/js/jquery.magnific-popup.min.js"></script>
+	<script src="/website_industrylane/static/src/js/owl.carousel.min.js" ></script>     
+    <script src="/website_industrylane/static/src/js/modernizr.js" ></script>  
+   <script src="/website_industrylane/static/src/js/jquery.bootstrap-duallistbox.js"></script> 
+    <script src="/website_industrylane/static/src/js/jquery.validate.min.js"></script> 
+    <script src="/website_industrylane/static/src/js/responsive-menu.js"></script> 
+   <script src="/website_industrylane/static/src/js/easy_auto_complete/jquery.easy-autocomplete.js"></script> 
+    
+	<script src="/website_industrylane/static/src/js/custom.js"></script>
+	<script type="text/javascript" src="/website_industrylane/static/src/js/basket_add.js"></script>
+	  	  <link rel='stylesheet' href='/website_sale/static/src/css/website_sale.css'/>
+	      <link rel='stylesheet' href='/website_sale/static/src/css/website_mail.css'/>
+	      <link rel="stylesheet" href="/website_industrylane/static/src/css/qty_css.css"/>
+	      
+   		<link rel="stylesheet" type="text/css" href="/website_industrylane/static/src/css/bootstrap-duallistbox.css"/>	      
+ 		 <script type="text/javascript" src="/website_industrylane/static/src/js/qty_add.js"></script>
+		  <script type="text/javascript" src="/website_industrylane/static/src/js/product_variant_qty.js"></script>
+
+
+
+<script src="/website_industrylane/static/src/js/highcharts/highcharts.js"></script>
+<script src="/website_industrylane/static/src/js/highcharts/modules/data.js"></script>
+<script src="/website_industrylane/static/src/js/highcharts/modules/drilldown.js"></script>   		  
+<style>
+body {
+    background-color: #f3f3f3 !important;
+}
+
+</style>
+  </xpath>
+</template>
+
+<template id="custom_footer" inherit_id="website.footer_default" name="Custom Footer">
+	 <xpath expr='//*[@id="wrapwrap"]/footer/div[1]' position="attributes">
+	       <attribute name="class">hidden</attribute>
+	  </xpath>  
+ 
+</template>
+
+<template id="add_meta" inherit_id="website.layout" name="Add Mobile View Port">
+ 	<xpath expr="//head" position="inside">
+ 	 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ 	</xpath>
+</template>
+<template id="custom_header" inherit_id="website.layout" name="Custom Header">
+
+	  <xpath expr="//*[@id='wrapwrap']" position="attributes">
+
+	  		<attribute name="class">boxed-container</attribute>
+	  </xpath>
+	  <xpath expr="//*[@id='wrapwrap']" position="before">
+	<!-- Start Pre-loader -->
+		<div id="loading">
+			<div id="loading-center">
+				<div id="loading-center-absolute">
+					<div class="object" id="object_one"></div>
+					<div class="object" id="object_two"></div>
+					<div class="object" id="object_three"></div>
+				</div>
+			</div>
+		</div> 
+		<!-- End Pre-loader -->
+	  </xpath>
+	   <xpath expr='//*[@id="wrapwrap"]/footer' position="inside">
+	   
+			<div class="footer-bottom">
+				
+				<div class="container-fluid">
+					
+					<div class="footer-bottom__left">
+						<div class="col-xs-12 col-md-12">
+
+  							<nav>
+								<ul class="bd-footer-links">
+									<li>
+										<a href="/shop">Home</a>
+									</li>
+									<li>
+										<a href="/shop_now" class="products">Shop Now </a>
+									</li>
+									<li>
+										<a href="/shop#Testimonials">Testimonials</a>
+									</li>
+									<li>
+										<a id="features" href="/shop#features">Features</a>
+									</li>          
+									<li><a href="/customer">Customer</a></li>
+									<li><a href="/supplier">Supplier</a></li>
+                                    <li><a href="/about">About Us</a></li>                                                               
+								</ul>
+							</nav>
+							
+						</div><!-- /.col-xs-12 col-md-12 -->
+					</div>
+					
+					<div class="footer-bottom__right">
+						Copyright 2015 - 2016 Industrylane. All rights reserved. 
+					</div>
+					
+				</div><!-- /.container -->
+				
+			</div><!-- /.footer-bottom -->
+			<a id="back-top" href="#" style="display: inline;"><i class="fa fa-angle-up fa-2x"></i></a>	
+			
+  
+	   </xpath>
+	  
+    <xpath expr="//*[@id='wrapwrap']/header" position="replace">
+		<!-- HEADER -->
+	
+        	<div class="topbar">
+            	<div class="container">
+                	<div class="topbar-left">
+                        <ul class="topbar-nav clearfix">
+                            <li><a href="/contact_us"><span class="phone">Connect with us</span></a></li>
+                            <li><span class="email">info@industrylane.com</span></li>
+                        </ul>
+                    </div>
+                    <div class="topbar-right">
+                    	<ul class="topbar-nav clearfix" id="top_menu">
+                    		<li><a href="/special_order_quotes" target="_self" id="button_requestQuote" groups="base.group_public">Get Your Quotes</a></li>
+							<li class="hb menuemail">
+								<a href="#" groups="base.group_public" data-toggle="modal" data-target=".bs-example-modal-sm"  data-placement="bottom"><span data-hover="Now">Sign Up</span></a>
+							</li>	                    		
+                        	 <li class="dropdown hb" t-ignore="true" t-if="website.user_id != user_id">
+                            	<a href="#" class="account dropdown-toggle" data-toggle="dropdown">My Account</a>
+                                <ul class="dropdown-menu dropdown-menu-right">
+				                    <li><a href="/shop/order_history" role="menuitem">Order History</a></li>        
+				                   <li><a href="/web#" role="menuitem">Spend Management</a></li>
+				                  <li><a href="/shop/smart_basket" role="menuitem">Smart Basket</a></li>                                                                                                                     
+				                   <li><a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a></li>
+                        		</ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!-- /.container -->
+            </div><!-- /.topbar -->	
+	<div class="head-bg">
+		<section id="header">
+			<div class="container">    
+                <header class="header-bottom row">
+					<div class="logo col-md-3">
+					 
+						<a href="/shop">
+							<img class="img-responsive" srcset="/website_industrylane/static/src/images/logo.png" alt="Industrylane" src="images/logo.png"/>
+						</a> 
+							
+						<a class="navbar-brand" href="/" t-field="res_company.name"/>
+						
+					</div><!-- /.header__logo -->
+                           <form class="form-search oe_website_sale" id="ilsearch" method="get" action="/search" style="min-height: auto;">
+                            	<input type="text" class="input-text" name="search" id="search" placeholder="Search Products by category, sub-category, name......"/>
+<!--                                  <div class="dropdown">
+                                  	<button type="button" class="btn" data-toggle="dropdown">All category <span class="fa fa-angle-down"></span></button>
+                                  	<ul class="dropdown dropdown-menu dropdown-menu-right">
+                                    	<li><a href="#">Category</a></li>
+                                    	<li><a href="#">Sub-Category</a></li>
+                                    	<li><a href="#">Products</a></li>
+                                  	</ul>
+                                </div>  -->
+                                <button type="submit" class="btn btn-danger"><span class="fa fa-search"></span></button>
+                                <input type="hidden" name="category" id="categ_id"/>
+                            </form>
+                </header>
+             </div>
+          </section>
+          			<!-- Start menu -->
+			<div id="menu">
+				<div class="wrapper">
+					<div class="container">
+						<!-- START Responsive Menu HTML -->
+						<div class="rm-container">
+							<a class="rm-toggle rm-button rm-nojs" href="">Menu</a>
+							<nav class="rm-nav rm-nojs rm-lighten">
+								<ul>
+									<li class="active">
+										<a href="/shop">Home</a>
+									</li>
+									<li>
+										<a href="/shop_now" class="products">Shop Now </a>
+									</li>
+									<li>
+										<a href="/shop#Testimonials">Testimonials</a>
+									</li>
+									<li>
+										<a  href="/shop#features">Features</a>
+									</li>
+									<li>
+										<a href="/customer">Customer</a>
+									</li>
+									<li>
+										<a href="/supplier">Supplier</a>
+									</li>  
+									<li>
+										<a href="/about#a01">About Us<i class="fa fa-angle-down"></i></a>
+										<ul>
+											<li><a href="/about#a01" id="overview">Overview</a></li>
+	                                        <li><a href="/about#a03" id="teamil">Team Industrylane</a></li>
+	                                        <li><a href="/about#a04" id="job">Careers</a></li>
+										</ul>
+									</li>
+								</ul>
+							</nav>
+						</div><!-- .rm-container -->
+						<!-- End Responsive Menu HTML -->
+					</div><!-- .container -->
+				</div><!-- .wrapper -->
+			</div><!-- #menu -->
+			<!-- End menu -->
+        </div>
+<!-- Modal -->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm register">
+    <div class="modal-content text-center">
+   		<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal">x</button>
+      	</div>   
+      	<div class="modal-body">
+      	 <div class="container col-md-12">
+      	 	  <div class="row">
+
+		                <div class="reservation-form-shadow">
+		                	<h4>NOT YET REGISTERED?</h4>
+											<h2 class="red">SIGN UP NOW</h2>
+	                    <form action="/home_customer_form" id="customerform" method="post" name="car-select-form" >
+	                        <div class="styled-select-car">
+	                             <input type="text" name="name" id="name"  required="required" class="form-control" placeholder="Enter your Name *"/>
+	                        </div>
+	            <div class="styled-select-car">
+	                                 <input type="text" name="partner_name" id="partner_name"  required="required" class="form-control " placeholder="Enter your Company *"/>
+	                            </div>
+	           <div class="styled-select-car">
+	                                 <input type="tel" name="phone" id="phone"  required="required" class="form-control " placeholder="Enter your Phone No *"/>
+	                            </div>    
+	                            
+	           <div class="styled-select-car">
+	                                 <input type="email" name="email_from" id="email_from"  required="required" class="form-control" placeholder="Enter your Email *"/>
+	                            </div>                                                    
+	
+	                        <input type="submit" class="submit" name="submit" value="Submit" id="checkoutModalLabel"/>
+	                    </form>
+		
+		                </div> 
+	      			</div>
+	      </div>     	
+      	</div> 
+    </div>
+   
+  </div>
+</div>           
+    </xpath>
+   	  
+</template>
+
+ <template id="show_sign_up" customize_show="True" inherit_id="website_industrylane.custom_header" name="Show Register Link">
+    <xpath expr="//ul[@id='top_menu']" position="inside">
+        <li class="divider" groups="base.group_public"/>
+    </xpath>
+</template>	
+<template id="custom_product_header" inherit_id="website_industrylane.home_products" name="Products Custom Header">
+	<xpath expr="//*[@id='wrap']" position="before">
+	<!-- Teaser start -->
+	<t t-if="request.env.user.name == 'Public user'">
+	<section id="teaser">
+		
+		<!-- JUMBOTRON -->
+		<div class="jumbotron jumbotron--with-captions">
+			
+			<div data-interval="5000" data-ride="carousel" id="headerCarousel" class="carousel slide">
+ 
+				<div class="carousel-inner">
+					
+					<div class="item  active">
+						<img alt="" sizes="100vw" src="/website_industrylane/static/src/images/slider/slider01.jpg"/>
+					</div><!-- /.item -->
+					
+					<div class="item">
+						<img alt="" sizes="100vw" src="/website_industrylane/static/src/images/slider/slider02.jpg"/>
+					</div><!-- /.item -->
+					
+					<div class="item">
+						<img alt="" sizes="100vw" src="/website_industrylane/static/src/images/slider/slider03.jpg"/>
+
+					</div><!-- /.item -->
+					
+					<div class="item">
+						<img alt="" sizes="100vw" src="/website_industrylane/static/src/images/slider/slider04.jpg"/>
+					</div><!-- /.item -->					
+					
+				</div><!-- /.carousel-inner -->
+			
+				<div class="container">
+ 
+					<a data-slide="prev" role="button" href="#headerCarousel" class="left jumbotron__control">
+						<i class="fa  fa-caret-left"></i>
+					</a>
+					<a data-slide="next" role="button" href="#headerCarousel" class="right jumbotron__control">
+						<i class="fa  fa-caret-right"></i>
+					</a>
+				</div><!-- /.container -->
+				
+			</div><!-- /.carousel -->
+			
+		</div><!-- /.jumbotron -->
+	</section>
+	
+	</t>
+	</xpath>
+	<xpath expr="//*[@id='wrap']" position="after">
+	
+<!-- OUR PARTNERS -->
+		<div class="container-fluid">
+			
+			<div class="row margin-bottom-60">
+				
+				<div class="col-sm-12">
+					
+					<div class="widget_text">
+						
+						<h3 class="widget-title lined big">
+							<span>OUR BRANDS</span>
+						</h3>
+						<div class="logo-panel">
+							<div id="owl-clients" class="row owl-carousel">
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/seco.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/miranda.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/yg.png"/>
+								</div>
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/addison.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/3m.png"/>									
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/widia.png"/>
+								</div>
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/ceratizit.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/camlin.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/eastman.png"/>									
+								</div>
+
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/alteco.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/bosch.png"/>									
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/taparia.png"/>
+								</div>
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/emuge.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/mititoyo.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/festo.png"/>									
+								</div>
+       
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/bando.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/panasonic.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/janatics.png"/>
+								</div>
+
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/skf.png"/>								
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/esab.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/fag.png"/>
+								</div>
+								<div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/stahwille_germany.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/IndoAsian.png"/>									
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/yamato.png"/>
+								</div>
+                               
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/luxor.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/Nataraj.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/cumi.png"/>									
+								</div>
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/apsara.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/contitech.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/toptul.png"/>									
+									
+								</div>
+	
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/stanley.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/kangaroo.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/fluke.png"/>									
+								</div>			
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/freeman.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/pidelite.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/esdee.png"/>
+								</div>	
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/bluestar.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/sandvik.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/Kyocera.png"/>									
+								</div>																																										
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/tnpl.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/KSS.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/jk.png"/>
+								</div>		
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/Mitsubishi.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/Prima.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/groz.png"/>									
+								</div>
+                                <div class="item">
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/Vertland.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/asian-paints.png"/>
+									<img alt="Client" src="/website_industrylane/static/src/images/clients/magicuttools.png"/>
+								</div>	
+																																			
+                                                                                                                                                                                                                                    
+							</div><!-- /.row -->
+						</div><!-- /.logo-panel -->
+							
+					</div><!-- /.widget_text -->
+					
+				</div><!-- /.col -->
+				
+			</div><!-- /.row -->
+			
+		</div><!-- /.container -->      
+        	
+			<!-- VALUES -->
+			<div class="values margin-bottom-0 alpha60"  id="features">
+			   <!-- ============== Experts Services That You Need =================== -->
+			   <section class="experts_services ">
+			      <div class="container">
+			         <div class="row">
+			            <div class="title_container" style="text-align:center;">
+			               <h1>Why Industrylane?</h1>
+			               <span class="decor-equal"></span>
+			            </div>
+			         </div>
+			         <!-- End row -->
+			         <div class="row">
+			            <figure class="threecol first gallery-item">
+			               <img src="/website_industrylane/static/src/img/01.jpg"/>
+			               <figcaption class="img-title">
+			                  <h2>Spend Management</h2>
+			                  <p>Industrylane is in partnership with manufacturers or biggest distributor assigned by the manufacturers to ensure 100% genuine and authentic products for customers.</p>
+			               </figcaption>
+			            </figure>
+			            <figure class="threecol gallery-item">
+			               <img src="/website_industrylane/static/src/img/02.jpg"/>
+			               <figcaption class="img-title">
+			                  <h2>Inventory Optimization</h2>
+			                  <p>Industrylane’s digitized catalogue allows streamlining of your entire procurement. Imagine having all products in place. No more calling hundreds of vendors for pricing. </p>
+			               </figcaption>
+			            </figure>
+			            <figure class="threecol gallery-item">
+			               <img src="/website_industrylane/static/src/img/03.jpg"/>
+			               <figcaption class="img-title">
+			                  <h2>Customized e-commerce store front</h2>
+			                  <p>Exclusive Store fronts for all customers. Customized store front for each customer, with customer specific products only. We show you only products that you are interested in buying. </p>
+			               </figcaption>
+			            </figure>
+			            <figure class="threecol last gallery-item">
+			               <img src="/website_industrylane/static/src/img/04.jpg"/>
+			               <figcaption class="img-title">
+			                  <h2>Best Prices</h2>
+			                  <p>Industrylane’s smart basket feature, simplifies your life. There is no need to request for a quote every time. We create your own custom catalogue based on your consumptions, and we fix rates for a period of time, thereby guaranteeing you additional cost savings.</p>
+			               </figcaption>
+			            </figure>
+			         </div>
+			         <!-- End row -->
+			      </div>
+			      <!-- End container -->
+			   </section>
+			   <!-- End experts_services -->
+			   <!-- ============== Experts Services That You Need =================== -->
+			</div>
+			<!-- /.values -->        
+			
+		<!-- TESTIMONIALS -->
+		<div class="testimonials" id="Testimonials">
+			
+			<div class="container-fluid">
+				
+				<div class="row margin-bottom-30">
+				
+					<div class="col-sm-12">
+					
+						<div class="testimonial">
+							
+							<h3 class="widget-title lined big">
+								<span>TESTIMONIALS</span>
+							</h3>
+							
+							<div class="testimonial__carousel">
+								<a data-slide="prev" href="#testimonalCarousel" class="testimonial__carousel--left">
+									<i aria-hidden="true" class="fa fa-caret-left"></i>
+									<span role="button" class="sr-only">Next</span>
+								</a>
+								<a data-slide="next" href="#testimonalCarousel" class="testimonial__carousel--right">
+									<i aria-hidden="true" class="fa fa-caret-right"></i>
+									<span role="button" class="sr-only">Previous</span>
+								</a>
+							</div><!-- /.testimonial__carousel -->
+							
+							<div data-interval="false" data-ride="carousel" class="carousel slide" id="testimonalCarousel">
+ 
+								<div role="listbox" class="carousel-inner">
+										
+									<div class="item active">
+										<div class="row">
+											<div class="col-xs-12  col-sm-6">
+												<blockquote>
+													<p class="testimonial__quote">
+														Industrylane is a trusted supplier. Best prices and products with amazing delivery services by experts/ technician.
+													</p>
+													<div class="testimonial__author">
+														Works Manager CMW Pressings<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+											<div class="col-xs-12  col-sm-6 last_testimonial">
+												<blockquote>
+													<p class="testimonial__quote">
+														We are really satisfied with the services from Industrylane team.Providing the right materials in the  right time has reduced our purchasing lead time, phone calls etc.This has also reduced lot of paper work.
+													</p>
+													<div class="testimonial__author">
+														Purchase Manager, JPT Electronic Systems Pvt Ltd.<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+										</div>
+									</div><!-- /.item -->
+										
+									<div class="item">
+										<div class="row">
+											<div class="col-xs-12  col-sm-6">
+												<blockquote>
+													<p class="testimonial__quote">
+														We hereby appreciate the services of M/S Industrylane  in providing industrial consumables on right time with reasonable pricing  from renowned sources. This has reduced our burden on searching for commodities , lead time for supply etc. Kindly keep up your good work in coming days.
+													</p>
+													<div class="testimonial__author">
+														DGM Operations, Nash Products<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+											<div class="col-xs-12  col-sm-6 last_testimonial">
+												<blockquote>
+													<p class="testimonial__quote">
+														Industry Lane Solutions Pvt Ltd has been proved incredible asset to our business within a short span. This start-up multi-brand store saves us a lot of  time and cost. They are awesome to work with, Incredibly organized, truly professional, easy to communicate, responsive with next iterations. I strongly recommend others to get associated with them.
+													</p>
+													<div class="testimonial__author">
+														Senior Manager Purchase, Nash Industries, Peenya.<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+										</div>
+									</div><!-- /.item -->
+                                    
+								<div class="item">
+										<div class="row">
+											<div class="col-xs-12  col-sm-6">
+												<blockquote>
+													<p class="testimonial__quote">
+														We have been working with Industrylane for quite some time and their products have always been of excellent quality and cost effective. 
+														Their understanding of our unique business needs enables them to provide us best quality products at most competitive prices. 
+														Industrylane has always been professional, honest, focused &amp; reliable and I would not hesitate in recommending Industrylane to anyone.
+													</p>
+													<div class="testimonial__author">
+														Plant head, Nash Industries, Bommasandra.<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+											<div class="col-xs-12  col-sm-6 last_testimonial">
+												<blockquote>
+													<p class="testimonial__quote">
+														In continuation with your great support in delivering industrial Consumables items, we place  your excellent services on record and we request you to keep up your good work in future.
+													</p>
+													<div class="testimonial__author">
+														Production Manager, Precision Products.<span class="testimonial__author-description"></span>
+													</div>
+												</blockquote>
+											</div>
+										</div>
+									</div><!-- /.item -->                                    
+										
+								</div><!-- /.carousel-inner -->
+									
+							</div><!-- /.carousel -->
+							
+						</div><!-- /.testimonial -->
+					
+					</div><!-- /.col -->
+				
+				</div><!-- /.row -->
+				
+			</div><!-- /.container -->
+			
+		</div><!-- /.testimonials -->
+			
+	
+   
+              
+					
+	</xpath>
+</template>
+
+<template name ="Customer" id ="customer" page="True">
+	<t t-call="website.layout">
+        
+<section class="customer" id="How_we_simplify_your_Life">
+          <div class="customer__picture"></div>
+          <!-- end of .customer__picture-->
+          <div class="container">
+            <div class="customer__content">
+              <div class="customer__header">
+                <h3 class="customer__title" style="visibility: visible; ">How we simplify your Life</h3>
+                
+              </div>
+              
+              <div class="row hwsyl">
+              
+            <figure class="sixcol first gallery-item">
+                <img src="/website_industrylane/static/src/img/cs01.jpg"/>
+                <figcaption class="img-title">
+                    <p>Industrylane ensures that you will get the best price for the product. We believe in serving our customers with utmost integrity and honesty and provide end to end transparency in your procurement.</p>    
+                </figcaption>
+            </figure>
+
+            <figure class="sixcol gallery-item">
+                <img src="/website_industrylane/static/src/img/cs02.jpg"/>
+                <figcaption class="img-title">
+                    <p>Industrylane’s digitized catalogue allows streamlining of your entire procurement. Imagine having all products in place. No more calling hundreds of vendors for pricing.  </p>    
+                </figcaption>
+            </figure>
+             </div>
+             
+               <div class="row hwsyl">
+            <figure class="sixcol first gallery-item">
+                <img src="/website_industrylane/static/src/img/cs03.jpg"/>
+                <figcaption class="img-title">
+                    <p>At Industrylane, a lot of emphasis is given on quality of products we procure. Our robust and stringent vendor enrollment procedures ensures that we only supply genuine products. Out of every 15 potential vendors we evaluate, only 1 qualifies.  </p>
+                </figcaption>
+            </figure>
+
+            <figure class="sixcol gallery-item">
+                <img src="/website_industrylane/static/src/img/cs04.jpg"/>
+                <figcaption class="img-title">
+                   <p>Industrylane ensures that all manufacturer’s warranty/ guarantee is passed on to our end customers. In the unfortunate scenario of where a product supplied develops an issue, Industrylane’s customer service agents will assist you through the entire process of a repair/ refund or replacement.</p> 
+                </figcaption>
+            </figure>              
+              </div>
+              
+           <div class="row hwsyl">
+            <figure class="sixcol first gallery-item">
+                <img src="/website_industrylane/static/src/img/cs05.jpg"/>
+                <figcaption class="img-title">
+                    <p>Stock only what you need, and the rest is our headache. We help optimize your warehouse inventory levels, thereby clearing up space for other activities.</p>
+                </figcaption>
+            </figure>
+          
+              </div>              
+              <!-- end of block .customer__header-->
+            </div>
+            <!-- end of .customer__content-->
+          </div>
+        </section>     	
+	</t>
+</template>
+<template name ="Supplier" id ="supplier" page="True">
+	<t t-call="website.layout">
+<!-- BEGIN SECTION FEATURE-->
+        <section class="feature" id="how_to_become_a_supplier">
+          <div class="feature__picture"></div>
+          <!-- end of .feature__picture-->
+          <div class="container">
+            <div class="feature__content">
+              <div class="feature__header">
+                <h3 data-sr="enter right ease-in-out 150px" class="feature__title">How to become a supplier</h3>
+                <h4 data-sr="enter right ease-in-out 250px" class="feature__headline">Welcome to Industrylane’s Supplier registration page. We would like to thank you for showing interest in doing business with us. If you are a product manufacturer interested in distributions, or if you are a seller of goods or services, request you to fill out the below form and we will revert back to you shortly. We will keep your profile in our database. Our product managers use the database and evaluate if there is a business opportunity with your company.</h4>
+              </div>
+  <div class="row text-center service-process">
+
+                        <!-- Step 1 -->
+                        <a href="#MyRegistration"  data-toggle="modal">
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-check icon-big"></em>                            
+                                  <h2 class="caption-title">Register</h2>
+                                </div>
+                              </div>
+                          </div>
+                        </a>
+
+                        <!-- Step 2 -->
+                       
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-phone icon-big"></em>
+                                    <h2 class="caption-title">Verification</h2>
+                                </div>
+                              </div>
+                          </div>
+
+
+                        <!-- Step 3 -->
+                        <div class="col-md-4">
+                            <div class="thumbnail-process">
+                              <div class="caption-head">
+                                <em class="caption-icon fa fa-truck icon-big"></em>
+                                  <h2 class="caption-title">Transactions</h2>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+  
+         
+
+              </div>
+              <!-- end of block .feature__list-->
+            </div>
+            <!-- end of .feature__content-->
+
+
+ <div id="MyRegistration"  enctype="multipart/form-data"  class="modal fade MyRegistration" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog vertical-align-center">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+            <h4 class="modal-title ">Supplier Registration</h4>
+        </div>
+        <div class="modal-body">
+          <form action="/supplier_ac" method="post"  id="supplier_register" class="form-horizontal mt32 shake" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+
+                   <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Name of the Company"  required="required"   data-error="This field is required."/>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group">
+
+                   <textarea rows="2" class="form-control required" id="street" name="street" required="required"  placeholder="Corporate/ Head Office Address"></textarea>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="form-group">
+
+                   <input type="text" class="form-control required"  maxlength="6"  id="zip" name="zip" required="required"  placeholder="Postal Code" />
+                    <div class="help-block with-errors"></div>
+                </div>                
+              <div class="form-group">
+
+                     <input type="text" class="form-control required" id="contact_person" required="required"  name="contact_person" placeholder="Contact Person" />
+                       <div class="help-block with-errors"></div>
+                </div>
+               <div class="form-group">
+
+                     <input type="email" class="form-control required" id="email" name="email" required="required"  placeholder="Email ID" />
+                       <div class="help-block with-errors"></div>
+                </div>     
+   
+                <div class="form-group">
+                     <input type="text" class="form-control required" id="mobile" name="mobile" required="required"  placeholder="Mobile Number" />
+                       <div class="help-block with-errors"></div>
+                </div>                                                                                                                 
+                
+            </div>
+             <div class="col-md-5 col-md-offset-1">
+ 
+
+   
+               <div class="form-group">
+                    <label class="control-label" for="nature_of_buisness">Nature of Business</label>
+                      <div class="form-group chekcbox">
+                     <label class="checkbox-inline"><input type="checkbox"  name="nature_of_buisness" value="manufacturer"/>Manufacturer Importer</label>
+					<label class="checkbox-inline"><input type="checkbox"  name="nature_of_buisness" value="dealer"/>Dealer / Stockist</label>
+					<label class="checkbox-inline"><input type="checkbox"  name="nature_of_buisness" value="distributor"/>Authorized Dealer / Distributor</label>
+                  
+                  </div>
+                </div>       
+                   <div class="form-group">
+                   <input type="text" class="form-control required" id="product_category" name="product_category" placeholder="Name of the Category" />
+                     <div class="help-block with-errors"></div>
+                </div>       
+                 <div class="form-group">
+                   <input type="text" class="form-control required" id="product_name" name="product_name" placeholder="Name of the Products" />
+                     <div class="help-block with-errors"></div>
+                </div>       
+
+               <div class="form-group">
+                     <label class="control-label" for="ufile">Add Certificates</label>
+   						<input class="input-file" id="fileInput" type="file" name="attachments"/>
+               </div>
+             </div>
+  
+             </div>
+             
+            <div class="row">
+              	 <div class="col-xs-12">
+                  <div class="form-group  text-center">
+                        <button type="submit" value="Submit" class="btn btn-custom btn-primary" id="send_btn">Submit</button>
+                </div>
+                </div>
+             </div>  
+                     
+        <div class="clearfix"></div>           
+            </form>
+        </div><!-- End of Modal body -->
+        </div><!-- End of Modal content -->
+        </div><!-- End of Modal dialog -->
+    </div><!-- End of Modal -->
+        </section>	
+	
+	</t>	
+</template>
+
+<template id="contactus_thanks" name="Contact us">
+    <t t-call="website.layout">
+<!-- BEGIN SECTION FEATURE-->
+        <section class="feature" id="how_to_become_a_supplier">
+          <div class="feature__picture"></div>
+          <!-- end of .feature__picture-->
+          <div class="container">
+            <div class="feature__content">
+              <div class="feature__header">
+                    <div class="alert alert-success">
+                        Your message has been sent successfully. We will get back to you shortly.
+                        <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                    </div>              
+                <h3 data-sr="enter right ease-in-out 150px" class="feature__title">How to become a supplier</h3>
+                <h4 data-sr="enter right ease-in-out 250px" class="feature__headline">Welcome to Industrylane’s Supplier registration page. We would like to thank you for showing interest in doing business with us. If you are a product manufacturer interested in distributions, or if you are a seller of goods or services, request you to fill out the below form and we will revert back to you shortly. We will keep your profile in our database. Our product managers use the database and evaluate if there is a business opportunity with your company.</h4>
+              </div>
+  <div class="row text-center service-process">
+
+                        <!-- Step 1 -->
+                        <a href="#MyRegistration"  data-toggle="modal">
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-check icon-big"></em>                            
+                                  <h2 class="caption-title">Register</h2>
+                                </div>
+                              </div>
+                          </div>
+                        </a>
+
+                        <!-- Step 2 -->
+                       
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-phone icon-big"></em>
+                                    <h2 class="caption-title">Verification</h2>
+                                </div>
+                              </div>
+                          </div>
+
+
+                        <!-- Step 3 -->
+                        <div class="col-md-4">
+                            <div class="thumbnail-process">
+                              <div class="caption-head">
+                                <em class="caption-icon fa fa-truck icon-big"></em>
+                                  <h2 class="caption-title">Transactions</h2>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+  
+         
+
+              </div>
+              <!-- end of block .feature__list-->
+            </div>
+            <!-- end of .feature__content-->
+  </section>    
+    </t>
+</template>
+
+<template id="error" name="Contact us">
+    <t t-call="website.layout">
+<!-- BEGIN SECTION FEATURE-->
+        <section class="feature" id="how_to_become_a_supplier">
+          <div class="feature__picture"></div>
+          <!-- end of .feature__picture-->
+          <div class="container-fluid">
+            <div class="feature__content">
+              <div class="feature__header">
+                    <div class="alert alert-error">
+                        Message not sent, please try again later
+                        <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                    </div>              
+                <h3 data-sr="enter right ease-in-out 150px" class="feature__title">How to become a supplier</h3>
+                <h4 data-sr="enter right ease-in-out 250px" class="feature__headline">Welcome to Industrylane’s Supplier registration page. We would like to thank you for showing interest in doing business with us. If you are a product manufacturer interested in distributions, or if you are a seller of goods or services, request you to fill out the below form and we will revert back to you shortly. We will keep your profile in our database. Our product managers use the database and evaluate if there is a business opportunity with your company.</h4>
+              </div>
+  <div class="row text-center service-process">
+
+                        <!-- Step 1 -->
+                        <a href="#MyRegistration"  data-toggle="modal">
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-check icon-big"></em>                            
+                                  <h2 class="caption-title">Register</h2>
+                                </div>
+                              </div>
+                          </div>
+                        </a>
+
+                        <!-- Step 2 -->
+                       
+                          <div class="col-md-4">
+                              <div class="thumbnail-process">
+                                <div class="caption-head">
+                                  <em class="caption-icon fa fa-phone icon-big"></em>
+                                    <h2 class="caption-title">Verification</h2>
+                                </div>
+                              </div>
+                          </div>
+
+
+                        <!-- Step 3 -->
+                        <div class="col-md-4">
+                            <div class="thumbnail-process">
+                              <div class="caption-head">
+                                <em class="caption-icon fa fa-truck icon-big"></em>
+                                  <h2 class="caption-title">Transactions</h2>
+                              </div>
+                            </div>
+                        </div>
+
+                    </div>
+  
+         
+
+              </div>
+              <!-- end of block .feature__list-->
+            </div>
+            <!-- end of .feature__content-->
+  </section>    
+    </t>
+</template>
+  <!-- === About Us Page === -->
+    <template name="About Us" id="aboutus" page="True">
+<t t-call="website.layout">    
+	<!-- MAIN TITLE -->
+		<div class="main-title">
+			<div class="container">
+				<h1 class="main-title__primary">About Us</h1>
+			</div>
+		</div><!-- /.main-title -->
+<div class="container-fluid">
+			
+			<div class="row margin-bottom-30">
+				
+				<div class="col-sm-8">
+					<div class="featured-widget">
+					
+						<h3 class="widget-title">We’re here to to simplify your life in two important ways:</h3>
+						 <p><b>Improve in purchase of supplies</b></p>
+						<ul>
+                        	<li>Reducing your supplier base.</li>
+                            <li>Being able to buy what you need, when you need</li>
+                            <li>Fixed rate contracts &amp; standardized products</li>
+                        </ul>
+						 <p><b>Provide Inventory Optimization Solutions</b></p>
+						<ul>
+                        	<li>Provide analytics on consumption patterns</li>
+                        	<li>Optimum space utilization in the warehouse</li>
+                        	<li>Build a reliable and trusting supply chain</li>
+                        </ul>
+					
+					</div>      
+                  </div>          
+
+			<div class="col-sm-12">
+					<p></p>
+					<p>Industrylane (Industrylane Solutions Pvt Ltd) is a one stop shop solution for all industrial consumable purchases such as MRO, cutting tools, measuring instruments, fasteners, safety equipments etc., among other product categories.</p>
+					<p>We at Industrylane believe in true partnerships because we understand that you’re short on time to work around the several challenges that’s associated with industrial consumable purchases. </p>
+
+					
+				</div><!-- /.col -->
+				
+				
+			</div><!-- /.row -->
+
+
+
+			
+		</div><!-- /.container -->
+	<div class="news  margin-bottom-60">
+		
+			<div class="container">
+				
+				<div class="row aligncenter">
+					<h2 class="white">"Industrylane strives to create solutions for our customers that can add real value.
+Creating a platform for honest , integral and best in class services, Industrylane and its team will simplify your life for you”</h2>
+
+				</div><!-- /.row -->
+				
+			</div><!-- /.container -->
+		
+		</div>	
+        
+ 
+            
+            
+     		<div class="margin-bottom-60"  id="a03">
+            		<div class="container">
+                    	<div class="row">
+                            <div class="title_container" style="text-align:center;">
+                                <h1>Team Industrylane</h1>
+                                <span class="decor-equal"></span>
+                            </div>
+                        </div> <!-- End row -->
+                        
+                <div class="row">
+                    <div class="col-md-12 value_proposition">
+                        <h3>The team at Industrylane has professionals who are leading change and driving the performance and growth of the organization. Academic qualifications that range from management, engineering, marketing and data analytics, combined with a rich experience in the industry. We value a transparent work environment. Open communication and honest dialogue are part of our work ethic. The contributions of all employees are valued. All the differences that define each of us as unique individuals are encompassed in the diversity of the workplace. Our professionals are constantly meeting the exciting challenges of delivering service solutions that consistently exceed industry standards.</h3>
+    
+                    </div>
+                 </div>       
+                                               
+                    </div>
+            </div>        
+            
+     		<div class=" margin-bottom-60"  id="a04">
+            		<div class="container">
+                    	<div class="row">
+                            <div class="title_container" style="text-align:center;">
+                                <h1>Careers</h1>
+                                <span class="decor-equal"></span>
+                            </div>
+                        </div> <!-- End row -->
+                        
+                <div class="row">
+                    <div class="col-md-12 value_proposition">
+                        <h3>As a rapidly growing company, working to solve customers' problems, with innovative solutions in a fast paced and exciting environment. Industrylane is constantly looking for exceptional talent to join hands with us in our quest to empower our customers in a competitive marketplace. If you feel you have the skills to make a difference to our effort, do mail your resume to <a href="mailto:careers@industrylane.com">careers@industrylane.com</a> .Our Recruitment Manager will get back to you when a suitable requirement arises within the organization.</h3>
+    
+                    </div>
+                 </div>       
+                                               
+                    </div>
+            </div>                
+ </t>      		
+      </template>
+</data>
+</openerp>

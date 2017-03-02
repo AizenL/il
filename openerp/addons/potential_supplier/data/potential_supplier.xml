@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+      
+
+      <record id="potential_supllier_tree_view" model="ir.ui.view">
+            <field name="name">potential.supllier.tree.view</field>
+            <field name="model">potential.supplier</field>
+            <!-- <field name="type">tree</field> -->
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Type">
+                        <field name="company_name"/>
+                        <field name="product_category"/>
+                        <field name="contact_person"/>
+                        <field name="email"/>
+                        <!-- <field name="supplier_id" string="Potential Supplier"/> -->
+                        <field name="mobile"/>
+                </tree>
+            </field>
+      </record>
+
+      <record model="ir.ui.view" id="potential_supllier_form_view">
+          <field name="name">potential.supllier.form.view</field>
+          <field name="model">potential.supplier</field>
+          <field name="arch" type="xml">
+            <form string="Potential Suppliers">
+              <header>
+            
+                <button  name="inprogress" string="In progress" states="new" type="object" class="oe_highlight"/>
+
+                <!-- <button  name="res_supplier" string="Convert as supplier " states="inprogress" class="oe_highlight"/> -->
+                
+                <button  name="create_res_partener" string="Convert as supplier" states="inprogress" type="object" class="oe_highlight"/>
+
+                <button  name="cancel_supl" string="Cancel" states="inprogress,new" type="object" class="oe_highlight"/>
+
+                <button  name="reset_new" string="Reset to draft" states="cancel" type="object" class="oe_highlight"/>
+
+                <field name="state" widget="statusbar" statusbar_visible="new,inprogress,done,cancel"/>
+
+          </header>
+              <sheet>
+                <group>
+                        <group>
+                            <field name="company_name"/>
+                            <label for="street" string="Corporate head office adress"/>
+                            <div>
+                                
+                                <field name="street" placeholder="Street..."/>
+                                <field name="street2" />
+                                <div class="address_format">
+                                    <field name="city" placeholder="City"/>
+                                    <field name="state_id" class="oe_no_button" placeholder="State"/>
+                                    <field name="zip" placeholder="Zip"/>
+                                </div>
+                                <field name="country_id" placeholder="Country"/>
+                            </div>
+                            <field name="email" placeholder="e.g. www.your@company.com"/>
+                        </group>
+                        <group>
+                            <field name="contact_person"/>
+                            <field name="mobile"/>
+                            <field name="product_category"/>
+                            <field name="product_name"/>
+                            <field name="nature_of_buisness"/>
+                        </group>
+                    </group>
+                    <field name="attachments" widget="many2many_binary"/>
+            </sheet>   
+            </form>
+          </field>
+      </record>
+
+    <record id="action_nature_of_potential_supplier_form" model="ir.actions.act_window">
+            <field name="name">Potential Supplier</field>
+            <field name="res_model">potential.supplier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="potential_supllier_tree_view"/>
+    </record>
+<menuitem action="action_nature_of_potential_supplier_form" id="nature_of_form" name="Potential Suppliers" parent="purchase.menu_procurement_management" sequence="7"/>
+    </data>
+</openerp>
